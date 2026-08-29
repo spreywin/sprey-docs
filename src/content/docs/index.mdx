@@ -1,0 +1,47 @@
+---
+title: Sprey Docs
+description: Build, connect, and operate the Sprey platform.
+template: splash
+hero:
+  tagline: Canonical technical documentation for Sprey products, deployable stacks, integrations, architecture, and operations.
+  actions:
+    - text: Explore architecture
+      link: /sprey-docs/architecture/overview/
+      icon: right-arrow
+      variant: primary
+    - text: Browse stacks
+      link: /sprey-docs/stacks/wp-stack/
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## One portal for the whole Sprey platform
+
+<CardGrid>
+  <Card title="Architecture" icon="seti:config">
+    Platform map, service boundaries, domains, deployment roles, and roadmap.
+  </Card>
+  <Card title="Products" icon="rocket">
+    Sprey Processing, Sprey RPC, Sprey VPN, and future customer-facing services.
+  </Card>
+  <Card title="Stacks" icon="seti:docker">
+    Reproducible infrastructure such as Sprey WP Stack and future BTCPay, RPC, and VPN stacks.
+  </Card>
+  <Card title="Integrations" icon="puzzle">
+    BTCPay + WooCommerce, Cloudflare, webhooks, and cross-service integration guides.
+  </Card>
+  <Card title="Operations" icon="setting">
+    Security, backups, updates, monitoring, recovery, and production procedures.
+  </Card>
+  <Card title="GitHub-first" icon="github">
+    Source, builds, and hosting stay on GitHub. Documentation does not depend on a Sprey VPS.
+  </Card>
+</CardGrid>
+
+## Documentation principles
+
+English is the canonical source language. The portal is structured for multilingual publishing, responsive use on desktop, tablet, and mobile devices, and light, dark, or automatic system themes.
+
+Features that are not deployed yet are explicitly marked **Planned**. Product documentation remains separate from implementation repositories so each stack can evolve independently.
