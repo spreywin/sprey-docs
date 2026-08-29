@@ -12,6 +12,14 @@ export default defineConfig({
       ],
       head: [
         {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
+            type: 'image/svg+xml',
+            href: '/favicon.svg',
+          },
+        },
+        {
           tag: 'script',
           content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_size:24,flag_style:'3d'};",
         },
