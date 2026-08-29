@@ -20,7 +20,7 @@ This page is the canonical map of the Sprey platform. It separates customer-faci
 
 Crypto payment infrastructure built around BTCPay Server and automation. BTCPay remains separate from the WordPress storefront stack.
 
-**Current / active direction:** `pay.sprey.win`
+**Current / active service:** [pay.sprey.win](https://pay.sprey.win/)
 
 ### Sprey RPC
 
@@ -37,12 +37,12 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 | Host | Role | Status |
 | --- | --- | --- |
 | `sprey.win` | Public website and WooCommerce store | Current direction |
-| `pay.sprey.win` | BTCPay / payment infrastructure | Current |
+| [pay.sprey.win](https://pay.sprey.win/) | BTCPay / payment infrastructure | **Live** |
 | `btcpay.sprey.win` | Additional BTCPay host / alias where required | Current architecture |
 | `app.sprey.win` | Customer application / control plane | Planned |
 | `rpc.sprey.win` | RPC/eRPC gateway | Planned |
 | `status.sprey.win` | Public service status | Planned |
-| `docs.sprey.win` | Canonical documentation portal on GitHub Pages | In progress |
+| [docs.sprey.win](https://docs.sprey.win/) | Canonical documentation portal on GitHub Pages | **Live** |
 
 ## Deployable stacks
 
@@ -80,7 +80,7 @@ The v1 design includes a **static outage fallback** hosted separately from the W
 
 The documentation source lives in [`spreywin/sprey-docs`](https://github.com/spreywin/sprey-docs), is built with Astro Starlight using GitHub Actions, and is served by GitHub Pages. No Sprey VPS is required to keep documentation online.
 
-Canonical public host: `docs.sprey.win`.
+Canonical public host: [docs.sprey.win](https://docs.sprey.win/).
 
 ## v1 roadmap
 
