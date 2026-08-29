@@ -7,27 +7,13 @@ export default defineConfig({
     starlight({
       title: 'Sprey Docs',
       description: 'Canonical technical documentation for Sprey products, deployable stacks, integrations, architecture, and operations.',
-      locales: {
-        root: { label: 'English', lang: 'en' },
-        ru: { label: 'Русский', lang: 'ru' },
-        kk: { label: 'Қазақша', lang: 'kk' },
-        de: { label: 'Deutsch', lang: 'de' },
-        es: { label: 'Español', lang: 'es' },
-        fr: { label: 'Français', lang: 'fr' },
-        pt: { label: 'Português', lang: 'pt' },
-        tr: { label: 'Türkçe', lang: 'tr' },
-        'zh-cn': { label: '简体中文', lang: 'zh-CN' },
-        ja: { label: '日本語', lang: 'ja' },
-        ko: { label: '한국어', lang: 'ko' },
-        ar: { label: 'العربية', lang: 'ar', dir: 'rtl' },
-      },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/spreywin' },
       ],
       head: [
         {
           tag: 'script',
-          content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_style:'3d'};",
+          content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_style:'3d',color_scheme:'dark'};",
         },
         {
           tag: 'script',
