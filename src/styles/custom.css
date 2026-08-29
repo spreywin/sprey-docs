@@ -46,12 +46,18 @@ body {
   border: 1px solid var(--sl-color-gray-5);
   border-radius: .75rem;
   background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, transparent);
+  font-size: .78rem;
+  line-height: 1.15;
 }
 
 .sprey-header-extra .gtranslate_wrapper a,
-.sprey-header-extra .gtranslate_wrapper span {
+.sprey-header-extra .gtranslate_wrapper span,
+.sprey-header-extra .gtranslate_wrapper select,
+.sprey-header-extra .gtranslate_wrapper button {
   color: var(--sl-color-text) !important;
-  font: inherit !important;
+  font-family: inherit !important;
+  font-size: .78rem !important;
+  line-height: 1.15 !important;
 }
 
 .hero {
@@ -206,7 +212,11 @@ body {
   :root { --sl-content-pad-x: 1rem; }
   .docs-metrics { grid-template-columns: repeat(2, 1fr); }
   .sprey-header-extra { gap: .4rem; }
-  .sprey-header-extra .gtranslate_wrapper { padding: .22rem .4rem; }
+  .sprey-header-extra .gtranslate_wrapper { padding: .22rem .4rem; font-size: .74rem; }
+  .sprey-header-extra .gtranslate_wrapper a,
+  .sprey-header-extra .gtranslate_wrapper span,
+  .sprey-header-extra .gtranslate_wrapper select,
+  .sprey-header-extra .gtranslate_wrapper button { font-size: .74rem !important; }
 }
 
 @media (max-width: 32rem) {
