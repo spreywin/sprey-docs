@@ -150,6 +150,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: .32rem;
+  margin-inline-start: .38rem;
   padding: .16rem .48rem;
   border: 1px solid color-mix(in srgb, var(--sprey-purple) 48%, var(--sl-color-gray-4));
   border-radius: 999px;
