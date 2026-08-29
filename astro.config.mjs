@@ -2,8 +2,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  site: 'https://spreywin.github.io',
-  base: '/sprey-docs',
+  site: 'https://docs.sprey.win',
   integrations: [
     starlight({
       title: 'Sprey Docs',
