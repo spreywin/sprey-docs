@@ -3,8 +3,6 @@ title: Sprey WP Stack
 description: Production-oriented WordPress and WooCommerce stack for a modest VPS.
 ---
 
-# Sprey WP Stack
-
 Sprey WP Stack is a compact Docker Compose deployment for WordPress and WooCommerce. It is intentionally a **website stack, not a server control panel**.
 
 Repository: [`spreywin/sprey-wp-stack`](https://github.com/spreywin/sprey-wp-stack)
