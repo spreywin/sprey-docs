@@ -97,6 +97,54 @@ body {
   color: #c084fc !important;
 }
 
+/* Live service links: compact inverse pills instead of default underlined links. */
+.sl-markdown-content a[href^='https://pay.sprey.win'],
+.sl-markdown-content a[href^='https://docs.sprey.win'] {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  padding: .16rem .48rem;
+  border: 1px solid #111827;
+  border-radius: .42rem;
+  background: #111827;
+  color: #ffffff !important;
+  font-family: var(--sl-font-system-mono);
+  font-size: .86em;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.sl-markdown-content a[href^='https://pay.sprey.win']::after,
+.sl-markdown-content a[href^='https://docs.sprey.win']::after {
+  content: '↗';
+  font-family: var(--sl-font-system);
+  font-size: .78em;
+  opacity: .72;
+}
+
+.sl-markdown-content a[href^='https://pay.sprey.win']:hover,
+.sl-markdown-content a[href^='https://docs.sprey.win']:hover {
+  transform: translateY(-1px);
+  background: #000000;
+  box-shadow: 0 .3rem .8rem rgb(15 23 42 / 16%);
+}
+
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win'] {
+  border-color: #e5e7eb;
+  background: #f8fafc;
+  color: #111827 !important;
+}
+
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win']:hover {
+  background: #ffffff;
+  box-shadow: 0 .3rem .9rem rgb(255 255 255 / 10%);
+}
+
 .hero {
   position: relative;
   min-height: 29rem;
