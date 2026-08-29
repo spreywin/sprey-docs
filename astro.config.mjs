@@ -22,18 +22,18 @@ export default defineConfig({
         ko: { label: '한국어', lang: 'ko' },
         ar: { label: 'العربية', lang: 'ar', dir: 'rtl' },
       },
-      social: {
-        github: 'https://github.com/spreywin',
-      },
+      social: [
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/spreywin' },
+      ],
       editLink: {
         baseUrl: 'https://github.com/spreywin/sprey-docs/edit/main/',
       },
       sidebar: [
-        { label: 'Architecture', autogenerate: { directory: 'architecture' } },
-        { label: 'Products', autogenerate: { directory: 'products' } },
-        { label: 'Stacks', autogenerate: { directory: 'stacks' } },
-        { label: 'Integrations', autogenerate: { directory: 'integrations' } },
-        { label: 'Operations', autogenerate: { directory: 'operations' } },
+        { label: 'Architecture', items: [{ autogenerate: { directory: 'architecture' } }] },
+        { label: 'Products', items: [{ autogenerate: { directory: 'products' } }] },
+        { label: 'Stacks', items: [{ autogenerate: { directory: 'stacks' } }] },
+        { label: 'Integrations', items: [{ autogenerate: { directory: 'integrations' } }] },
+        { label: 'Operations', items: [{ autogenerate: { directory: 'operations' } }] },
       ],
       customCss: ['./src/styles/custom.css'],
     }),
