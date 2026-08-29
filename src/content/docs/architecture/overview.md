@@ -80,7 +80,7 @@ The v1 design includes a **static outage fallback** hosted separately from the W
 
 The documentation source lives in <a class="github-repository-badge" href="https://github.com/spreywin/sprey-docs" target="_blank" rel="noopener noreferrer">spreywin/sprey-docs</a>, is built with Astro Starlight using GitHub Actions, and is served by GitHub Pages. No Sprey VPS is required to keep documentation online.
 
-Canonical public host: [docs.sprey.win](https://docs.sprey.win/).
+Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 
 ## v1 roadmap
 
