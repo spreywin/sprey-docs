@@ -30,6 +30,13 @@ export default defineConfig({
             defer: true,
           },
         },
+        {
+          tag: 'script',
+          attrs: {
+            src: '/scroll-to-top.js',
+            defer: true,
+          },
+        },
       ],
       components: {
         SocialIcons: './src/components/GTranslateSocial.astro',
