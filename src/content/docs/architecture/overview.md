@@ -3,8 +3,6 @@ title: Sprey Architecture v1
 description: Canonical platform map, service boundaries, domains, stacks, and roadmap for Sprey.
 ---
 
-# Sprey Architecture v1
-
 This page is the canonical map of the Sprey platform. It separates customer-facing **products** from deployable **stacks** and from shared infrastructure.
 
 ## Core principles
