@@ -200,7 +200,6 @@ body {
   border-radius: 1.8rem;
   background: url('/hero-docs.svg') center/contain no-repeat;
   filter: drop-shadow(0 1.8rem 3.8rem color-mix(in srgb, var(--sprey-purple) 18%, transparent));
-  animation: spreyFloat 6s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -307,11 +306,6 @@ body {
 .docs-metrics div:nth-child(4) strong { color: var(--sprey-orange); }
 .docs-metrics span { color: var(--sl-color-gray-2); font-size: .86rem; }
 
-@keyframes spreyFloat {
-  0%,100% { transform: translateY(-50%) translateY(0); }
-  50% { transform: translateY(-50%) translateY(-10px); }
-}
-
 @keyframes spreyDrift {
   from { transform: translateX(0); }
   to { transform: translateX(8%); }
@@ -327,7 +321,6 @@ body {
 @media (max-width: 60rem) {
   .hero { min-height: auto; padding-right: 0; padding-bottom: 21rem; }
   .hero::after { top: auto; bottom: 0; right: 50%; width: min(92vw, 32rem); transform: translateX(50%); }
-  @keyframes spreyFloat { 0%,100% { transform: translateX(50%) translateY(0); } 50% { transform: translateX(50%) translateY(-8px); } }
 }
 
 @media (max-width: 50rem) {
