@@ -13,12 +13,12 @@ export default defineConfig({
       head: [
         {
           tag: 'script',
-          content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_style:'3d',switcher_text_color:'#f3e8ff',switcher_arrow_color:'#c4b5fd',switcher_border_color:'#3b2763',switcher_background_color:'#171022',switcher_background_shadow_color:'#0c0712',switcher_background_hover_color:'#241735',dropdown_text_color:'#f5f3ff',dropdown_hover_color:'#33204c',dropdown_background_color:'#120b1b'};",
+          content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_size:24,flag_style:'3d'};",
         },
         {
           tag: 'script',
           attrs: {
-            src: 'https://cdn.gtranslate.net/widgets/latest/dwf.js',
+            src: 'https://cdn.gtranslate.net/widgets/latest/popup.js',
             defer: true,
           },
         },
