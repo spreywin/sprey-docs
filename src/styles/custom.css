@@ -60,22 +60,41 @@ body {
   line-height: 1.15 !important;
 }
 
-/* GTranslate popup uses a light panel. Keep its language labels dark and readable
-   even when Sprey Docs itself is using the dark theme. */
-.gt_languages,
-.gt_languages a,
-.gt_languages span,
-.gt_languages div,
-.gt_languages td,
-.gt_languages li,
-.gt_languages .gt_languages_language {
+/* GTranslate popup lives in the page DOM, so theme the actual popup classes. */
+.gt_white_content {
+  background-color: #ffffff !important;
+  color: #263142 !important;
+}
+
+.gt_white_content .gt_languages,
+.gt_white_content .gt_languages a,
+.gt_white_content .gt_languages span,
+.gt_white_content .gt_languages div,
+.gt_white_content .gt_languages td,
+.gt_white_content .gt_languages li {
   color: #263142 !important;
   text-shadow: none !important;
 }
 
-.gt_languages a:hover,
-.gt_languages a:focus {
-  color: #111827 !important;
+:root[data-theme='dark'] .gt_white_content {
+  background-color: #0b0d10 !important;
+  color: #f3f4f6 !important;
+}
+
+:root[data-theme='dark'] .gt_white_content .gt_languages,
+:root[data-theme='dark'] .gt_white_content .gt_languages a,
+:root[data-theme='dark'] .gt_white_content .gt_languages span,
+:root[data-theme='dark'] .gt_white_content .gt_languages div,
+:root[data-theme='dark'] .gt_white_content .gt_languages td,
+:root[data-theme='dark'] .gt_white_content .gt_languages li {
+  color: #f3f4f6 !important;
+  border-color: #343a46 !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='dark'] .gt_white_content .gt_languages a:hover,
+:root[data-theme='dark'] .gt_white_content .gt_languages a:focus {
+  color: #c084fc !important;
 }
 
 .hero {
