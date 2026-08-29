@@ -145,6 +145,42 @@ body {
   box-shadow: 0 .3rem .9rem rgb(255 255 255 / 10%);
 }
 
+/* Source repository links: outlined pills, distinct from filled live-service badges. */
+.sl-markdown-content .github-repository-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .32rem;
+  padding: .16rem .48rem;
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 48%, var(--sl-color-gray-4));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sprey-purple) 7%, transparent);
+  color: var(--sprey-purple) !important;
+  font-family: var(--sl-font-system-mono);
+  font-size: .86em;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: border-color .15s ease, background-color .15s ease, transform .15s ease;
+}
+
+.sl-markdown-content .github-repository-badge::after {
+  content: '↗';
+  font-family: var(--sl-font-system);
+  font-size: .78em;
+  opacity: .72;
+}
+
+.sl-markdown-content .github-repository-badge:hover {
+  transform: translateY(-1px);
+  border-color: var(--sprey-purple);
+  background: color-mix(in srgb, var(--sprey-purple) 13%, transparent);
+}
+
+:root[data-theme='dark'] .sl-markdown-content .github-repository-badge {
+  color: #c084fc !important;
+}
+
 .hero {
   position: relative;
   min-height: 29rem;

@@ -50,7 +50,7 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 
 WordPress + WooCommerce + Caddy + MariaDB in Docker Compose with an optional local-only phpMyAdmin profile.
 
-Repository: [`spreywin/sprey-wp-stack`](https://github.com/spreywin/sprey-wp-stack)
+Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
 
 ### BTCPay Stack
 
