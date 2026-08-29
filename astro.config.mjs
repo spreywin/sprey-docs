@@ -24,6 +24,22 @@ export default defineConfig({
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/spreywin' },
       ],
+      head: [
+        {
+          tag: 'script',
+          content: "window.gtranslateSettings={default_language:'en',native_language_names:true,wrapper_selector:'.gtranslate_wrapper',flag_style:'3d'};",
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: 'https://cdn.gtranslate.net/widgets/latest/popup.js',
+            defer: true,
+          },
+        },
+      ],
+      components: {
+        SocialIcons: './src/components/GTranslateSocial.astro',
+      },
       editLink: {
         baseUrl: 'https://github.com/spreywin/sprey-docs/edit/main/',
       },
