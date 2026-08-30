@@ -2,10 +2,13 @@
 .sprey-header-extra,
 .social-icons {
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .sprey-social-links {
-  gap: .45rem;
+  gap: .55rem;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
 }
 
 .sprey-social-links a,
@@ -74,6 +77,35 @@ starlight-theme-select .caret {
   box-shadow: none !important;
   font-size: .78rem;
   white-space: nowrap;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.sprey-header-extra .gtranslate_wrapper,
+.sprey-header-extra .gtranslate_wrapper > *,
+.sprey-header-extra .gtranslate_wrapper .gt_switcher-popup,
+.sprey-header-extra .gtranslate_wrapper .gt-current-lang {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .35rem !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
+
+/* Starlight places these controls in the mobile menu utility row. */
+@media (max-width: 50rem) {
+  .mobile-preferences,
+  .mobile-preferences > div,
+  [class*='mobile-preferences'] {
+    align-items: center !important;
+    gap: .45rem !important;
+    flex-wrap: nowrap !important;
+  }
+}
+
+.sprey-header-extra .gtranslate_wrapper img {
+  flex: 0 0 auto;
+  vertical-align: middle;
 }
 
 .sprey-header-extra .gtranslate_wrapper > a,
@@ -97,12 +129,13 @@ starlight-theme-select .caret {
   }
 
   .sprey-header-extra {
-    gap: .28rem !important;
+    gap: .4rem !important;
     min-width: 0;
+    flex-wrap: nowrap !important;
   }
 
   .sprey-social-links {
-    gap: .18rem !important;
+    gap: .35rem !important;
   }
 
   .sprey-social-links a,
@@ -119,6 +152,7 @@ starlight-theme-select .caret {
     max-width: 8.8rem;
     padding-inline: .1rem !important;
     font-size: .72rem !important;
+    overflow: visible;
   }
 
   .sprey-header-extra .gtranslate_wrapper a,
@@ -140,7 +174,7 @@ starlight-theme-select .caret {
   }
 
   .sprey-header-extra {
-    gap: .12rem !important;
+    gap: .24rem !important;
   }
 
   .sprey-social-links a,
@@ -154,7 +188,7 @@ starlight-theme-select .caret {
 
   .sprey-header-extra .gtranslate_wrapper {
     max-width: 7.2rem;
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* Docs landing page: prevent the large hero illustration from crowding narrow phones. */
