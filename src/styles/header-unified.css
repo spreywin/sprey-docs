@@ -5,6 +5,11 @@
   flex-wrap: nowrap;
 }
 
+.right-group,
+.sprey-header-extra {
+  gap: .55rem !important;
+}
+
 .sprey-social-links {
   gap: .55rem;
   flex: 0 0 auto;
@@ -128,13 +133,13 @@ starlight-theme-select .caret {
   }
 
   .sprey-header-extra {
-    gap: .4rem !important;
+    gap: .45rem !important;
     min-width: 0;
     flex-wrap: nowrap !important;
   }
 
   .sprey-social-links {
-    gap: .35rem !important;
+    gap: .45rem !important;
   }
 
   .sprey-social-links a,
@@ -173,7 +178,12 @@ starlight-theme-select .caret {
   }
 
   .sprey-header-extra {
-    gap: .24rem !important;
+    gap: .35rem !important;
+  }
+
+  .sprey-social-links,
+  .right-group {
+    gap: .35rem !important;
   }
 
   .sprey-social-links a,
