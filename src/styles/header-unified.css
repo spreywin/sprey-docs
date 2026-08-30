@@ -1,0 +1,190 @@
+/* Unified Sprey header controls: lightweight icons + compact language selector. */
+.sprey-header-extra,
+.social-icons {
+  align-items: center;
+}
+
+.sprey-social-links {
+  gap: .45rem;
+}
+
+.sprey-social-links a,
+.social-icons a {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  padding: 0;
+  place-items: center;
+  border: 0 !important;
+  border-radius: .5rem;
+  background: transparent !important;
+  color: var(--sl-color-text);
+  box-shadow: none !important;
+  transition: color .15s ease, background-color .15s ease, transform .15s ease;
+}
+
+.sprey-social-links a:hover,
+.social-icons a:hover {
+  color: var(--sprey-purple-2);
+  background: color-mix(in srgb, var(--sprey-purple) 10%, transparent) !important;
+  transform: translateY(-1px);
+}
+
+.sprey-social-links svg,
+.social-icons svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Keep Starlight's accessible native theme selector, but visually reduce it to an icon. */
+starlight-theme-select label {
+  --sl-select-width: 2rem !important;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  border: 0 !important;
+  border-radius: .5rem;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+starlight-theme-select select {
+  width: 2rem !important;
+  height: 2rem;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+}
+
+starlight-theme-select .caret {
+  display: none !important;
+}
+
+.sprey-header-extra .gtranslate_wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 .2rem !important;
+  border: 0 !important;
+  border-radius: .5rem;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: .78rem;
+  white-space: nowrap;
+}
+
+.sprey-header-extra .gtranslate_wrapper > a,
+.sprey-header-extra .gtranslate_wrapper > button,
+.sprey-header-extra .gtranslate_wrapper > span,
+.sprey-header-extra .gtranslate_wrapper .gt_switcher-popup,
+.sprey-header-extra .gtranslate_wrapper .gt-current-lang {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sprey-header-extra .gtranslate_wrapper:hover {
+  background: color-mix(in srgb, var(--sprey-purple) 8%, transparent) !important;
+}
+
+/* Mobile header: keep all utilities on one compact row without clipping. */
+@media (max-width: 50rem) {
+  header.header {
+    min-width: 0;
+  }
+
+  .sprey-header-extra {
+    gap: .28rem !important;
+    min-width: 0;
+  }
+
+  .sprey-social-links {
+    gap: .18rem !important;
+  }
+
+  .sprey-social-links a,
+  .social-icons a,
+  starlight-theme-select label,
+  starlight-theme-select select {
+    width: 1.85rem !important;
+    min-width: 1.85rem !important;
+    height: 1.85rem !important;
+  }
+
+  .sprey-header-extra .gtranslate_wrapper {
+    min-height: 1.85rem;
+    max-width: 8.8rem;
+    padding-inline: .1rem !important;
+    font-size: .72rem !important;
+  }
+
+  .sprey-header-extra .gtranslate_wrapper a,
+  .sprey-header-extra .gtranslate_wrapper span,
+  .sprey-header-extra .gtranslate_wrapper select,
+  .sprey-header-extra .gtranslate_wrapper button {
+    font-size: .72rem !important;
+  }
+}
+
+@media (max-width: 35rem) {
+  .site-title {
+    min-width: 0;
+  }
+
+  .site-title span,
+  .site-title {
+    font-size: .9rem;
+  }
+
+  .sprey-header-extra {
+    gap: .12rem !important;
+  }
+
+  .sprey-social-links a,
+  .social-icons a,
+  starlight-theme-select label,
+  starlight-theme-select select {
+    width: 1.72rem !important;
+    min-width: 1.72rem !important;
+    height: 1.72rem !important;
+  }
+
+  .sprey-header-extra .gtranslate_wrapper {
+    max-width: 7.2rem;
+    overflow: hidden;
+  }
+
+  /* Docs landing page: prevent the large hero illustration from crowding narrow phones. */
+  .hero {
+    padding-bottom: 16.5rem !important;
+  }
+
+  .hero::after {
+    width: min(88vw, 25rem) !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.35rem, 13vw, 3.35rem) !important;
+  }
+
+  .hero .actions {
+    gap: .65rem;
+  }
+
+  .hero .actions a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .docs-metrics {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .docs-metrics div {
+    min-height: 5.5rem;
+    padding: .7rem;
+  }
+}
