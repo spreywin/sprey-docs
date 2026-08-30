@@ -8,12 +8,13 @@
 }
 
 .sprey-icon-control {
-  display: grid;
+  display: flex;
   width: 2rem;
   height: 2rem;
   min-width: 2rem;
   padding: 0;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: .5rem;
   background: transparent;
@@ -37,7 +38,6 @@
   display: block;
   width: 1.05rem;
   height: 1.05rem;
-  margin: auto;
   fill: currentColor;
 }
 
@@ -76,7 +76,6 @@
 
 .sprey-header-controls .gtranslate_wrapper {
   display: flex;
-  min-width: 0;
   min-height: 2rem;
   align-items: center;
   padding: 0 .15rem;
@@ -91,7 +90,8 @@
 
 .sprey-header-controls .gtranslate_wrapper > a:first-child,
 .sprey-header-controls .gtranslate_wrapper > button:first-child,
-.sprey-header-controls .gtranslate_wrapper > .gt-current-lang {
+.sprey-header-controls .gtranslate_wrapper > .gt-current-lang,
+.sprey-header-controls .gtranslate_wrapper .gt_switcher-popup {
   display: inline-flex !important;
   align-items: center !important;
   gap: .35rem !important;
@@ -105,6 +105,24 @@
   margin: 0;
 }
 
+.sprey-home-menu-panel .sprey-header-controls {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sl-color-hairline-shade);
+}
+
 @media (max-width: 64rem) {
-  .sprey-header-controls { gap: .5rem; }
+  .sprey-header-controls {
+    gap: .55rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .sprey-header-controls {
+    gap: .45rem;
+  }
+
+  .sprey-header-controls .gtranslate_wrapper {
+    font-size: .74rem;
+  }
 }
