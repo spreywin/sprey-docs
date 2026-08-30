@@ -105,6 +105,18 @@
   margin: 0;
 }
 
+/* GTranslate popup: one scrollbar only. */
+.gt_white_content {
+  overflow: hidden !important;
+}
+
+.gt_white_content .gt_languages {
+  max-height: min(62vh, 480px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
 .sprey-home-menu-panel .sprey-header-controls {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -112,17 +124,10 @@
 }
 
 @media (max-width: 64rem) {
-  .sprey-header-controls {
-    gap: .55rem;
-  }
+  .sprey-header-controls { gap: .55rem; }
 }
 
 @media (max-width: 30rem) {
-  .sprey-header-controls {
-    gap: .45rem;
-  }
-
-  .sprey-header-controls .gtranslate_wrapper {
-    font-size: .74rem;
-  }
+  .sprey-header-controls { gap: .45rem; }
+  .sprey-header-controls .gtranslate_wrapper { font-size: .74rem; }
 }
