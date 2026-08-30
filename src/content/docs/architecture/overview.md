@@ -72,9 +72,20 @@ Repeatable deployment for isolated VPN traffic nodes. Control-plane and traffic-
 
 ## Edge and availability
 
-Cloudflare may sit in front of `sprey.win` for DNS, TLS, edge protection, and caching rules appropriate for WordPress and WooCommerce.
+Cloudflare sits in front of `sprey.win` for DNS, TLS, edge protection, request-time failover, and caching rules appropriate for WordPress and WooCommerce.
 
-The v1 design includes a **static outage fallback** hosted separately from the WordPress VPS. If the application origin is unavailable, an outage page can be served through Cloudflare infrastructure. The fallback is informational only and does not emulate WooCommerce cart, account, or checkout state.
+The v1 availability path is:
+
+```text
+visitor -> Cloudflare Worker -> primary WordPress VPS
+                            \-> sprey-outage.pages.dev on failure
+```
+
+The Worker is attached to `sprey.win/*` as a Workers Route. It attempts the primary origin for every visitor request. A network error, bounded timeout, or selected upstream `502`, `503`, or `504` response switches that request to the static Cloudflare Pages outage site. The next request tries primary again, so recovery is automatic once WordPress responds successfully.
+
+This free design replaces Cloudflare Load Balancing as the primary v1 failover mechanism. It is **request-time failover, not an independent periodic health monitor**: no background probe detects an outage before traffic arrives. The fallback is informational only and cannot provide WooCommerce cart, account, checkout, order, session, or payment functionality.
+
+Implementation and rollout: [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/). Incident checks: [WP Stack failover operations](/operations/wp-stack-failover/).
 
 ## Documentation architecture
 
@@ -87,7 +98,7 @@ Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 1. Establish the independent documentation portal.
 2. Finalize Sprey WP Stack v1 and production hardening.
 3. Publish reproducible BTCPay for WooCommerce V2 integration.
-4. Publish reproducible Cloudflare production and outage-failover configuration.
+4. Operate and validate the Cloudflare Worker request-time failover configuration.
 5. Document backup, update, monitoring, and recovery procedures.
 6. Expand Processing automation and the future customer application.
 7. Add RPC and VPN stacks as those products move from Planned to implementation.
