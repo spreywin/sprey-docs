@@ -17,13 +17,14 @@
 }
 
 .sprey-social-links a,
-.social-icons a {
+.sprey-header-extra > a:first-child {
   display: grid;
   width: 2rem;
   height: 2rem;
   min-width: 2rem;
   padding: 0;
   place-items: center;
+  line-height: 0;
   border: 0 !important;
   border-radius: .5rem;
   background: transparent !important;
@@ -33,14 +34,16 @@
 }
 
 .sprey-social-links a:hover,
-.social-icons a:hover {
+.sprey-header-extra > a:first-child:hover {
   color: var(--sprey-purple-2);
   background: color-mix(in srgb, var(--sprey-purple) 10%, transparent) !important;
   transform: translateY(-1px);
 }
 
 .sprey-social-links svg,
-.social-icons svg {
+.sprey-header-extra > a:first-child > svg {
+  display: block;
+  margin: auto;
   width: 1.05rem;
   height: 1.05rem;
 }
@@ -143,7 +146,7 @@ starlight-theme-select .caret {
   }
 
   .sprey-social-links a,
-  .social-icons a,
+  .sprey-header-extra > a:first-child,
   starlight-theme-select label,
   starlight-theme-select select {
     width: 1.85rem !important;
@@ -187,7 +190,7 @@ starlight-theme-select .caret {
   }
 
   .sprey-social-links a,
-  .social-icons a,
+  .sprey-header-extra > a:first-child,
   starlight-theme-select label,
   starlight-theme-select select {
     width: 1.72rem !important;
