@@ -81,10 +81,9 @@ starlight-theme-select .caret {
   overflow: visible;
 }
 
-.sprey-header-extra .gtranslate_wrapper,
-.sprey-header-extra .gtranslate_wrapper > *,
-.sprey-header-extra .gtranslate_wrapper .gt_switcher-popup,
-.sprey-header-extra .gtranslate_wrapper .gt-current-lang {
+.sprey-header-extra .gtranslate_wrapper > a:first-child,
+.sprey-header-extra .gtranslate_wrapper > button:first-child,
+.sprey-header-extra .gtranslate_wrapper > .gt-current-lang {
   display: inline-flex !important;
   align-items: center !important;
   gap: .35rem !important;
