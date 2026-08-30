@@ -1,97 +1,97 @@
-/* Unified Sprey header controls: lightweight icons + compact language selector. */
-.sprey-header-extra,
-.social-icons {
+/* One flat control row: GitHub, X, Telegram, theme, language. */
+.sprey-header-controls {
+  display: flex;
   align-items: center;
   flex-wrap: nowrap;
+  gap: .7rem;
+  white-space: nowrap;
 }
 
-.right-group,
-.sprey-header-extra {
-  gap: .55rem !important;
-}
-
-.sprey-social-links {
-  gap: .55rem;
-  flex: 0 0 auto;
-  flex-wrap: nowrap;
-}
-
-.sprey-social-links a,
-.sprey-header-extra > a:first-child {
+.sprey-icon-control {
   display: grid;
   width: 2rem;
   height: 2rem;
   min-width: 2rem;
   padding: 0;
   place-items: center;
-  line-height: 0;
-  border: 0 !important;
+  border: 0;
   border-radius: .5rem;
-  background: transparent !important;
+  background: transparent;
   color: var(--sl-color-text);
-  box-shadow: none !important;
+  line-height: 0;
   transition: color .15s ease, background-color .15s ease, transform .15s ease;
 }
 
-.sprey-social-links a:hover,
-.sprey-header-extra > a:first-child:hover {
+.sprey-icon-control:hover {
+  background: color-mix(in srgb, var(--sprey-purple) 10%, transparent);
   color: var(--sprey-purple-2);
-  background: color-mix(in srgb, var(--sprey-purple) 10%, transparent) !important;
   transform: translateY(-1px);
 }
 
-.sprey-social-links svg,
-.sprey-header-extra > a:first-child > svg {
-  display: block;
-  margin: auto;
-  width: 1.05rem;
-  height: 1.05rem;
+.sprey-icon-control:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--sprey-purple) 35%, transparent);
+  outline-offset: 2px;
 }
 
-/* Keep Starlight's accessible native theme selector, but visually reduce it to an icon. */
-starlight-theme-select label {
+.sprey-icon-control svg {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: auto;
+  fill: currentColor;
+}
+
+.sprey-header-controls starlight-theme-select,
+.sprey-header-controls starlight-theme-select label,
+.sprey-header-controls starlight-theme-select select {
+  width: 2rem !important;
+  min-width: 2rem !important;
+  height: 2rem !important;
+  margin: 0 !important;
+}
+
+.sprey-header-controls starlight-theme-select label {
   --sl-select-width: 2rem !important;
-  width: 2rem;
-  min-width: 2rem;
-  height: 2rem;
+  display: grid;
+  padding: 0 !important;
+  place-items: center;
   border: 0 !important;
   border-radius: .5rem;
   background: transparent !important;
   box-shadow: none !important;
 }
 
-starlight-theme-select select {
-  width: 2rem !important;
-  height: 2rem;
+.sprey-header-controls starlight-theme-select select {
   padding: 0 !important;
   border: 0 !important;
   background: transparent !important;
   color: transparent !important;
   box-shadow: none !important;
+  cursor: pointer;
 }
 
-starlight-theme-select .caret {
+.sprey-header-controls starlight-theme-select .caret {
   display: none !important;
 }
 
-.sprey-header-extra .gtranslate_wrapper {
+.sprey-header-controls .gtranslate_wrapper {
   display: flex;
-  align-items: center;
+  min-width: 0;
   min-height: 2rem;
-  padding: 0 .2rem !important;
-  border: 0 !important;
+  align-items: center;
+  padding: 0 .15rem;
+  border: 0;
   border-radius: .5rem;
-  background: transparent !important;
-  box-shadow: none !important;
+  background: transparent;
+  box-shadow: none;
   font-size: .78rem;
+  line-height: 1;
   white-space: nowrap;
-  flex: 0 0 auto;
-  overflow: visible;
 }
 
-.sprey-header-extra .gtranslate_wrapper > a:first-child,
-.sprey-header-extra .gtranslate_wrapper > button:first-child,
-.sprey-header-extra .gtranslate_wrapper > .gt-current-lang {
+.sprey-header-controls .gtranslate_wrapper > a:first-child,
+.sprey-header-controls .gtranslate_wrapper > button:first-child,
+.sprey-header-controls .gtranslate_wrapper > .gt-current-lang {
   display: inline-flex !important;
   align-items: center !important;
   gap: .35rem !important;
@@ -99,138 +99,12 @@ starlight-theme-select .caret {
   white-space: nowrap !important;
 }
 
-/* Starlight places these controls in the mobile menu utility row. */
-@media (max-width: 50rem) {
-  .mobile-preferences,
-  .mobile-preferences > div,
-  [class*='mobile-preferences'] {
-    align-items: center !important;
-    gap: .45rem !important;
-    flex-wrap: nowrap !important;
-  }
-}
-
-.sprey-header-extra .gtranslate_wrapper img {
+.sprey-header-controls .gtranslate_wrapper img {
+  display: block;
   flex: 0 0 auto;
-  vertical-align: middle;
+  margin: 0;
 }
 
-.sprey-header-extra .gtranslate_wrapper > a,
-.sprey-header-extra .gtranslate_wrapper > button,
-.sprey-header-extra .gtranslate_wrapper > span,
-.sprey-header-extra .gtranslate_wrapper .gt_switcher-popup,
-.sprey-header-extra .gtranslate_wrapper .gt-current-lang {
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.sprey-header-extra .gtranslate_wrapper:hover {
-  background: color-mix(in srgb, var(--sprey-purple) 8%, transparent) !important;
-}
-
-/* Mobile header: keep all utilities on one compact row without clipping. */
-@media (max-width: 50rem) {
-  header.header {
-    min-width: 0;
-  }
-
-  .sprey-header-extra {
-    gap: .45rem !important;
-    min-width: 0;
-    flex-wrap: nowrap !important;
-  }
-
-  .sprey-social-links {
-    gap: .45rem !important;
-  }
-
-  .sprey-social-links a,
-  .sprey-header-extra > a:first-child,
-  starlight-theme-select label,
-  starlight-theme-select select {
-    width: 1.85rem !important;
-    min-width: 1.85rem !important;
-    height: 1.85rem !important;
-  }
-
-  .sprey-header-extra .gtranslate_wrapper {
-    min-height: 1.85rem;
-    max-width: 8.8rem;
-    padding-inline: .1rem !important;
-    font-size: .72rem !important;
-    overflow: visible;
-  }
-
-  .sprey-header-extra .gtranslate_wrapper a,
-  .sprey-header-extra .gtranslate_wrapper span,
-  .sprey-header-extra .gtranslate_wrapper select,
-  .sprey-header-extra .gtranslate_wrapper button {
-    font-size: .72rem !important;
-  }
-}
-
-@media (max-width: 35rem) {
-  .site-title {
-    min-width: 0;
-  }
-
-  .site-title span,
-  .site-title {
-    font-size: .9rem;
-  }
-
-  .sprey-header-extra {
-    gap: .35rem !important;
-  }
-
-  .sprey-social-links,
-  .right-group {
-    gap: .35rem !important;
-  }
-
-  .sprey-social-links a,
-  .sprey-header-extra > a:first-child,
-  starlight-theme-select label,
-  starlight-theme-select select {
-    width: 1.72rem !important;
-    min-width: 1.72rem !important;
-    height: 1.72rem !important;
-  }
-
-  .sprey-header-extra .gtranslate_wrapper {
-    max-width: 7.2rem;
-    overflow: visible;
-  }
-
-  /* Docs landing page: prevent the large hero illustration from crowding narrow phones. */
-  .hero {
-    padding-bottom: 16.5rem !important;
-  }
-
-  .hero::after {
-    width: min(88vw, 25rem) !important;
-  }
-
-  .hero h1 {
-    font-size: clamp(2.35rem, 13vw, 3.35rem) !important;
-  }
-
-  .hero .actions {
-    gap: .65rem;
-  }
-
-  .hero .actions a {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .docs-metrics {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  .docs-metrics div {
-    min-height: 5.5rem;
-    padding: .7rem;
-  }
+@media (max-width: 64rem) {
+  .sprey-header-controls { gap: .5rem; }
 }
