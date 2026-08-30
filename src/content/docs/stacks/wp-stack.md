@@ -30,6 +30,10 @@ sudo ./install.sh example.com admin@example.com
 Internet
    │
    ▼
+Cloudflare Worker
+   ├── failure ──> sprey-outage.pages.dev
+   │
+   ▼ healthy
 Caddy :80/:443
    │
    ▼
@@ -49,7 +53,11 @@ A reproducible integration guide will live under **Integrations**, so it can be 
 
 ## Cloudflare
 
-Cloudflare production settings and static outage failover are part of the v1 documentation scope. Dynamic WooCommerce routes must not be treated as static cache content, and the outage page is informational rather than a live store replacement.
+Cloudflare production settings and static outage failover are part of v1. A Workers Route on `sprey.win/*` places the Cloudflare Worker before the primary WordPress VPS. The Worker forwards every request to primary and uses `sprey-outage.pages.dev` after a network error, bounded timeout, or selected `502/503/504`. It tries primary again on every new request, so recovery does not require a DNS change.
+
+This is request-time failover on the Workers Free plan, not Cloudflare Load Balancing or an independent periodic health monitor. Dynamic WooCommerce routes must not be treated as static cache content. The outage page is an informational `503` response, not a live store: cart, checkout, accounts, orders, sessions, and payments require WordPress.
+
+Follow [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/) for a test-hostname-first rollout. Use [WP Stack failover operations](/operations/wp-stack-failover/) for validation, incident response, and rollback.
 
 ## Operations
 
@@ -62,3 +70,5 @@ docker compose pull && docker compose up -d
 ```
 
 Back up MariaDB and WordPress uploads before upgrades. Never run `docker compose down -v` on a production deployment unless permanent volume deletion is explicitly intended.
+
+For the edge path, monitor Worker exceptions, timeouts, fallback response counts, and Free-plan usage. A fallback response reports a failed request to primary; it is not by itself proof that every service on the VPS is down.
