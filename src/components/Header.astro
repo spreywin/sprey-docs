@@ -16,33 +16,105 @@ const shouldRenderSearch =
     <summary aria-label="Open documentation menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
     </summary>
-    <div class="sprey-home-menu-panel"><Sidebar /></div>
+    <div class="sprey-home-menu-panel">
+      <Sidebar />
+      <SocialIcons />
+    </div>
   </details>
   <div class="sl-hidden md:sl-flex print:hidden right-group">
-    <div class="sl-flex social-icons"><SocialIcons /></div>
+    <SocialIcons />
   </div>
 </div>
 
 <style>
   @layer starlight.core {
-    .header { display:flex; gap:var(--sl-nav-gap); justify-content:space-between; align-items:center; height:100%; }
-    .title-wrapper { overflow:clip; padding:.25rem; margin:-.25rem; min-width:0; }
-    .right-group,.social-icons { gap:0; align-items:center; }
-    .sprey-home-menu { display:none; }
+    .header {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sl-nav-gap);
+    }
+
+    .title-wrapper {
+      min-width: 0;
+      margin: -.25rem;
+      padding: .25rem;
+      overflow: clip;
+    }
+
+    .right-group {
+      align-items: center;
+    }
+
+    .sprey-home-menu {
+      display: none;
+    }
 
     @media (max-width: 49.99rem) {
-      :global(:root[data-has-hero]) .sprey-home-menu { display:block; position:relative; flex:0 0 auto; }
-      .sprey-home-menu summary { display:grid; width:2.5rem; height:2.5rem; padding:.5rem; place-items:center; border-radius:50%; color:var(--sl-color-text); cursor:pointer; list-style:none; }
-      .sprey-home-menu summary::-webkit-details-marker { display:none; }
-      .sprey-home-menu summary:hover { background:var(--sl-color-gray-6); }
-      .sprey-home-menu summary svg { width:1.4rem; height:1.4rem; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; }
-      .sprey-home-menu-panel { position:fixed; z-index:var(--sl-z-index-menu); inset:var(--sl-nav-height) 0 0; padding:1rem var(--sl-sidebar-pad-x); border-top:1px solid var(--sl-color-hairline-shade); background:var(--sl-color-bg-sidebar); box-shadow:var(--sl-shadow-md); overflow-y:auto; }
+      :global(:root[data-has-hero]) .sprey-home-menu {
+        display: block;
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .sprey-home-menu summary {
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: .5rem;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--sl-color-text);
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .sprey-home-menu summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .sprey-home-menu summary:hover {
+        background: var(--sl-color-gray-6);
+      }
+
+      .sprey-home-menu summary svg {
+        width: 1.4rem;
+        height: 1.4rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      .sprey-home-menu-panel {
+        position: fixed;
+        z-index: var(--sl-z-index-menu);
+        inset: var(--sl-nav-height) 0 0;
+        padding: 1rem var(--sl-sidebar-pad-x);
+        overflow-y: auto;
+        border-top: 1px solid var(--sl-color-hairline-shade);
+        background: var(--sl-color-bg-sidebar);
+        box-shadow: var(--sl-shadow-md);
+      }
     }
 
     @media (min-width: 50rem) {
-      :global(:root[data-has-sidebar]) { --__sidebar-pad:calc(2 * var(--sl-nav-pad-x)); }
-      :global(:root:not([data-has-toc])) { --__toc-width:0rem; }
-      .header { --__sidebar-width:max(0rem,var(--sl-content-inline-start,0rem) - var(--sl-nav-pad-x)); --__main-column-fr:calc((100% + var(--__sidebar-pad,0rem) - var(--__toc-width,var(--sl-sidebar-width)) - (2 * var(--__toc-width,var(--sl-nav-pad-x))) - var(--sl-content-inline-start,0rem) - var(--sl-content-width))/2); display:grid; grid-template-columns:minmax(calc(var(--__sidebar-width) + max(0rem,var(--__main-column-fr) - var(--sl-nav-gap))),auto) 1fr auto; align-content:center; }
+      :global(:root[data-has-sidebar]) {
+        --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+      }
+
+      :global(:root:not([data-has-toc])) {
+        --__toc-width: 0rem;
+      }
+
+      .header {
+        --__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+        --__main-column-fr: calc((100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) - (2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) - var(--sl-content-width)) / 2);
+        display: grid;
+        grid-template-columns: minmax(calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))), auto) 1fr auto;
+        align-content: center;
+      }
     }
   }
 </style>
