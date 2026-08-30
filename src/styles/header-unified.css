@@ -1,4 +1,4 @@
-/* One flat control row: GitHub, X, Telegram, theme, language. */
+/* One flat control row: GitHub, X, Telegram, language, theme. */
 .sprey-header-controls {
   display: flex;
   align-items: center;
