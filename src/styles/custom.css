@@ -38,6 +38,61 @@ body {
   gap: .65rem;
 }
 
+.sprey-social-links {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+.sprey-social-links a {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: .75rem;
+  background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, transparent);
+  color: var(--sl-color-text);
+  transition: border-color .15s ease, color .15s ease, transform .15s ease;
+}
+
+.sprey-social-links a:hover {
+  transform: translateY(-1px);
+  border-color: var(--sprey-purple);
+  color: var(--sprey-purple-2);
+}
+
+.sprey-social-links a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--sprey-purple) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.sprey-social-links svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+/* Keep Starlight's accessible theme selector and show only its state icon. */
+starlight-theme-select label {
+  --sl-select-width: 2.25rem !important;
+}
+
+starlight-theme-select select {
+  width: 2.25rem;
+  color: transparent !important;
+  cursor: pointer;
+}
+
+starlight-theme-select select option {
+  color: var(--sl-color-text) !important;
+  background: var(--sl-color-bg-nav);
+}
+
+starlight-theme-select .caret {
+  display: none;
+}
+
 .sprey-header-extra .gtranslate_wrapper {
   display: flex;
   align-items: center;
@@ -99,7 +154,8 @@ body {
 
 /* Live service links: compact inverse pills instead of default underlined links. */
 .sl-markdown-content a[href^='https://pay.sprey.win'],
-.sl-markdown-content a[href^='https://docs.sprey.win'] {
+.sl-markdown-content a[href^='https://docs.sprey.win'],
+.sl-markdown-content a[href^='https://wp-stack.sprey.win'] {
   display: inline-flex;
   align-items: center;
   gap: .28rem;
@@ -118,7 +174,8 @@ body {
 }
 
 .sl-markdown-content a[href^='https://pay.sprey.win']::after,
-.sl-markdown-content a[href^='https://docs.sprey.win']::after {
+.sl-markdown-content a[href^='https://docs.sprey.win']::after,
+.sl-markdown-content a[href^='https://wp-stack.sprey.win']::after {
   content: '↗';
   font-family: var(--sl-font-system);
   font-size: .78em;
@@ -126,21 +183,24 @@ body {
 }
 
 .sl-markdown-content a[href^='https://pay.sprey.win']:hover,
-.sl-markdown-content a[href^='https://docs.sprey.win']:hover {
+.sl-markdown-content a[href^='https://docs.sprey.win']:hover,
+.sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover {
   transform: translateY(-1px);
   background: #000000;
   box-shadow: 0 .3rem .8rem rgb(15 23 42 / 16%);
 }
 
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win'],
-:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win'] {
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win'] {
   border-color: #e5e7eb;
   background: #f8fafc;
   color: #111827 !important;
 }
 
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win']:hover,
-:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win']:hover {
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover {
   background: #ffffff;
   box-shadow: 0 .3rem .9rem rgb(255 255 255 / 10%);
 }
@@ -327,6 +387,7 @@ body {
   :root { --sl-content-pad-x: 1rem; }
   .docs-metrics { grid-template-columns: repeat(2, 1fr); }
   .sprey-header-extra { gap: .4rem; }
+  .sprey-social-links { gap: .25rem; }
   .sprey-header-extra .gtranslate_wrapper { padding: .22rem .4rem; font-size: .74rem; }
   .sprey-header-extra .gtranslate_wrapper a,
   .sprey-header-extra .gtranslate_wrapper span,

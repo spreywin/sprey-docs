@@ -43,6 +43,7 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 | `rpc.sprey.win` | RPC/eRPC gateway | Planned |
 | `status.sprey.win` | Public service status | Planned |
 | [docs.sprey.win](https://docs.sprey.win/) | Canonical documentation portal on GitHub Pages | **Live** |
+| <a href="https://wp-stack.sprey.win/" target="_blank" rel="noopener noreferrer">wp-stack.sprey.win</a> | Sprey WP Stack product landing on GitHub Pages | **Live** |
 
 ## Deployable stacks
 
@@ -51,6 +52,8 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 WordPress + WooCommerce + Caddy + MariaDB in Docker Compose with an optional local-only phpMyAdmin profile.
 
 Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
+
+Product landing: <a href="https://wp-stack.sprey.win/" target="_blank" rel="noopener noreferrer">wp-stack.sprey.win</a>
 
 ### BTCPay Stack
 

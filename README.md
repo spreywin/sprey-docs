@@ -50,6 +50,10 @@ Example:
 
 - [`spreywin/sprey-wp-stack`](https://github.com/spreywin/sprey-wp-stack) → `docs.sprey.win/stacks/wp-stack/`
 
+Public WP Stack landing: [wp-stack.sprey.win](https://wp-stack.sprey.win/)
+
+Follow Sprey on [X](https://x.com/SpreyWin) and [Telegram](https://t.me/SpreyWin).
+
 ## Status
 
 Initial portal migration and Starlight setup are in progress.

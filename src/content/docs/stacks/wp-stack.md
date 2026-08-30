@@ -7,6 +7,8 @@ Sprey WP Stack is a compact Docker Compose deployment for WordPress and WooComme
 
 Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
 
+Product landing: <a href="https://wp-stack.sprey.win/" target="_blank" rel="noopener noreferrer">wp-stack.sprey.win</a>
+
 ## Components
 
 - Caddy as the only public web service.
