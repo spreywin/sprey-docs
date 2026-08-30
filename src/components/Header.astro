@@ -1,0 +1,53 @@
+---
+import config from 'virtual:starlight/user-config';
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import Search from 'virtual:starlight/components/Search';
+import Sidebar from 'virtual:starlight/components/Sidebar';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+
+const shouldRenderSearch =
+  config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+---
+
+<div class="header">
+  <div class="title-wrapper sl-flex"><SiteTitle /></div>
+  <div class="sl-flex print:hidden">{shouldRenderSearch && <Search />}</div>
+  <details class="sprey-home-menu print:hidden">
+    <summary aria-label="Open documentation menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+    </summary>
+    <div class="sprey-home-menu-panel"><Sidebar /></div>
+  </details>
+  <div class="sl-hidden md:sl-flex print:hidden right-group">
+    <div class="sl-flex social-icons"><SocialIcons /></div>
+    <ThemeSelect />
+    <LanguageSelect />
+  </div>
+</div>
+
+<style>
+  @layer starlight.core {
+    .header { display:flex; gap:var(--sl-nav-gap); justify-content:space-between; align-items:center; height:100%; }
+    .title-wrapper { overflow:clip; padding:.25rem; margin:-.25rem; min-width:0; }
+    .right-group,.social-icons { gap:1rem; align-items:center; }
+    .social-icons::after { content:''; height:2rem; border-inline-end:1px solid var(--sl-color-gray-5); }
+    .sprey-home-menu { display:none; }
+
+    @media (max-width: 49.99rem) {
+      :global(:root[data-has-hero]) .sprey-home-menu { display:block; position:relative; flex:0 0 auto; }
+      .sprey-home-menu summary { display:grid; width:2.5rem; height:2.5rem; padding:.5rem; place-items:center; border-radius:50%; color:var(--sl-color-text); cursor:pointer; list-style:none; }
+      .sprey-home-menu summary::-webkit-details-marker { display:none; }
+      .sprey-home-menu summary:hover { background:var(--sl-color-gray-6); }
+      .sprey-home-menu summary svg { width:1.4rem; height:1.4rem; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; }
+      .sprey-home-menu-panel { position:fixed; z-index:var(--sl-z-index-menu); inset:var(--sl-nav-height) 0 0; padding:1rem var(--sl-sidebar-pad-x); border-top:1px solid var(--sl-color-hairline-shade); background:var(--sl-color-bg-sidebar); box-shadow:var(--sl-shadow-md); overflow-y:auto; }
+    }
+
+    @media (min-width: 50rem) {
+      :global(:root[data-has-sidebar]) { --__sidebar-pad:calc(2 * var(--sl-nav-pad-x)); }
+      :global(:root:not([data-has-toc])) { --__toc-width:0rem; }
+      .header { --__sidebar-width:max(0rem,var(--sl-content-inline-start,0rem) - var(--sl-nav-pad-x)); --__main-column-fr:calc((100% + var(--__sidebar-pad,0rem) - var(--__toc-width,var(--sl-sidebar-width)) - (2 * var(--__toc-width,var(--sl-nav-pad-x))) - var(--sl-content-inline-start,0rem) - var(--sl-content-width))/2); display:grid; grid-template-columns:minmax(calc(var(--__sidebar-width) + max(0rem,var(--__main-column-fr) - var(--sl-nav-gap))),auto) 1fr auto; align-content:center; }
+    }
+  }
+</style>
