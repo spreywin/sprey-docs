@@ -52,7 +52,7 @@ export default defineConfig({
         { label: 'Integrations', items: [{ autogenerate: { directory: 'integrations' } }] },
         { label: 'Operations', items: [{ autogenerate: { directory: 'operations' } }] },
       ],
-      customCss: ['./src/styles/custom.css', './src/styles/header-unified.css'],
+      customCss: ['./src/styles/custom.css', './src/styles/header-unified.css', './src/styles/home.css'],
     }),
   ],
 });
