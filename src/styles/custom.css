@@ -133,6 +133,38 @@ body {
   box-shadow: 0 .5rem 1.6rem color-mix(in srgb, var(--sprey-purple) 5%, transparent);
 }
 
+:root:not([data-has-hero]) .sl-markdown-content .quick-start-terminal {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 26%, var(--sl-color-gray-5));
+  border-radius: .85rem;
+  background: var(--sl-color-bg-nav);
+  box-shadow: 0 .65rem 1.8rem color-mix(in srgb, var(--sprey-purple) 7%, transparent);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content .quick-start-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: .38rem;
+  height: 2.25rem;
+  padding-inline: 1rem;
+  border-bottom: 1px solid var(--sl-color-gray-5);
+  background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, var(--sl-color-bg));
+}
+
+:root:not([data-has-hero]) .sl-markdown-content .quick-start-terminal-bar span {
+  width: .62rem;
+  height: .62rem;
+  border-radius: 50%;
+  background: var(--sl-color-gray-4);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content .quick-start-terminal pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 :root:not([data-has-hero]) .sl-markdown-content table {
   display: table;
   width: 100%;
