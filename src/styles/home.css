@@ -8,9 +8,7 @@
   align-items: center;
 }
 
-:root[data-has-hero] .hero > .sl-flex {
-  min-width: 0;
-}
+:root[data-has-hero] .hero > .sl-flex { min-width: 0; }
 
 :root[data-has-hero] .hero::after {
   content: '';
@@ -28,9 +26,7 @@
   pointer-events: none;
 }
 
-:root[data-theme='dark'][data-has-hero] .hero::after {
-  background-image: url('/hero-docs.svg');
-}
+:root[data-theme='dark'][data-has-hero] .hero::after { background-image: url('/hero-docs.svg'); }
 
 :root[data-has-hero] .hero h1 {
   margin: 0;
@@ -54,35 +50,53 @@
   margin-top: 1.6rem;
 }
 
-:root[data-has-hero] .hero .actions a {
-  width: auto;
-  white-space: nowrap;
-}
+:root[data-has-hero] .hero .actions a { width: auto; white-space: nowrap; }
 
+/* Documentation qualities. */
 :root[data-has-hero] .docs-badges {
   justify-content: center;
+  margin-bottom: 1.65rem;
 }
 
-:root[data-has-hero] .docs-card-link {
-  color: inherit;
-  text-decoration: none;
+:root[data-has-hero] .docs-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
 }
 
-:root[data-has-hero] .docs-card-link:hover,
-:root[data-has-hero] .docs-card-link:focus-visible {
+:root[data-has-hero] .docs-badges svg {
+  width: .95rem;
+  height: .95rem;
   color: var(--sprey-purple-2);
 }
 
-/* Homepage metrics: four equal cards with consistent spacing and baseline. */
-:root[data-has-hero] .docs-metrics {
-  gap: .65rem;
-  padding: .65rem;
-  align-items: stretch;
+/* Homepage section cards. */
+:root[data-has-hero] .card-grid > article,
+:root[data-has-hero] .card-grid > .card,
+:root[data-has-hero] .sl-link-card {
+  border-radius: 1rem;
 }
 
-:root[data-has-hero] .docs-metrics::before {
-  display: none;
+:root[data-has-hero] .card-grid > * {
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
 }
+
+:root[data-has-hero] .card-grid > *:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--sprey-purple) 45%, var(--sl-color-gray-5));
+  box-shadow: 0 .8rem 2rem color-mix(in srgb, var(--sprey-purple) 8%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sprey-purple) 5%, transparent), transparent 45%);
+}
+
+:root[data-has-hero] .docs-card-link { color: inherit; text-decoration: none; }
+:root[data-has-hero] .docs-card-link:hover,
+:root[data-has-hero] .docs-card-link:focus-visible { color: var(--sprey-purple-2); }
+
+/* Homepage metrics: four equal cards with consistent spacing and baseline. */
+:root[data-has-hero] .docs-metrics { gap: .65rem; padding: .65rem; align-items: stretch; }
+:root[data-has-hero] .docs-metrics::before { display: none; }
 
 :root[data-has-hero] .docs-metrics div {
   --metric-color: var(--sprey-purple-2);
@@ -96,16 +110,25 @@
   margin: 0;
   padding: 1rem;
   border-top: 2px solid color-mix(in srgb, var(--metric-color) 65%, transparent);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--metric-color) 9%, transparent),
-    transparent 72%
-  );
+  background: linear-gradient(180deg, color-mix(in srgb, var(--metric-color) 9%, transparent), transparent 72%);
 }
 
 :root[data-has-hero] .docs-metrics div:nth-child(2) { --metric-color: var(--sprey-blue); }
 :root[data-has-hero] .docs-metrics div:nth-child(3) { --metric-color: var(--sprey-cyan); }
 :root[data-has-hero] .docs-metrics div:nth-child(4) { --metric-color: var(--sprey-orange); }
+
+:root[data-has-hero] .docs-metrics a {
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+:root[data-has-hero] .docs-metrics a:hover strong { transform: translateY(-1px); }
 
 :root[data-has-hero] .docs-metrics strong {
   align-self: end;
@@ -113,6 +136,7 @@
   line-height: 1;
   color: var(--metric-color);
   font-variant-numeric: tabular-nums;
+  transition: transform .15s ease;
 }
 
 :root[data-has-hero] .docs-metrics span {
@@ -122,32 +146,44 @@
   line-height: 1.15rem;
 }
 
+/* Calm visual finish for the homepage. */
+:root[data-has-hero] .docs-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+:root[data-has-hero] .docs-principles > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .35rem .7rem;
+  align-content: start;
+  padding: 1.15rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
+}
+
+:root[data-has-hero] .docs-principles svg {
+  grid-row: 1 / span 2;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: .1rem;
+  color: var(--sprey-purple-2);
+}
+
+:root[data-has-hero] .docs-principles strong { font-size: 1rem; }
+:root[data-has-hero] .docs-principles span { color: var(--sl-color-gray-2); line-height: 1.5; }
+
 @media (max-width: 60rem) {
-  :root[data-has-hero] .hero {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    min-height: auto;
-    padding: 3rem 0;
-  }
-
-  :root[data-has-hero] .hero::after {
-    grid-column: 1;
-    grid-row: auto;
-    width: min(100%, 36rem);
-  }
-
-  :root[data-has-hero] .hero h1 {
-    white-space: normal;
-  }
+  :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; }
+  :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); }
+  :root[data-has-hero] .hero h1 { white-space: normal; }
+  :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 34rem) {
-  :root[data-has-hero] .hero .actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  :root[data-has-hero] .hero .actions a {
-    width: auto;
-  }
+  :root[data-has-hero] .hero .actions { flex-direction: column; align-items: center; }
+  :root[data-has-hero] .hero .actions a { width: auto; }
 }
