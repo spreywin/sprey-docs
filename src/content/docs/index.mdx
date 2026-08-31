@@ -15,10 +15,15 @@ hero:
       variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
 
 <div class="docs-badges" aria-label="Documentation qualities">
-  <span>⚡ Always up to date</span><span>⌘ Open source</span><span>◎ GitHub-first</span><span>◇ Self-hosted</span><span>♢ Non-custodial</span><span>⚙ Automation-first</span>
+  <span><Icon name="refresh" />Always up to date</span>
+  <span><Icon name="open-book" />Open source</span>
+  <span><Icon name="github" />GitHub-first</span>
+  <span><Icon name="laptop" />Self-hosted</span>
+  <span><Icon name="shield-check" />Non-custodial</span>
+  <span><Icon name="setting" />Automation-first</span>
 </div>
 
 ## One portal for the whole Sprey platform
@@ -45,14 +50,16 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 </CardGrid>
 
 <div class="docs-metrics" aria-label="Sprey documentation model">
-  <div><strong>3+</strong><span>Products</span></div>
-  <div><strong>4</strong><span>Stack families</span></div>
+  <div><a href="/architecture/overview/#products"><strong>3+</strong><span>Products</span></a></div>
+  <div><a href="/stacks/wp-stack/"><strong>4</strong><span>Stack families</span></a></div>
   <div><strong>1</strong><span>Canonical portal</span></div>
   <div><strong>100%</strong><span>Static on GitHub</span></div>
 </div>
 
 ## Documentation principles
 
-English is the canonical source language. The portal is structured for multilingual publishing, responsive use on desktop, tablet, and mobile devices, and light, dark, or automatic system themes.
-
-Features that are not deployed yet are explicitly marked **Planned**. Product documentation remains separate from implementation repositories so each stack can evolve independently.
+<div class="docs-principles">
+  <div><Icon name="document" /><strong>Canonical</strong><span>English is the canonical source language, with multilingual access layered on top.</span></div>
+  <div><Icon name="eye" /><strong>Transparent</strong><span>Planned capabilities are clearly marked so documentation reflects what exists today.</span></div>
+  <div><Icon name="seti:git" /><strong>Reproducible</strong><span>Product documentation stays separate from implementation repositories so each stack can evolve independently.</span></div>
+</div>
