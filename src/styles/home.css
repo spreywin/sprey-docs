@@ -65,16 +65,23 @@
   color: var(--sprey-purple-2);
 }
 
-/* Homepage metrics: clear numbers, stable baseline, no decorative motion. */
+/* Homepage metrics: four equal cards with consistent spacing and baseline. */
+:root[data-has-hero] .docs-metrics {
+  gap: .65rem;
+  padding: .65rem;
+}
+
 :root[data-has-hero] .docs-metrics::before {
   display: none;
 }
 
 :root[data-has-hero] .docs-metrics div {
   --metric-color: var(--sprey-purple-2);
+  box-sizing: border-box;
   grid-template-rows: 3.7rem auto;
   align-content: center;
   min-height: 8rem;
+  padding: 1rem;
   border-top: 2px solid color-mix(in srgb, var(--metric-color) 65%, transparent);
   background: linear-gradient(
     180deg,
