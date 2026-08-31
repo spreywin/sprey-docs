@@ -9,11 +9,16 @@
   align-items: center;
 }
 
-:root[data-has-hero] .hero > .sl-flex { min-width: 0; }
+:root[data-has-hero] .hero > .sl-flex {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
 
 :root[data-has-hero] .hero::after {
   content: '';
   position: static;
+  z-index: 0;
   grid-column: 2;
   grid-row: 1;
   width: 100%;
