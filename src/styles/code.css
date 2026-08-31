@@ -1,0 +1,14 @@
+/* Shared Expressive Code frame styling for internal documentation. */
+:root:not([data-has-hero]) .sl-markdown-content .expressive-code figure.frame {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 24%, var(--sl-color-gray-5));
+  border-radius: .85rem;
+  box-shadow: 0 .55rem 1.6rem color-mix(in srgb, var(--sprey-purple) 6%, transparent);
+}
+
+/* Let the Expressive Code frame own the outer chrome instead of styling its inner pre twice. */
+:root:not([data-has-hero]) .sl-markdown-content .expressive-code figure.frame pre {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
