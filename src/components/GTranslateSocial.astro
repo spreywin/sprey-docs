@@ -13,3 +13,22 @@ import Default from '@astrojs/starlight/components/SocialIcons.astro';
     link.setAttribute('rel', 'me noopener noreferrer');
   });
 </script>
+
+<style>
+  .gtranslate_wrapper {
+    position: relative;
+    margin-inline-start: .75rem;
+  }
+
+  .gtranslate_wrapper::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -.75rem;
+    top: 50%;
+    width: 1px;
+    height: 1.6rem;
+    background: var(--sl-color-gray-5);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+</style>
