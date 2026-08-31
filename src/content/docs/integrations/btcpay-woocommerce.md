@@ -30,20 +30,39 @@ A product exists in WooCommerce, not in BTCPay Server. At checkout, the BTCPay p
 
 ## Choose a BTCPay Server
 
+There are four practical paths depending on whether you want a ready hosted service, a temporary test environment, or full infrastructure ownership.
+
+### 1. Sprey Processing — recommended
+
 For a Sprey deployment, the recommended hosted endpoint is <a href="https://pay.sprey.win/" target="_blank" rel="noopener noreferrer">pay.sprey.win</a>. Create or use your BTCPay account and store there, configure that store with a **merchant-controlled wallet or payment destination**, and then connect the BTCPay store to WooCommerce.
+
+Sprey Processing is designed as a ready-to-use non-custodial payment layer: the merchant keeps control of funds while Sprey operates the payment-processing infrastructure. In addition to direct Bitcoin payments, the Sprey deployment can expose additional payment methods through installed and configured BTCPay integrations and plugins, including supported USDt networks, opt-in altcoins, and exchange/payment integrations where enabled. Availability depends on the payment methods and integrations configured for the Sprey service.
+
+This gives a merchant a broader integration surface without requiring them to deploy, synchronize, secure, update, and monitor their own BTCPay Server and supporting infrastructure.
 
 :::note
 `pay.sprey.win` provides payment-processing infrastructure and payment-state verification. It is not a custodial wallet. Merchant funds must remain under merchant control rather than being deposited into a Sprey-owned wallet.
 :::
 
-If you only want to evaluate BTCPay Server before choosing a production host, the BTCPay Server project provides official public demo instances:
+### 2. Official mainnet demo
 
-- <a href="https://mainnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">Mainnet demo</a> — real Bitcoin network; testing only, with no uptime guarantee.
-- <a href="https://testnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">Testnet demo</a> — suitable for tests using testnet coins.
+The BTCPay Server project provides a public <a href="https://mainnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">mainnet demo</a> using the real Bitcoin network. It is useful for evaluation, but it is not production infrastructure and carries no uptime guarantee.
+
+### 3. Official testnet demo
+
+The official <a href="https://testnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">testnet demo</a> is suitable for testing the integration with testnet coins before using real funds.
 
 :::caution
 The official demo servers are for evaluation and testing. Do not treat them as production infrastructure or rely on their availability.
 :::
+
+### 4. Self-host BTCPay Server
+
+Merchants who want full control of the payment-server infrastructure can deploy their own BTCPay Server. The project officially supports several deployment approaches, including hosted/web deployment options, Docker deployment on a VPS, deployment on supported hardware, and advanced manual installation. For production self-hosting, BTCPay recommends its supported deployment methods rather than a manual build.
+
+Start with the official <a href="https://docs.btcpayserver.org/Deployment/" target="_blank" rel="noopener noreferrer">BTCPay Server deployment guide</a>. Technical users deploying to a VPS can also use the official <a href="https://docs.btcpayserver.org/Docker/" target="_blank" rel="noopener noreferrer">Docker deployment</a>, while the <a href="https://docs.btcpayserver.org/Configurator/" target="_blank" rel="noopener noreferrer">BTCPay Server Configurator</a> can prepare or deploy a Docker configuration over SSH.
+
+Self-hosting gives the merchant control of the BTCPay application and node infrastructure, but also makes the merchant responsible for server security, blockchain/node resources, updates, monitoring, backups, availability, and recovery.
 
 ## Prepare the storefront
 
@@ -94,4 +113,7 @@ For non-production testing, prefer the official BTCPay testnet demo so no real b
 
 - <a href="https://docs.btcpayserver.org/WooCommerce/" target="_blank" rel="noopener noreferrer">BTCPay Server — WooCommerce integration</a>
 - <a href="https://docs.btcpayserver.org/TryItOut/" target="_blank" rel="noopener noreferrer">BTCPay Server — Try it out</a>
+- <a href="https://docs.btcpayserver.org/Deployment/" target="_blank" rel="noopener noreferrer">BTCPay Server — deployment methods</a>
+- <a href="https://docs.btcpayserver.org/Docker/" target="_blank" rel="noopener noreferrer">BTCPay Server — Docker deployment</a>
+- <a href="https://docs.btcpayserver.org/Configurator/" target="_blank" rel="noopener noreferrer">BTCPay Server Configurator</a>
 - <a href="https://github.com/btcpayserver/woocommerce-greenfield-plugin" target="_blank" rel="noopener noreferrer">BTCPay for WooCommerce V2 source</a>
