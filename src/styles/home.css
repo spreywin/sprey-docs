@@ -77,7 +77,7 @@
   margin: -.5rem 0 1.65rem;
 }
 
-:root[data-has-hero] .docs-badges span {
+:root[data-has-hero] .docs-badges > span {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -89,11 +89,11 @@
   color: var(--sl-color-gray-2);
   background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
   font-size: .85rem;
-  line-height: 1.2;
+  line-height: 1;
   white-space: nowrap;
 }
 
-:root[data-has-hero] .docs-badges svg {
+:root[data-has-hero] .docs-badges > span > svg {
   position: absolute;
   inset-inline-start: .72rem;
   top: 50%;
@@ -101,6 +101,19 @@
   height: .95rem;
   color: var(--sprey-purple-2);
   transform: translateY(-50%);
+}
+
+:root[data-has-hero] .docs-badge-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1rem;
+  line-height: 1;
+}
+
+:root[data-has-hero] .docs-badge-label > font {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 :root[data-has-hero] .docs-badge-icon {
@@ -249,13 +262,13 @@
 :root[data-has-hero] .docs-home-footer a { color: inherit; }
 
 /* Light theme: keep the same visual system, but with stronger separation and contrast. */
-:root:not([data-theme='dark'])[data-has-hero] .docs-badges span {
+:root:not([data-theme='dark'])[data-has-hero] .docs-badges > span {
   border-color: color-mix(in srgb, var(--sprey-purple) 28%, var(--sl-color-gray-5));
   background: color-mix(in srgb, var(--sprey-purple) 6%, #ffffff);
   color: var(--sl-color-gray-1);
 }
 
-:root:not([data-theme='dark'])[data-has-hero] .docs-badges svg,
+:root:not([data-theme='dark'])[data-has-hero] .docs-badges > span > svg,
 :root:not([data-theme='dark'])[data-has-hero] .docs-badge-icon,
 :root:not([data-theme='dark'])[data-has-hero] .docs-principles svg {
   color: #7c3aed;
