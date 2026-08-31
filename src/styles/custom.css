@@ -21,6 +21,9 @@ body {
   background-image:
     radial-gradient(circle at 82% 8%, color-mix(in srgb, var(--sprey-purple) 9%, transparent), transparent 30%),
     radial-gradient(circle at 12% 30%, color-mix(in srgb, var(--sprey-blue) 4%, transparent), transparent 25%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
 }
 
 .site-title::before {
