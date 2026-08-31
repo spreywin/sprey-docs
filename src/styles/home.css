@@ -70,6 +70,14 @@
   color: var(--sprey-purple-2);
 }
 
+:root[data-has-hero] .docs-badge-icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* Homepage section cards. */
 :root[data-has-hero] .card-grid > article,
 :root[data-has-hero] .card-grid > .card,
@@ -158,8 +166,9 @@
   grid-template-rows: auto auto;
   gap: .25rem .65rem;
   align-content: start;
-  min-height: 0;
-  height: 100%;
+  min-height: 8rem;
+  height: 8rem;
+  margin: 0 !important;
   padding: 1rem 1.15rem;
   border: 1px solid var(--sl-color-gray-5);
   border-radius: 1rem;
@@ -178,8 +187,8 @@
 :root[data-has-hero] .docs-principles span { color: var(--sl-color-gray-2); font-size: .9rem; line-height: 1.4; }
 
 :root[data-has-hero] .docs-home-footer {
-  margin-top: 2.5rem;
-  padding: 1rem 0 0;
+  margin-top: 1.75rem;
+  padding: .85rem 0 0;
   border-top: 1px solid var(--sl-color-gray-6);
   color: var(--sl-color-gray-3);
   font-size: .85rem;
@@ -193,6 +202,7 @@
   :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); }
   :root[data-has-hero] .hero h1 { white-space: normal; }
   :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; }
+  :root[data-has-hero] .docs-principles > div { height: auto; min-height: 0; }
 }
 
 @media (max-width: 34rem) {
