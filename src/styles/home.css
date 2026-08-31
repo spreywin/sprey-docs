@@ -69,6 +69,7 @@
 :root[data-has-hero] .docs-metrics {
   gap: .65rem;
   padding: .65rem;
+  align-items: stretch;
 }
 
 :root[data-has-hero] .docs-metrics::before {
@@ -78,9 +79,13 @@
 :root[data-has-hero] .docs-metrics div {
   --metric-color: var(--sprey-purple-2);
   box-sizing: border-box;
-  grid-template-rows: 3.7rem auto;
+  display: grid;
+  grid-template-rows: 3.7rem 1.5rem;
   align-content: center;
+  align-self: stretch;
   min-height: 8rem;
+  height: 100%;
+  margin: 0;
   padding: 1rem;
   border-top: 2px solid color-mix(in srgb, var(--metric-color) 65%, transparent);
   background: linear-gradient(
@@ -104,8 +109,9 @@
 
 :root[data-has-hero] .docs-metrics span {
   align-self: start;
-  margin-top: .35rem;
+  margin: .35rem 0 0;
   font-size: .92rem;
+  line-height: 1.15rem;
 }
 
 @media (max-width: 60rem) {
