@@ -39,6 +39,7 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 | `sprey.win` | Public website and WooCommerce store | Planned |
 | [pay.sprey.win](https://pay.sprey.win/) | BTCPay / payment infrastructure | **Live** |
 | `btcpay.sprey.win` | Additional BTCPay host / alias where required | Planned |
+| [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
 | `app.sprey.win` | Customer application / control plane | Planned |
 | `rpc.sprey.win` | RPC/eRPC gateway | Planned |
 | `status.sprey.win` | Public service status | Planned |
