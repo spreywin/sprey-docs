@@ -3,7 +3,7 @@ title: Sprey WP Stack
 description: Production-oriented WordPress and WooCommerce stack for a modest VPS.
 ---
 
-Sprey WP Stack is a compact Docker Compose deployment for WordPress and WooCommerce. It is intentionally a **website stack, not a server control panel**.
+Sprey WP Stack is a compact Docker Compose deployment for WordPress and WooCommerce with the BTCPay payment integration bundled into the WordPress application image. It is intentionally a **website stack, not a server control panel**.
 
 Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
 
@@ -52,12 +52,13 @@ Caddy :80/:443
    │
    ▼
 WordPress + WooCommerce
+   + BTCPay for WooCommerce V2
    │
    ▼
 MariaDB LTS
 ```
 
-WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by default and is intended for temporary local access over an SSH tunnel.
+WooCommerce and BTCPay for WooCommerce V2 are part of the WordPress application layer. The plugin connects outward to separate BTCPay Server infrastructure; BTCPay Server itself does not run in this stack. WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by default and is intended for temporary local access over an SSH tunnel.
 
 ## BTCPay
 
