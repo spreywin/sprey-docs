@@ -1,5 +1,6 @@
 /* Docs splash hero: balanced 50/50 desktop layout, single-column mobile. */
 :root[data-has-hero] .hero {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 5rem);
@@ -50,12 +51,25 @@
   margin-top: 1.6rem;
 }
 
-:root[data-has-hero] .hero .actions a { width: auto; white-space: nowrap; }
+:root[data-has-hero] .hero .actions a {
+  width: auto;
+  border-radius: .85rem;
+  white-space: nowrap;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+:root[data-has-hero] .hero .actions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .9rem 2.5rem color-mix(in srgb, var(--sprey-purple) 14%, transparent);
+}
 
 /* Documentation qualities. */
 :root[data-has-hero] .docs-badges {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 1.65rem;
+  gap: .75rem;
+  margin: -.5rem 0 1.65rem;
 }
 
 :root[data-has-hero] .docs-badges span {
@@ -63,6 +77,12 @@
   align-items: center;
   gap: .42rem;
   min-height: 3rem;
+  padding: .42rem .72rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 999px;
+  color: var(--sl-color-gray-2);
+  background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
+  font-size: .85rem;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -106,14 +126,31 @@
 :root[data-has-hero] .docs-card-link:focus-visible { color: var(--sprey-purple-2); }
 
 /* Homepage metrics: four equal cards with consistent spacing and baseline. */
-:root[data-has-hero] .docs-metrics { gap: .65rem; padding: .65rem; align-items: stretch; }
+:root[data-has-hero] .docs-metrics {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .65rem;
+  margin: 2.5rem 0 3rem;
+  padding: .65rem;
+  align-items: stretch;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 1.1rem;
+  background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
+}
+
 :root[data-has-hero] .docs-metrics::before { display: none; }
 
 :root[data-has-hero] .docs-metrics div {
   --metric-color: var(--sprey-purple-2);
+  position: relative;
+  z-index: 1;
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 3.7rem 1.5rem;
+  gap: .15rem;
+  place-items: center;
   align-content: center;
   align-self: stretch;
   min-height: 8rem;
@@ -121,6 +158,7 @@
   margin: 0;
   padding: 1rem;
   border-top: 2px solid color-mix(in srgb, var(--metric-color) 65%, transparent);
+  border-radius: .8rem;
   background: linear-gradient(180deg, color-mix(in srgb, var(--metric-color) 9%, transparent), transparent 72%);
 }
 
@@ -151,6 +189,7 @@
   align-self: start;
   justify-self: center;
   margin: .35rem 0 0;
+  color: var(--sl-color-gray-2);
   font-size: .92rem;
   line-height: 1.15rem;
 }
@@ -242,6 +281,14 @@
   color: var(--sl-color-gray-1);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root[data-has-hero] .hero::after,
+  :root[data-has-hero] .hero .actions a {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @media (max-width: 60rem) {
   :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; }
   :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); }
@@ -250,7 +297,15 @@
   :root[data-has-hero] .docs-principles > div { height: auto; min-height: 0; }
 }
 
+@media (max-width: 50rem) {
+  :root[data-has-hero] .docs-metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 34rem) {
   :root[data-has-hero] .hero .actions { flex-direction: column; align-items: center; }
   :root[data-has-hero] .hero .actions a { width: auto; }
+}
+
+@media (max-width: 32rem) {
+  :root[data-has-hero] .docs-metrics { grid-template-columns: 1fr; }
 }
