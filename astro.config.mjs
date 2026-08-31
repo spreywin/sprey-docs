@@ -41,6 +41,7 @@ export default defineConfig({
         },
       ],
       components: {
+        PageFrame: './src/components/PageFrame.astro',
         SocialIcons: './src/components/GTranslateSocial.astro',
       },
       editLink: {
