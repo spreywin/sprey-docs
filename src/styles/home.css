@@ -78,11 +78,12 @@
 }
 
 :root[data-has-hero] .docs-badges span {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: .42rem;
   min-height: 3rem;
-  padding: .42rem .72rem;
+  padding-block: .42rem;
+  padding-inline: 2rem .72rem;
   border: 1px solid var(--sl-color-gray-5);
   border-radius: 999px;
   color: var(--sl-color-gray-2);
@@ -93,11 +94,13 @@
 }
 
 :root[data-has-hero] .docs-badges svg {
-  flex: 0 0 .95rem;
+  position: absolute;
+  inset-inline-start: .72rem;
+  top: 50%;
   width: .95rem;
   height: .95rem;
-  align-self: center;
   color: var(--sprey-purple-2);
+  transform: translateY(-50%);
 }
 
 :root[data-has-hero] .docs-badge-icon {
@@ -234,8 +237,9 @@
 :root[data-has-hero] .docs-principles span { color: var(--sl-color-gray-2); font-size: .9rem; line-height: 1.4; }
 
 :root[data-has-hero] .docs-home-footer {
-  margin-top: 1.75rem;
-  padding: .85rem 0 0;
+  margin-top: 1.25rem;
+  margin-bottom: -1rem;
+  padding: .65rem 0 0;
   border-top: 1px solid var(--sl-color-gray-6);
   color: var(--sl-color-gray-3);
   font-size: .85rem;
