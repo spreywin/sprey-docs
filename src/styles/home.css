@@ -250,9 +250,9 @@
 :root[data-has-hero] .docs-principles span { color: var(--sl-color-gray-2); font-size: .9rem; line-height: 1.4; }
 
 :root[data-has-hero] .docs-home-footer {
-  margin-top: 1.25rem;
-  margin-bottom: -1rem;
-  padding: .65rem 0 0;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  padding: .85rem 0 0;
   border-top: 1px solid var(--sl-color-gray-6);
   color: var(--sl-color-gray-3);
   font-size: .85rem;
