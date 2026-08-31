@@ -54,28 +54,36 @@ Caddy :80/:443
 WordPress + WooCommerce
    + BTCPay for WooCommerce V2
    │
+   ├── order / invoice status <──── BTCPay Server
+   │                                  │
+   │                                  └── observes payment
+   │
+   └──────────────────────────────> Merchant-controlled wallet / payment destination
+   │
    ▼
 MariaDB LTS
 ```
 
-WooCommerce and BTCPay for WooCommerce V2 are part of the WordPress application layer. The plugin connects outward to separate BTCPay Server infrastructure; BTCPay Server itself does not run in this stack. WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by default and is intended for temporary local access over an SSH tunnel.
+WooCommerce owns the catalog, cart, checkout, and orders. The BTCPay plugin creates invoices and synchronizes payment state with separate BTCPay Server infrastructure. The merchant controls the wallet or payment destination; Sprey Processing does not receive, hold, or forward merchant funds. WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by default and is intended for temporary local access over an SSH tunnel.
 
 ## BTCPay
 
 BTCPay Server is **not** part of the WordPress stack. The official BTCPay for WooCommerce V2 plugin is bundled with the Sprey WordPress image and connects WooCommerce to separate BTCPay infrastructure.
+
+The payment model is non-custodial: products and orders remain in WooCommerce, customers pay the merchant-controlled payment destination configured for the BTCPay store, BTCPay observes the payment and invoice state, and WooCommerce receives the resulting status update.
 
 Recommended deployment flow:
 
 1. Deploy Sprey WP Stack and complete WordPress setup.
 2. Activate the bundled WooCommerce plugin and complete its initial store setup.
 3. Activate the bundled BTCPay for WooCommerce V2 plugin.
-4. Connect it to a BTCPay Server store. For Sprey deployments, <a href="https://pay.sprey.win/" target="_blank" rel="noopener noreferrer">pay.sprey.win</a> is the recommended hosted endpoint; follow [BTCPay for WooCommerce](/integrations/btcpay-woocommerce/) for the connection and testing procedure.
-5. Run a test payment before accepting production orders.
+4. Connect it to a BTCPay Server store. For Sprey deployments, <a href="https://pay.sprey.win/" target="_blank" rel="noopener noreferrer">pay.sprey.win</a> is the recommended hosted endpoint; follow [BTCPay for WooCommerce](/integrations/btcpay-woocommerce/) for the merchant-wallet, connection, and testing procedure.
+5. Run a test payment and verify both the WooCommerce order state and receipt at the merchant-controlled destination before accepting production orders.
 
 For evaluation without a production BTCPay host, the BTCPay Server project provides official <a href="https://mainnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">mainnet</a> and <a href="https://testnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">testnet</a> demo servers. They are for testing and do not carry an uptime guarantee.
 
 :::caution
-Do not store BTCPay Server secrets, API keys, wallet seeds, or payment credentials in the repository.
+Do not store BTCPay Server secrets, API keys, wallet seeds, private spending keys, or payment credentials in the repository. For Sprey-hosted BTCPay, custody must remain with the merchant.
 :::
 
 ## Cloudflare
