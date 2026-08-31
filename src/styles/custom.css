@@ -292,6 +292,28 @@ body {
   .sprey-header-extra .gtranslate_wrapper span,
   .sprey-header-extra .gtranslate_wrapper select,
   .sprey-header-extra .gtranslate_wrapper button { font-size: .74rem !important; }
+
+  :root:not([data-has-hero]) .sl-markdown-content {
+    min-width: 0;
+  }
+
+  :root:not([data-has-hero]) .sl-markdown-content table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :root:not([data-has-hero]) .sl-markdown-content table > thead,
+  :root:not([data-has-hero]) .sl-markdown-content table > tbody {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+  }
 }
 
 /* Global scroll-to-top control. */
