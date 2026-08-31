@@ -1,0 +1,41 @@
+---
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+---
+
+<div class="mobile-preferences sl-flex">
+  <div class="social-icons">
+    <SocialIcons />
+  </div>
+  <LanguageSelect />
+  <ThemeSelect />
+</div>
+
+<style>
+  @layer starlight.core {
+    .mobile-preferences {
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: .75rem;
+      border-top: 1px solid var(--sl-color-gray-6);
+      padding: 1rem .5rem;
+    }
+
+    .social-icons {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-inline-end: 0;
+      padding: 0;
+    }
+
+    .social-icons:empty {
+      display: none;
+    }
+
+    :global(starlight-theme-select) {
+      margin-inline-start: auto;
+    }
+  }
+</style>
