@@ -12,4 +12,8 @@ import Default from '@astrojs/starlight/components/SocialIcons.astro';
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'me noopener noreferrer');
   });
+
+  document.querySelectorAll('.sprey-header-extra > a[href*="github.com"] svg').forEach((icon) => {
+    icon.innerHTML = '<path d="M12 2.5a9.5 9.5 0 0 0-3 18.52c.48.09.65-.21.65-.46v-1.68c-2.67.58-3.23-1.13-3.23-1.13-.43-1.11-1.07-1.4-1.07-1.4-.87-.6.07-.59.07-.59.97.07 1.48 1 1.48 1 .86 1.48 2.25 1.05 2.8.8.09-.63.34-1.05.61-1.29-2.13-.24-4.37-1.07-4.37-4.7 0-1.04.37-1.89.98-2.55-.1-.24-.43-1.21.09-2.52 0 0 .8-.26 2.61.97A9.1 9.1 0 0 1 12 7.15a9.1 9.1 0 0 1 2.38.32c1.81-1.23 2.61-.97 2.61-.97.52 1.31.19 2.28.09 2.52.61.66.98 1.51.98 2.55 0 3.64-2.25 4.46-4.39 4.7.35.3.65.88.65 1.78v2.51c0 .25.18.55.66.46A9.5 9.5 0 0 0 12 2.5Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" />';
+  });
 </script>
