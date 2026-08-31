@@ -55,6 +55,16 @@
   white-space: nowrap;
 }
 
+:root[data-has-hero] .docs-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+:root[data-has-hero] .docs-card-link:hover,
+:root[data-has-hero] .docs-card-link:focus-visible {
+  color: var(--sprey-purple-2);
+}
+
 @media (max-width: 60rem) {
   :root[data-has-hero] .hero {
     grid-template-columns: 1fr;
