@@ -18,16 +18,11 @@ Repository: <a class="github-repository-badge" href="https://github.com/spreywin
 
 ## Quick start
 
-<div class="quick-start-terminal">
-<div class="quick-start-terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-
 ```bash
 git clone https://github.com/spreywin/sprey-wp-stack.git
 cd sprey-wp-stack
 sudo ./install.sh example.com admin@example.com
 ```
-
-</div>
 
 ## Architecture
 
