@@ -150,7 +150,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: .32rem;
-  margin-inline: 0.38rem;
+  margin-inline: .38rem;
   padding: .16rem .48rem;
   border: 1px solid color-mix(in srgb, var(--sprey-purple) 48%, var(--sl-color-gray-4));
   border-radius: 999px;
@@ -182,62 +182,6 @@ body {
   color: #c084fc !important;
 }
 
-.hero {
-  position: relative;
-  min-height: 29rem;
-  padding-right: min(43vw, 34rem);
-  align-items: center;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: min(42vw, 34rem);
-  aspect-ratio: 640 / 420;
-  transform: translateY(-50%);
-  border-radius: 1.8rem;
-  background: url('/hero-docs.svg') center/contain no-repeat;
-  filter: drop-shadow(0 1.8rem 3.8rem color-mix(in srgb, var(--sprey-purple) 18%, transparent));
-  pointer-events: none;
-}
-
-.hero h1 {
-  letter-spacing: -0.045em;
-  font-size: clamp(3.1rem, 7vw, 5.8rem);
-}
-
-.hero .tagline {
-  max-width: 42rem;
-}
-
-.hero .actions a {
-  border-radius: .85rem;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-.hero .actions a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 .9rem 2.5rem color-mix(in srgb, var(--sprey-purple) 14%, transparent);
-}
-
-.docs-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem;
-  margin: -.5rem 0 2.2rem;
-}
-
-.docs-badges span {
-  padding: .42rem .72rem;
-  border: 1px solid var(--sl-color-gray-5);
-  border-radius: 999px;
-  color: var(--sl-color-gray-2);
-  background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
-  font-size: .85rem;
-}
-
 .sl-link-card {
   border-radius: 1rem;
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
@@ -255,77 +199,15 @@ body {
   color: var(--sprey-purple-2);
 }
 
-.docs-metrics {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  margin: 2.5rem 0 3rem;
-  padding: .4rem;
-  border: 1px solid var(--sl-color-gray-5);
-  border-radius: 1.1rem;
-  background: color-mix(in srgb, var(--sl-color-bg-nav) 82%, transparent);
-}
-
-.docs-metrics::before {
-  content: '';
-  position: absolute;
-  left: -15%;
-  right: -15%;
-  bottom: .8rem;
-  height: 2.2rem;
-  opacity: .4;
-  background:
-    radial-gradient(circle at 10% 60%, var(--sprey-purple) 0 2px, transparent 3px),
-    radial-gradient(circle at 40% 35%, var(--sprey-blue) 0 2px, transparent 3px),
-    radial-gradient(circle at 70% 60%, var(--sprey-cyan) 0 2px, transparent 3px),
-    radial-gradient(circle at 90% 35%, var(--sprey-orange) 0 2px, transparent 3px);
-  animation: spreyDrift 10s linear infinite;
-}
-
-.docs-metrics div {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: .15rem;
-  place-items: center;
-  min-height: 7rem;
-  padding: 1rem;
-  border-radius: .8rem;
-}
-
-.docs-metrics strong {
-  font-size: 2rem;
-  line-height: 1;
-  color: var(--sprey-purple-2);
-}
-
-.docs-metrics div:nth-child(2) strong { color: var(--sprey-blue); }
-.docs-metrics div:nth-child(3) strong { color: var(--sprey-cyan); }
-.docs-metrics div:nth-child(4) strong { color: var(--sprey-orange); }
-.docs-metrics span { color: var(--sl-color-gray-2); font-size: .86rem; }
-
-@keyframes spreyDrift {
-  from { transform: translateX(0); }
-  to { transform: translateX(8%); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hero::after,
-  .docs-metrics::before,
-  .sl-link-card,
-  .hero .actions a { animation: none !important; transition: none !important; }
-}
-
-@media (max-width: 60rem) {
-  .hero { min-height: auto; padding-right: 0; padding-bottom: 21rem; }
-  .hero::after { top: auto; bottom: 0; right: 50%; width: min(92vw, 32rem); transform: translateX(50%); }
+  .sl-link-card {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 @media (max-width: 50rem) {
   :root { --sl-content-pad-x: 1rem; }
-  .docs-metrics { grid-template-columns: repeat(2, 1fr); }
   .sprey-header-extra { gap: .4rem; }
   .sprey-header-extra .gtranslate_wrapper { padding: .22rem .4rem; font-size: .74rem; }
   .sprey-header-extra .gtranslate_wrapper a,
@@ -333,12 +215,6 @@ body {
   .sprey-header-extra .gtranslate_wrapper select,
   .sprey-header-extra .gtranslate_wrapper button { font-size: .74rem !important; }
 }
-
-@media (max-width: 32rem) {
-  .hero { padding-bottom: 17rem; }
-  .docs-metrics { grid-template-columns: 1fr; }
-}
-
 
 /* Global scroll-to-top control. */
 .scroll-to-top {
