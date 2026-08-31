@@ -6,3 +6,10 @@ import Default from '@astrojs/starlight/components/SocialIcons.astro';
   <Default><slot /></Default>
   <div class="gtranslate_wrapper" aria-label="Translate documentation"></div>
 </div>
+
+<script>
+  document.querySelectorAll('.sprey-header-extra > a[href^="http"]').forEach((link) => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'me noopener noreferrer');
+  });
+</script>
