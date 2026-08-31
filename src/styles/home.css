@@ -28,9 +28,9 @@
 
 /* High-value architectural invariant on the homepage. */
 :root[data-has-hero] .docs-home-payment-model { display: grid; grid-template-columns: minmax(10rem, 1fr) minmax(0, 3fr) minmax(10rem, 1fr); gap: .45rem 1.25rem; align-items: center; margin: 0 0 2.5rem; padding: 1rem 1.15rem; border: 1px solid color-mix(in srgb, var(--sprey-purple) 45%, var(--sl-color-gray-5)); border-inline-start: 3px solid var(--sprey-purple-2); border-radius: 1rem; background: linear-gradient(135deg, color-mix(in srgb, var(--sprey-purple) 11%, var(--sl-color-bg-nav)), color-mix(in srgb, var(--sl-color-bg-nav) 92%, transparent)); }
-:root[data-has-hero] .docs-home-payment-model strong { color: var(--sprey-purple-2); white-space: nowrap; }
+:root[data-has-hero] .docs-home-payment-model strong { min-width: 0; color: var(--sprey-purple-2); white-space: normal; overflow-wrap: anywhere; }
 :root[data-has-hero] .docs-home-payment-model span { color: var(--sl-color-gray-2); font-size: .94rem; line-height: 1.5; }
-:root[data-has-hero] .docs-home-payment-model a { justify-self: end; color: var(--sprey-purple-2); font-size: .9rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+:root[data-has-hero] .docs-home-payment-model a { min-width: 0; justify-self: end; color: var(--sprey-purple-2); font-size: .9rem; font-weight: 600; text-align: end; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
 :root[data-has-hero] .docs-home-payment-model a:hover { text-decoration: underline; }
 
 /* Homepage section cards. */
@@ -75,7 +75,7 @@
 :root:not([data-theme='dark'])[data-has-hero] .docs-principles span, :root:not([data-theme='dark'])[data-has-hero] .docs-metrics span, :root:not([data-theme='dark'])[data-has-hero] .docs-home-footer { color: var(--sl-color-gray-1); }
 
 @media (prefers-reduced-motion: reduce) { :root[data-has-hero] .hero::after, :root[data-has-hero] .hero .actions a { animation: none !important; transition: none !important; } }
-@media (max-width: 60rem) { :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; } :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); } :root[data-has-hero] .hero h1 { white-space: normal; } :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model strong, :root[data-has-hero] .docs-home-payment-model a { justify-self: start; white-space: normal; } }
+@media (max-width: 60rem) { :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; } :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); } :root[data-has-hero] .hero h1 { white-space: normal; } :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model strong, :root[data-has-hero] .docs-home-payment-model a { justify-self: start; text-align: start; } }
 @media (max-width: 50rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 34rem) { :root[data-has-hero] .hero .actions { flex-direction: column; align-items: center; } :root[data-has-hero] .hero .actions a { width: auto; } }
 @media (max-width: 32rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: 1fr; } }
