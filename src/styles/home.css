@@ -87,9 +87,10 @@
 @media (max-width: 34rem) {
   :root[data-has-hero] .hero .actions {
     flex-direction: column;
+    align-items: center;
   }
 
   :root[data-has-hero] .hero .actions a {
-    width: 100%;
+    width: auto;
   }
 }
