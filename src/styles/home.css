@@ -59,6 +59,10 @@
   white-space: nowrap;
 }
 
+:root[data-has-hero] .docs-badges {
+  justify-content: center;
+}
+
 :root[data-has-hero] .docs-card-link {
   color: inherit;
   text-decoration: none;
