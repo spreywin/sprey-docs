@@ -10,7 +10,8 @@ This page is the canonical map of the Sprey platform. It separates customer-faci
 - Services are separated by responsibility rather than placed on one monolithic server.
 - Documentation is static and independent from production VPS infrastructure.
 - Public websites, payment infrastructure, RPC infrastructure, VPN traffic nodes, monitoring, and documentation are separate concerns.
-- Sprey Processing is designed around non-custodial payment infrastructure: customer funds remain under customer control.
+- Sprey Processing is non-custodial: merchant funds go to merchant-controlled wallets or payment destinations; Sprey does not receive, hold, or forward them.
+- BTCPay Server creates and observes invoice/payment state, while WooCommerce owns products and orders and updates order status from BTCPay events.
 - Lightning integrations use customer-controlled external nodes; operating a customer-specific node may be offered as a separate deployment service.
 - Planned components are documented as **Planned** until they exist in production.
 
@@ -19,6 +20,16 @@ This page is the canonical map of the Sprey platform. It separates customer-faci
 ### Sprey Processing
 
 Crypto payment infrastructure built around BTCPay Server and automation. BTCPay remains separate from the WordPress storefront stack.
+
+The core payment path is deliberately non-custodial:
+
+```text
+WooCommerce order -> BTCPay invoice -> merchant-controlled wallet / payment destination
+                         |
+                         +-> verified invoice/payment state -> WooCommerce order status
+```
+
+WooCommerce stores the catalog, cart, checkout, and order data. BTCPay verifies whether the invoice has been paid and reports that state back to the storefront. Sprey Processing is not the destination or intermediary for merchant funds.
 
 **Current / active service:** [pay.sprey.win](https://pay.sprey.win/)
 
@@ -37,7 +48,7 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 | Host | Role | Status |
 | --- | --- | --- |
 | `sprey.win` | Public website and WooCommerce store | Planned |
-| [pay.sprey.win](https://pay.sprey.win/) | BTCPay / payment infrastructure | **Live** |
+| [pay.sprey.win](https://pay.sprey.win/) | Non-custodial BTCPay processing and payment-state verification | **Live** |
 | `btcpay.sprey.win` | Additional BTCPay host / alias where required | Planned |
 | [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
 | `app.sprey.win` | Customer application / control plane | Planned |
@@ -49,13 +60,13 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 
 ### Sprey WP Stack
 
-WordPress + WooCommerce + BTCPay for WooCommerce V2 + Caddy + MariaDB in Docker Compose, with an optional local-only phpMyAdmin profile. WooCommerce and the BTCPay V2 plugin are bundled into the WordPress application image; BTCPay Server itself remains separate payment infrastructure.
+WordPress + WooCommerce + BTCPay for WooCommerce V2 + Caddy + MariaDB in Docker Compose, with an optional local-only phpMyAdmin profile. WooCommerce and the BTCPay V2 plugin are bundled into the WordPress application image; BTCPay Server itself remains separate payment infrastructure. Products and orders stay in WooCommerce, while payment settlement stays with the merchant-controlled wallet or payment destination.
 
 Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
 
 ### BTCPay Stack
 
-Payment-server deployment and operating conventions for Sprey Processing. It remains separate from the WordPress application server.
+Payment-server deployment and operating conventions for Sprey Processing. It remains separate from the WordPress application server and must preserve the non-custodial boundary: merchant funds are not held by Sprey.
 
 **Documentation status:** Planned.
 
@@ -98,7 +109,7 @@ Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 
 1. Establish the independent documentation portal.
 2. Finalize Sprey WP Stack v1 and production hardening.
-3. Validate the bundled WooCommerce and BTCPay for WooCommerce V2 integration against Sprey Processing.
+3. Validate the bundled WooCommerce and BTCPay for WooCommerce V2 integration against Sprey Processing, including direct merchant settlement and order-status synchronization.
 4. Operate and validate the Cloudflare Worker request-time failover configuration.
 5. Document backup, update, monitoring, and recovery procedures.
 6. Expand Processing automation and the future customer application.
