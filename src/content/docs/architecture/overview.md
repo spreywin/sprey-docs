@@ -15,6 +15,8 @@ This page is the canonical map of the Sprey platform. It separates customer-faci
 - Lightning integrations use customer-controlled external nodes; operating a customer-specific node may be offered as a separate deployment service.
 - Planned components are documented as **Planned** until they exist in production.
 
+The rules used to evolve this architecture are documented separately in [Engineering Principles](/architecture/engineering-principles/).
+
 ## Products
 
 ### Sprey Processing
