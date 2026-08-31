@@ -202,6 +202,46 @@
 
 :root[data-has-hero] .docs-home-footer a { color: inherit; }
 
+/* Light theme: keep the same visual system, but with stronger separation and contrast. */
+:root:not([data-theme='dark'])[data-has-hero] .docs-badges span {
+  border-color: color-mix(in srgb, var(--sprey-purple) 28%, var(--sl-color-gray-5));
+  background: color-mix(in srgb, var(--sprey-purple) 6%, #ffffff);
+  color: var(--sl-color-gray-1);
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .docs-badges svg,
+:root:not([data-theme='dark'])[data-has-hero] .docs-badge-icon,
+:root:not([data-theme='dark'])[data-has-hero] .docs-principles svg {
+  color: #7c3aed;
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .card-grid > * {
+  border-color: color-mix(in srgb, var(--sprey-purple) 18%, var(--sl-color-gray-5));
+  background: color-mix(in srgb, var(--sprey-purple) 2.5%, #ffffff);
+  box-shadow: 0 .35rem 1.1rem rgb(15 23 42 / 5%);
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .docs-metrics {
+  border-color: color-mix(in srgb, var(--sprey-purple) 20%, var(--sl-color-gray-5));
+  background: color-mix(in srgb, var(--sprey-purple) 3%, #ffffff);
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .docs-metrics div {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--metric-color) 14%, #ffffff), #ffffff 82%);
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .docs-principles > div {
+  border-color: color-mix(in srgb, var(--sprey-purple) 20%, var(--sl-color-gray-5));
+  background: color-mix(in srgb, var(--sprey-purple) 3.5%, #ffffff);
+  box-shadow: 0 .3rem 1rem rgb(15 23 42 / 4%);
+}
+
+:root:not([data-theme='dark'])[data-has-hero] .docs-principles span,
+:root:not([data-theme='dark'])[data-has-hero] .docs-metrics span,
+:root:not([data-theme='dark'])[data-has-hero] .docs-home-footer {
+  color: var(--sl-color-gray-1);
+}
+
 @media (max-width: 60rem) {
   :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; }
   :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); }
