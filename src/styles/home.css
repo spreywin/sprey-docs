@@ -65,6 +65,42 @@
   color: var(--sprey-purple-2);
 }
 
+/* Homepage metrics: clear numbers, stable baseline, no decorative motion. */
+:root[data-has-hero] .docs-metrics::before {
+  display: none;
+}
+
+:root[data-has-hero] .docs-metrics div {
+  --metric-color: var(--sprey-purple-2);
+  grid-template-rows: 3.7rem auto;
+  align-content: center;
+  min-height: 8rem;
+  border-top: 2px solid color-mix(in srgb, var(--metric-color) 65%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--metric-color) 9%, transparent),
+    transparent 72%
+  );
+}
+
+:root[data-has-hero] .docs-metrics div:nth-child(2) { --metric-color: var(--sprey-blue); }
+:root[data-has-hero] .docs-metrics div:nth-child(3) { --metric-color: var(--sprey-cyan); }
+:root[data-has-hero] .docs-metrics div:nth-child(4) { --metric-color: var(--sprey-orange); }
+
+:root[data-has-hero] .docs-metrics strong {
+  align-self: end;
+  font-size: clamp(2.75rem, 5vw, 3.6rem);
+  line-height: 1;
+  color: var(--metric-color);
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-has-hero] .docs-metrics span {
+  align-self: start;
+  margin-top: .35rem;
+  font-size: .92rem;
+}
+
 @media (max-width: 60rem) {
   :root[data-has-hero] .hero {
     grid-template-columns: 1fr;
