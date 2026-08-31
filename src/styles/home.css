@@ -20,12 +20,16 @@
   width: 100%;
   max-width: 42rem;
   aspect-ratio: 640 / 420;
-  justify-self: center;
+  place-self: center;
   transform: none;
   border-radius: 1.8rem;
-  background: url('/hero-docs.svg') center/contain no-repeat;
+  background: url('/hero-docs-light.svg') center/contain no-repeat;
   filter: drop-shadow(0 1.8rem 3.8rem color-mix(in srgb, var(--sprey-purple) 18%, transparent));
   pointer-events: none;
+}
+
+:root[data-theme='dark'][data-has-hero] .hero::after {
+  background-image: url('/hero-docs.svg');
 }
 
 :root[data-has-hero] .hero h1 {
