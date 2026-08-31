@@ -26,8 +26,10 @@ import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
   <span><Icon name="setting" /><span class="docs-badge-label">Automation-first</span></span>
 </div>
 
-<div class="docs-home-payment-model">
-  Sprey payment processing is non-custodial: products and orders stay in the storefront, merchant funds settle to merchant-controlled wallets or payment destinations, and BTCPay verifies payment state for order automation.
+<div class="docs-home-payment-model" role="note" aria-label="Non-custodial payment model">
+  <strong>Non-custodial by design</strong>
+  <span>Products and orders stay in the storefront. Merchant funds settle to merchant-controlled wallets or payment destinations. BTCPay verifies payment state for order automation — Sprey does not receive, hold, or forward merchant funds.</span>
+  <a href="/integrations/btcpay-woocommerce/">See the payment flow →</a>
 </div>
 
 ## One portal for the whole Sprey platform
