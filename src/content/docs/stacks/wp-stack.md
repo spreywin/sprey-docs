@@ -17,7 +17,8 @@ Repository: <a class="github-repository-badge" href="https://github.com/spreywin
 
 - Caddy as the only public web service, with automatic HTTPS and HTTP/3.
 - WordPress with Apache and PHP 8.4.
-- WooCommerce-ready application layer.
+- WooCommerce bundled in the WordPress image.
+- BTCPay for WooCommerce V2 bundled in the WordPress image.
 - MariaDB LTS on a private Docker network.
 - Optional phpMyAdmin profile bound to localhost only and disabled by default.
 - UFW configured by the installer for SSH, HTTP, HTTPS, and HTTP/3.
@@ -33,9 +34,9 @@ cd sprey-wp-stack
 sudo ./install.sh example.com admin@example.com
 ```
 
-The installer installs Docker when needed, creates strong database passwords in `.env`, configures UFW without closing the active SSH port, and starts the stack. It refuses to replace an existing `.env` or run on an unsupported system.
+The installer installs Docker when needed, creates strong database passwords in `.env`, configures UFW without closing the active SSH port, builds the Sprey WordPress image with the tested WooCommerce and BTCPay plugin versions, and starts the stack. It refuses to replace an existing `.env` or run on an unsupported system.
 
-After the stack starts, open `https://YOUR_DOMAIN` and complete the WordPress installer.
+After the stack starts, open `https://YOUR_DOMAIN` and complete the WordPress installer. WooCommerce and BTCPay for WooCommerce V2 are then available to activate from WordPress Admin without downloading them separately.
 
 ## Architecture
 
@@ -60,21 +61,21 @@ WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by
 
 ## BTCPay
 
-BTCPay Server is **not** part of the WordPress stack. WooCommerce connects to separate BTCPay infrastructure using the current BTCPay for WooCommerce V2 integration.
+BTCPay Server is **not** part of the WordPress stack. The official BTCPay for WooCommerce V2 plugin is bundled with the Sprey WordPress image and connects WooCommerce to separate BTCPay infrastructure.
 
 Recommended deployment flow:
 
 1. Deploy Sprey WP Stack and complete WordPress setup.
-2. Install and activate WooCommerce.
-3. Install the current BTCPay for WooCommerce V2 plugin.
-4. Connect the plugin to the intended BTCPay Server store using the integration flow provided by BTCPay Server.
+2. Activate the bundled WooCommerce plugin and complete its initial store setup.
+3. Activate the bundled BTCPay for WooCommerce V2 plugin.
+4. Connect it to a BTCPay Server store. For Sprey deployments, <a href="https://pay.sprey.win/" target="_blank" rel="noopener noreferrer">pay.sprey.win</a> is the recommended hosted endpoint; follow [BTCPay for WooCommerce](/integrations/btcpay-woocommerce/) for the connection and testing procedure.
 5. Run a test payment before accepting production orders.
+
+For evaluation without a production BTCPay host, the BTCPay Server project provides official <a href="https://mainnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">mainnet</a> and <a href="https://testnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">testnet</a> demo servers. They are for testing and do not carry an uptime guarantee.
 
 :::caution
 Do not store BTCPay Server secrets, API keys, wallet seeds, or payment credentials in the repository.
 :::
-
-A reproducible integration guide will live under **Integrations**, so it can be reused by any Sprey storefront stack without coupling BTCPay Server to WordPress.
 
 ## Cloudflare
 
@@ -100,11 +101,12 @@ Common stack commands:
 docker compose config --quiet
 docker compose ps
 docker compose logs -f caddy
-docker compose pull
+docker compose pull --ignore-buildable
+docker compose build wordpress
 docker compose up -d
 ```
 
-Review release notes before pulling new images. Back up both the MariaDB database and WordPress uploads before upgrades.
+Review WordPress, WooCommerce, BTCPay plugin, and container release notes before upgrades. Back up both the MariaDB database and WordPress uploads before rebuilding or recreating production containers.
 
 :::danger
 Never run `docker compose down -v` on a production deployment unless permanent volume deletion is explicitly intended. It removes the named volumes containing the site, database, and Caddy certificates.
