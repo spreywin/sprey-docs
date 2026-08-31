@@ -8,9 +8,9 @@ export default defineConfig({
       title: 'Sprey Docs',
       description: 'Canonical technical documentation for Sprey products, deployable stacks, integrations, architecture, and operations.',
       social: [
-        { icon: 'telegram', label: 'Telegram', href: 'https://t.me/SpreyWin' },
-        { icon: 'x.com', label: 'X', href: 'https://x.com/SpreyWin' },
         { icon: 'github', label: 'GitHub', href: 'https://github.com/spreywin' },
+        { icon: 'x.com', label: 'X', href: 'https://x.com/SpreyWin' },
+        { icon: 'telegram', label: 'Telegram', href: 'https://t.me/SpreyWin' },
       ],
       head: [
         {
