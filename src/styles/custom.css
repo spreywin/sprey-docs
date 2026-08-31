@@ -100,6 +100,68 @@ body {
   color: #c084fc !important;
 }
 
+/* Internal documentation polish. Keep homepage visuals isolated in home.css. */
+:root:not([data-has-hero]) .content-panel .sl-container > header:first-child {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sprey-purple) 20%, var(--sl-color-gray-6));
+}
+
+:root:not([data-has-hero]) .content-panel .sl-container > header:first-child h1 {
+  letter-spacing: -.025em;
+}
+
+:root:not([data-has-hero]) .content-panel .sl-container > header:first-child p {
+  max-width: 48rem;
+  color: var(--sl-color-gray-2);
+}
+
+:root:not([data-has-hero]) .sidebar-content a[aria-current='page'] {
+  border-radius: .55rem;
+  background: color-mix(in srgb, var(--sprey-purple) 13%, transparent);
+  color: var(--sl-color-accent-high);
+  font-weight: 650;
+}
+
+:root:not([data-has-hero]) .sidebar-content a:not([aria-current='page']):hover {
+  border-radius: .55rem;
+  background: color-mix(in srgb, var(--sprey-purple) 6%, transparent);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content pre {
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 22%, var(--sl-color-gray-5));
+  border-radius: .85rem;
+  box-shadow: 0 .5rem 1.6rem color-mix(in srgb, var(--sprey-purple) 5%, transparent);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: .85rem;
+}
+
+:root:not([data-has-hero]) .sl-markdown-content th {
+  background: color-mix(in srgb, var(--sprey-purple) 9%, var(--sl-color-bg-nav));
+  color: var(--sl-color-text-accent);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content th,
+:root:not([data-has-hero]) .sl-markdown-content td {
+  border: 0;
+  border-bottom: 1px solid var(--sl-color-gray-6);
+}
+
+:root:not([data-has-hero]) .sl-markdown-content tr:last-child td {
+  border-bottom: 0;
+}
+
+:root:not([data-has-hero]) .starlight-aside {
+  border-radius: .85rem;
+  border-inline-start-width: 3px;
+}
+
 /* Live service links: compact inverse pills instead of default underlined links. */
 .sl-markdown-content a[href^='https://pay.sprey.win'],
 .sl-markdown-content a[href^='https://docs.sprey.win'] {
