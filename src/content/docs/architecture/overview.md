@@ -49,7 +49,7 @@ Crypto payment infrastructure built around BTCPay Server and automation. BTCPay 
 
 ### Sprey WP Stack
 
-WordPress + WooCommerce + Caddy + MariaDB in Docker Compose with an optional local-only phpMyAdmin profile.
+WordPress + WooCommerce + BTCPay for WooCommerce V2 + Caddy + MariaDB in Docker Compose, with an optional local-only phpMyAdmin profile. WooCommerce and the BTCPay V2 plugin are bundled into the WordPress application image; BTCPay Server itself remains separate payment infrastructure.
 
 Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
 
@@ -98,7 +98,7 @@ Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 
 1. Establish the independent documentation portal.
 2. Finalize Sprey WP Stack v1 and production hardening.
-3. Publish reproducible BTCPay for WooCommerce V2 integration.
+3. Validate the bundled WooCommerce and BTCPay for WooCommerce V2 integration against Sprey Processing.
 4. Operate and validate the Cloudflare Worker request-time failover configuration.
 5. Document backup, update, monitoring, and recovery procedures.
 6. Expand Processing automation and the future customer application.
