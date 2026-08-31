@@ -142,13 +142,19 @@ body {
   border-radius: .85rem;
 }
 
-:root:not([data-has-hero]) .sl-markdown-content th {
+:root:not([data-has-hero]) .sl-markdown-content thead,
+:root:not([data-has-hero]) .sl-markdown-content thead tr {
   background: color-mix(in srgb, var(--sprey-purple) 9%, var(--sl-color-bg-nav));
+}
+
+:root:not([data-has-hero]) .sl-markdown-content th {
+  background: transparent;
   color: var(--sl-color-text-accent);
 }
 
 :root:not([data-has-hero]) .sl-markdown-content th,
 :root:not([data-has-hero]) .sl-markdown-content td {
+  padding-inline: 1rem;
   border: 0;
   border-bottom: 1px solid var(--sl-color-gray-6);
 }
