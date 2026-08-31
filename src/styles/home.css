@@ -62,11 +62,16 @@
   display: inline-flex;
   align-items: center;
   gap: .42rem;
+  min-height: 3rem;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 :root[data-has-hero] .docs-badges svg {
+  flex: 0 0 .95rem;
   width: .95rem;
   height: .95rem;
+  align-self: center;
   color: var(--sprey-purple-2);
 }
 
