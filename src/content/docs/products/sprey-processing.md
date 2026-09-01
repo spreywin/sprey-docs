@@ -72,7 +72,17 @@ The host UFW service is currently inactive. The reference deployment deliberatel
 
 Cloudflare Rocket Loader caused BTCPay login JavaScript to fail under BTCPay's Content Security Policy. The failure was reproduced on the reference deployment and disappeared when Rocket Loader was disabled.
 
-The intended configuration is to keep Rocket Loader disabled for the BTCPay hostnames (`pay.sprey.win` and `adminpay.sprey.win`). At the current verified checkpoint Rocket Loader is disabled globally for the zone; replacing that with hostname-specific Cloudflare Configuration Rules remains a follow-up hardening task and is not yet documented as verified state.
+The verified production configuration keeps Rocket Loader enabled globally for the `sprey.win` zone and disables it only for the BTCPay hostnames through the active Cloudflare Configuration Rule `BTCPay - Disable Rocket Loader`:
+
+```text
+Hostname equals pay.sprey.win
+OR
+Hostname equals adminpay.sprey.win
+
+-> Rocket Loader: Off
+```
+
+After the hostname-specific rule was deployed, global Rocket Loader was re-enabled. The login-code flow on `pay.sprey.win` and the Cloudflare Access plus BTCPay login flow on `adminpay.sprey.win` were both re-tested successfully. This hostname-specific exclusion is therefore the canonical verified configuration.
 
 ## Current product state
 
