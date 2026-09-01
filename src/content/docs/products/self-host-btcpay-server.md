@@ -19,15 +19,20 @@ The currently verified host baseline is:
 | --- | --- |
 | Provider | Hetzner Cloud |
 | Hostname | `sprey-btcpay` |
-| OS | Ubuntu 26.04 LTS |
+| OS | Ubuntu 26.04.1 LTS |
 | CPU | 4 vCPU |
 | Memory | 8 GB RAM |
 | Disk | 80 GB SSD |
 | Swap | 2 GB |
-| Public firewall | UFW |
-| Public ports | 22/tcp, 80/tcp, 443/tcp |
+| Public firewall | Hetzner Cloud Firewall |
+| Allowed inbound | 22/tcp and ICMP |
+| Host UFW | Inactive |
 | Automatic security updates | Enabled with `unattended-upgrades` |
+| Automatic reboot | Not enabled |
 | Public BTCPay endpoint | `pay.sprey.win` |
+| Administrative endpoint | `adminpay.sprey.win` behind Cloudflare Access |
+| Web ingress | Cloudflare Tunnel |
+| BTCPay Server | v2.4.3 |
 | Bitcoin network | Mainnet |
 | Bitcoin node mode | Pruned |
 | Lightning | None for the initial reference configuration |
@@ -47,16 +52,19 @@ clean VPS
 Ubuntu baseline
    |
    v
-SSH + firewall + updates + swap
-   |
-   v
-DNS
+SSH + updates + swap
    |
    v
 Docker + BTCPay Server
    |
    v
-HTTPS endpoint
+Cloudflare Tunnel + DNS
+   |
+   v
+public endpoint + protected admin endpoint
+   |
+   v
+external origin firewall
    |
    v
 Bitcoin node + NBXplorer
@@ -77,7 +85,7 @@ invoice
 real payment
    |
    v
-verified invoice state
+observed invoice state
    |
    v
 backup and recovery test
@@ -93,40 +101,120 @@ Before using these values as sizing guidance for another deployment, account for
 
 ## 2. Establish the Ubuntu baseline
 
-The reference server currently has:
+The verified reference host has:
 
 - hostname `sprey-btcpay`;
 - 2 GB swap;
-- UFW enabled;
-- inbound ports 22, 80, and 443 allowed;
-- `unattended-upgrades` enabled;
-- IPv6 available on the host.
+- IPv4 and IPv6 available;
+- `unattended-upgrades` enabled and running;
+- APT daily and daily-upgrade timers enabled;
+- automatic reboot not enabled.
+
+At the latest maintenance checkpoint all available APT updates were installed, no packages remained upgradable, and `/var/run/reboot-required` was absent.
 
 The exact clean-server command sequence is **pending reproduction and verification**. It will be added rather than reconstructed from memory.
 
-## 3. Configure DNS
+## 3. Deploy Docker and BTCPay Server
 
-The production endpoint is:
+BTCPay Server is running on the reference host using the official Docker-based deployment stack. The verified BTCPay version at this checkpoint is v2.4.3.
+
+The active stack includes BTCPay Server, NBXplorer, Bitcoin Core, PostgreSQL, nginx, Tor support containers, and the BTCPay-managed Cloudflare Tunnel container.
+
+The reference environment includes these verified settings:
+
+```text
+BTCPAY_HOST=pay.sprey.win
+BTCPAY_ADDITIONAL_HOSTS=adminpay.sprey.win
+BTCPAYGEN_CRYPTO1=btc
+BTCPAYGEN_LIGHTNING=none
+BTCPAYGEN_REVERSEPROXY=nginx
+BTCPAYGEN_ADDITIONAL_FRAGMENTS=opt-save-storage-xs;opt-add-cloudflared
+BTCPAYGEN_EXCLUDE_FRAGMENTS=nginx-https
+NBITCOIN_NETWORK=mainnet
+```
+
+Secrets such as the Cloudflare Tunnel token are intentionally omitted.
+
+The exact clean installation sequence is still **pending reproduction and verification**. Existing installations should use the official BTCPay update mechanism rather than manually replacing generated containers or individual images.
+
+## 4. Configure Cloudflare Tunnel and DNS
+
+The Sprey reference deployment uses a Cloudflare Tunnel named `sprey-btcpay`. The tunnel is established outbound from the server by the BTCPay-managed `cloudflared` container.
+
+Two published application routes are configured:
+
+```text
+pay.sprey.win      -> http://nginx
+adminpay.sprey.win -> http://nginx
+```
+
+The public hostname is therefore not routed to the server IP with a conventional public web-origin A record. Cloudflare provides the public HTTPS edge and sends traffic through the Tunnel to nginx.
+
+The generated BTCPay deployment excludes the `nginx-https` fragment. At the verified checkpoint the host publishes nginx on port 80 for the internal Tunnel target, while port 443 is not publicly bound by Docker.
+
+**Verification:**
+
+- the Cloudflare Tunnel reports healthy;
+- `pay.sprey.win` opens the BTCPay service over HTTPS;
+- `adminpay.sprey.win` reaches the same BTCPay deployment after Access authentication;
+- the BTCPay login methods continue to work after the edge configuration is applied.
+
+## 5. Protect the administrative hostname with Cloudflare Access
+
+`pay.sprey.win` remains public. Do not place the public Processing hostname behind an interactive Access login: invoices, merchant integrations, APIs, webhooks, and customer traffic need to reach BTCPay normally.
+
+`adminpay.sprey.win` is the protected administrative hostname. It is configured as an additional BTCPay host and as a Cloudflare Access self-hosted application.
+
+The verified Access policy uses:
+
+```text
+Action: Allow
+Include: Emails -> <specific administrative email>
+```
+
+Use the `Emails` selector for a specific address. Do not confuse it with `Emails ending in`, which matches an email domain. The actual administrative email is private and is not recorded in this public runbook.
+
+**Verification:** open `adminpay.sprey.win` in a private/incognito browser session. Cloudflare Access must appear before BTCPay, the authorized address must be able to complete authentication, and `pay.sprey.win` must remain publicly reachable without the Access challenge.
+
+## 6. Disable Rocket Loader for BTCPay hostnames
+
+On the reference deployment Cloudflare Rocket Loader broke BTCPay login JavaScript under BTCPay's Content Security Policy. Browser diagnostics showed Rocket Loader involvement, and disabling Rocket Loader restored the affected BTCPay login-code flow.
+
+Rocket Loader should therefore be disabled for:
 
 ```text
 pay.sprey.win
+adminpay.sprey.win
 ```
 
-DNS must resolve the public hostname to the intended BTCPay host before production TLS and public access are considered verified.
+At the current verified checkpoint Rocket Loader is disabled globally for the Cloudflare zone. A hostname-specific Cloudflare Configuration Rule is the intended narrower configuration, but that rule has **not yet been implemented and verified**. Until it is, do not document the narrower rule as current state.
 
-**Verified state:** `pay.sprey.win` is publicly reachable over HTTPS and serves the Sprey BTCPay instance.
+## 7. Close direct web access to the origin
 
-The exact DNS records and rollout sequence will be documented when they are verified against the current configuration.
+The reference host publishes Docker nginx on `0.0.0.0:80` and `[::]:80`. UFW is inactive, the host INPUT policy was observed as ACCEPT, and the `DOCKER-USER` chain contained no custom filtering rules.
 
-## 4. Deploy Docker and BTCPay Server
+Because Docker-published ports require special care with host firewall rules, the Sprey reference deployment uses an external Hetzner Cloud Firewall as the public perimeter.
 
-BTCPay Server is running on the reference host using its Docker-based deployment stack.
+Verified inbound rules are:
 
-The exact installation command, environment variables, generated compose configuration, and update procedure are **pending configuration audit**. They must be captured from the real host before this section becomes a copy-and-run installation guide.
+| Protocol | Port | Source |
+| --- | --- | --- |
+| TCP | 22 | Any IPv4 and Any IPv6 |
+| ICMP | — | Any IPv4 and Any IPv6 |
 
-This is deliberate: a plausible BTCPay command copied from memory is not a Sprey production runbook.
+No inbound rule allows ports 80 or 443. Hetzner therefore drops unsolicited inbound web traffic before it reaches the server, while the outbound Cloudflare Tunnel remains operational. No outbound firewall rules are configured at this checkpoint.
 
-## 5. Bitcoin and NBXplorer
+After applying the firewall, verify all of the following before closing the existing SSH session:
+
+1. The existing SSH session remains connected.
+2. A new SSH connection can be established.
+3. `pay.sprey.win` still works through the Tunnel.
+4. `adminpay.sprey.win` still presents Cloudflare Access and reaches BTCPay after authentication.
+5. Direct access to the server IP on port 80 no longer succeeds externally.
+
+This is the verified origin-protection boundary for the current reference deployment.
+
+## 8. Bitcoin and NBXplorer
 
 The reference deployment uses Bitcoin mainnet with a pruned Bitcoin node. BTCPay and NBXplorer are running as part of the payment infrastructure.
 
@@ -139,7 +227,7 @@ The node has been synchronizing before merchant wallet configuration. The final 
 - effective pruning configuration confirmed;
 - storage usage checked after synchronization.
 
-## 6. Lightning
+## 9. Lightning
 
 Lightning is intentionally not part of the initial reference payment path.
 
@@ -147,13 +235,13 @@ Sprey Processing is designed to support merchant-controlled external Lightning i
 
 The first production verification therefore uses Bitcoin on-chain.
 
-## 7. Configure SMTP
+## 10. Configure SMTP
 
 SMTP is configured on the current BTCPay/Processing deployment.
 
 The exact provider settings, sender identities, ports, TLS mode, and secrets must not be copied into public documentation. A future verified procedure should document the required fields, safe secret handling, and a test-email verification step without exposing credentials.
 
-## 8. Enable infrastructure backups
+## 11. Enable infrastructure backups
 
 Hetzner Backups are enabled for `sprey-btcpay`, providing a provider-level recovery layer for the VPS.
 
@@ -166,7 +254,7 @@ Provider backups are not a substitute for understanding application-level consis
 - document restore order;
 - perform and record a recovery test.
 
-## 9. Connect a merchant-controlled wallet
+## 12. Connect a merchant-controlled wallet
 
 This is the next product milestone for the reference store.
 
@@ -174,7 +262,7 @@ The merchant payment destination must remain under merchant control. Sprey does 
 
 The exact wallet setup procedure will be documented while it is performed on the reference store.
 
-## 10. Create and pay the first invoice
+## 13. Create and pay the first invoice
 
 After wallet configuration:
 
@@ -186,7 +274,7 @@ After wallet configuration:
 
 This test is the boundary between "the server is online" and "the Bitcoin payment path has been verified."
 
-## 11. Verify integrations
+## 14. Verify integrations
 
 Storefront and API integrations are verified only after the underlying payment path works independently.
 
@@ -194,20 +282,57 @@ For WooCommerce, products and orders stay in WooCommerce. The BTCPay integration
 
 Additional networks, tokens, plugins, or conversion integrations should be enabled and documented one at a time.
 
-## 12. Updates, diagnostics, and recovery
+## 15. Updates, diagnostics, and recovery
 
-A production runbook is incomplete without routine operations. This section will include verified procedures for:
+### Ubuntu updates
 
-- checking service/container health;
-- checking Bitcoin and NBXplorer synchronization;
-- checking disk, memory, and swap pressure;
-- inspecting relevant logs;
-- updating BTCPay safely;
-- validating the service after an update;
-- restoring from a known-good backup;
-- recovering from a failed update or host loss.
+The reference server uses `unattended-upgrades` for routine OS updates. The service is enabled and running, and the APT daily timers are active. Automatic reboot is not enabled; a required reboot should be treated as a controlled maintenance action.
 
-These procedures are **pending verification on the reference deployment**.
+Useful checks are:
+
+```bash
+apt list --upgradable
+
+test -f /var/run/reboot-required \
+  && echo "REBOOT REQUIRED" \
+  || echo "Reboot not required"
+
+systemctl status unattended-upgrades --no-pager
+systemctl list-timers apt-daily.timer apt-daily-upgrade.timer
+```
+
+### BTCPay updates
+
+Do not configure unattended replacement of the production BTCPay stack. The reference deployment is updated through the BTCPay Docker repository's update script:
+
+```bash
+cd ~/btcpayserver-docker
+./btcpay-update.sh
+```
+
+After any BTCPay update, verify container health, Bitcoin/NBXplorer state, the public endpoint, the Access-protected administrative endpoint, and the payment path before considering the maintenance complete.
+
+### Routine host checks
+
+A compact manual checkpoint is:
+
+```bash
+apt list --upgradable
+
+test -f /var/run/reboot-required \
+  && echo "REBOOT REQUIRED" \
+  || echo "Reboot not required"
+
+df -h /
+free -h
+docker ps
+
+cd ~/btcpayserver-docker
+git status -sb
+git log -1 --oneline
+```
+
+Application-level BTCPay/PostgreSQL backup, restore testing, and automated monitoring/alerting remain separate pending operational tasks.
 
 ## Non-custodial boundary
 
