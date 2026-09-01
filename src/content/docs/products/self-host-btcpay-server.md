@@ -21,9 +21,9 @@ The currently verified host baseline is:
 | Hostname | `sprey-btcpay` |
 | OS | Ubuntu 26.04.1 LTS |
 | CPU | 4 vCPU |
-| Memory | 8 GB RAM |
-| Disk | 80 GB SSD |
-| Swap | 2 GB |
+| Memory | 8 GB RAM; approximately 5.9 GiB available at the verified checkpoint |
+| Disk | 80 GB SSD; root filesystem approximately 75 GiB usable and 57% used at the verified checkpoint |
+| Swap | 4 GiB `/swapfile`; `vm.swappiness=10` |
 | Public firewall | Hetzner Cloud Firewall |
 | Allowed inbound | 22/tcp and ICMP |
 | Host UFW | Inactive |
@@ -34,7 +34,9 @@ The currently verified host baseline is:
 | Web ingress | Cloudflare Tunnel |
 | BTCPay Server | v2.4.3 |
 | Bitcoin network | Mainnet |
-| Bitcoin node mode | Pruned |
+| Bitcoin node mode | Pruned and synchronized |
+| Bitcoin prune target | 25,000 MiB |
+| Bitcoin Docker volume | Approximately 37.73 GB at the verified checkpoint |
 | Lightning | None for the initial reference configuration |
 | SMTP | Configured |
 | Provider backups | Hetzner Backups enabled |
@@ -104,15 +106,39 @@ Before using these values as sizing guidance for another deployment, account for
 The verified reference host has:
 
 - hostname `sprey-btcpay`;
-- 2 GB swap;
+- 4 GiB swap at `/swapfile`;
+- `vm.swappiness=10`, persisted in `/etc/sysctl.d/99-sprey-memory.conf`;
 - IPv4 and IPv6 available;
 - `unattended-upgrades` enabled and running;
 - APT daily and daily-upgrade timers enabled;
 - automatic reboot not enabled.
 
+At the latest memory checkpoint, `free -h` reported approximately 7.6 GiB total RAM, 1.7 GiB used, 5.9 GiB available, and about 32 MiB of the 4 GiB swap in use. Small non-zero swap usage is not treated as a fault while ample RAM remains available.
+
+The swap configuration used on the reference host is:
+
+```text
+/swapfile none swap sw 0 0
+```
+
+The memory policy is persisted separately:
+
+```text
+# /etc/sysctl.d/99-sprey-memory.conf
+vm.swappiness=10
+```
+
+Useful verification commands are:
+
+```bash
+sysctl vm.swappiness
+swapon --show
+free -h
+```
+
 At the latest maintenance checkpoint all available APT updates were installed, no packages remained upgradable, and `/var/run/reboot-required` was absent.
 
-The exact clean-server command sequence is **pending reproduction and verification**. It will be added rather than reconstructed from memory.
+The exact full clean-server command sequence is **pending reproduction and verification**. It will be added rather than reconstructed from memory.
 
 ## 3. Deploy Docker and BTCPay Server
 
@@ -231,16 +257,39 @@ This is the verified origin-protection boundary for the current reference deploy
 
 ## 8. Bitcoin and NBXplorer
 
-The reference deployment uses Bitcoin mainnet with a pruned Bitcoin node. BTCPay and NBXplorer are running as part of the payment infrastructure.
+The reference deployment uses Bitcoin mainnet with a pruned Bitcoin node. Bitcoin Core is synchronized and continues to accept fresh mainnet blocks. BTCPay and NBXplorer are running as part of the payment infrastructure.
 
-The node has been synchronizing before merchant wallet configuration. The final synchronization state and the exact pruning configuration must be verified on the running host before they are recorded as canonical values.
+The effective Bitcoin configuration was verified from the running container:
+
+```text
+BITCOIN_NETWORK=mainnet
+prune=25000
+```
+
+Bitcoin Core logs confirmed:
+
+```text
+Prune configured to target 25000 MiB on disk for block and undo files.
+Block files have previously been pruned
+```
+
+Synchronization was verified from live `UpdateTip` log entries reaching fresh blocks with `progress=1.000000`. The Docker volume `generated_bitcoin_datadir` occupied approximately 37.73 GB at the same checkpoint. The prune target applies to block and undo files; the complete Bitcoin data volume also contains chainstate and other node data, so total volume usage is expected to be higher than 25,000 MiB.
+
+The official BTCPay Docker documentation identifies `opt-save-storage-xs` as the 25 GB Bitcoin pruning fragment, matching the active reference configuration. citeturn0search0
+
+**Verified:**
+
+- Bitcoin mainnet active;
+- Bitcoin synchronization complete based on fresh `UpdateTip` entries and `progress=1.000000`;
+- effective pruning configuration `prune=25000`;
+- previous pruning confirmed by Bitcoin Core logs;
+- Bitcoin Docker volume approximately 37.73 GB at the checkpoint.
 
 **Pending verification:**
 
-- Bitcoin synchronization complete;
-- NBXplorer synchronized and healthy;
-- effective pruning configuration confirmed;
-- storage usage checked after synchronization.
+- NBXplorer synchronization and health checkpoint before the first merchant payment.
+
+For routine Bitcoin diagnostics, the BTCPay Docker installation provides its own `bitcoin-cli.sh` helper for authenticated node RPC access; prefer that helper over manually extracting RPC credentials. citeturn0search0
 
 ## 9. Lightning
 
@@ -340,6 +389,8 @@ test -f /var/run/reboot-required \
 
 df -h /
 free -h
+swapon --show
+sysctl vm.swappiness
 docker ps
 
 cd ~/btcpayserver-docker
