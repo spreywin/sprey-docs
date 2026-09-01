@@ -31,6 +31,8 @@ The current Sprey reference deployment uses:
 | Swap | 4 GiB `/swapfile`; `vm.swappiness=10` |
 | Network perimeter | Hetzner Cloud Firewall; inbound 22/tcp and ICMP only |
 | Web ingress | Cloudflare Tunnel to the BTCPay nginx service |
+| Application health | `https://pay.sprey.win/api/v1/health`; verified HTTP 200 with `{"synchronized":true}` |
+| Monitoring approach | Native provider/component signals first; no additional monitoring stack on the BTCPay host at this checkpoint |
 | Automatic OS updates | `unattended-upgrades` enabled; automatic reboot not enabled |
 | BTCPay Server | v2.4.3, live |
 | Bitcoin | Mainnet, synchronized pruned node; prune target 25,000 MiB |
@@ -48,6 +50,33 @@ At the latest verified checkpoint the host had approximately 7.6 GiB of usable R
 The root filesystem was about 57% used. Docker data was dominated by the Bitcoin volume at approximately 37.73 GB; this is expected application data rather than unidentified Docker growth. Bitcoin Core is configured with `prune=25000`, and its logs confirm a 25,000 MiB target for block and undo files and that block files have previously been pruned.
 
 Bitcoin synchronization was verified from live Bitcoin Core logs: fresh mainnet blocks were accepted with `UpdateTip` and `progress=1.000000`. This establishes the synchronized Bitcoin node state before merchant wallet configuration.
+
+## Verified monitoring baseline
+
+The reference deployment deliberately avoids adding a separate monitoring stack to `sprey-btcpay` unless a concrete operational gap requires one. Monitoring starts with signals already provided by the infrastructure and application components:
+
+```text
+Hetzner Cloud
+  -> host/infrastructure metrics and server state
+
+Cloudflare
+  -> edge, Access, and Tunnel state
+
+BTCPay Server
+  -> /api/v1/health
+```
+
+The public application health endpoint was verified through the real production ingress path:
+
+```text
+GET https://pay.sprey.win/api/v1/health
+HTTP/2 200
+{"synchronized":true}
+```
+
+This request traverses Cloudflare and the Cloudflare Tunnel before reaching BTCPay, so it verifies the externally reachable Processing application path rather than only a localhost service.
+
+The canonical monitoring principle is to use native provider and component health signals first. A third-party agent, dashboard, or monitoring stack should be introduced only when a specific missing check justifies the added operational complexity. Filesystem fullness, swap behavior, Docker container state, updates, and other host details remain part of the compact manual maintenance checkpoint until an automated gap is deliberately selected and verified.
 
 ## Verified public and administrative ingress
 
@@ -95,13 +124,13 @@ After the hostname-specific rule was deployed, global Rocket Loader was re-enabl
 
 ## Current product state
 
-The BTCPay Server instance is online and the **Sprey Processing** store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin synchronization, pruning configuration, and host resource baseline have been verified. Bitcoin wallet setup and the first end-to-end production payment are the next product verification milestones.
+The BTCPay Server instance is online and the **Sprey Processing** store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin synchronization, pruning configuration, host resource baseline, and public BTCPay health endpoint have been verified. Bitcoin wallet setup and the first end-to-end production payment are the next product verification milestones.
 
 A payment method is not considered operational merely because its configuration page is available. It becomes part of the verified Sprey Processing reference only after the complete flow has been tested: merchant destination configured, invoice created, customer payment sent independently, network state observed by BTCPay, and invoice state reported correctly.
 
 ## Product verification path
 
-1. Verify BTCPay/NBXplorer health against the synchronized Bitcoin node.
+1. Verify NBXplorer health against the synchronized Bitcoin node.
 2. Connect a merchant-controlled Bitcoin wallet to the reference store.
 3. Create an invoice.
 4. Send a real on-chain payment to the merchant-controlled destination.
