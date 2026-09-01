@@ -27,18 +27,27 @@ The current Sprey reference deployment uses:
 | Hosting | Hetzner Cloud |
 | Operating system | Ubuntu 26.04.1 LTS |
 | Compute | 4 vCPU / 8 GB RAM |
-| Disk | 80 GB SSD |
-| Swap | 2 GB |
+| Disk | 80 GB SSD; root filesystem approximately 75 GiB usable, 57% used at the verified checkpoint |
+| Swap | 4 GiB `/swapfile`; `vm.swappiness=10` |
 | Network perimeter | Hetzner Cloud Firewall; inbound 22/tcp and ICMP only |
 | Web ingress | Cloudflare Tunnel to the BTCPay nginx service |
 | Automatic OS updates | `unattended-upgrades` enabled; automatic reboot not enabled |
 | BTCPay Server | v2.4.3, live |
-| Bitcoin | Mainnet, pruned node |
+| Bitcoin | Mainnet, synchronized pruned node; prune target 25,000 MiB |
+| Bitcoin storage | Docker Bitcoin volume approximately 37.73 GB at the verified checkpoint |
 | Lightning | Not configured in the reference store |
 | SMTP | Configured for server and Processing email delivery |
 | VPS backups | Hetzner Backups enabled |
 
 The reference deployment is intentionally documented from observed and verified state. Configuration details that have not yet been reproduced or verified are not presented here as canonical instructions.
+
+## Verified resource baseline
+
+At the latest verified checkpoint the host had approximately 7.6 GiB of usable RAM, about 1.7 GiB in use, and about 5.9 GiB available. A 4 GiB swap file is enabled as an emergency buffer. `vm.swappiness` is explicitly set to `10` in `/etc/sysctl.d/99-sprey-memory.conf`; swap usage was about 32 MiB immediately after applying the setting.
+
+The root filesystem was about 57% used. Docker data was dominated by the Bitcoin volume at approximately 37.73 GB; this is expected application data rather than unidentified Docker growth. Bitcoin Core is configured with `prune=25000`, and its logs confirm a 25,000 MiB target for block and undo files and that block files have previously been pruned.
+
+Bitcoin synchronization was verified from live Bitcoin Core logs: fresh mainnet blocks were accepted with `UpdateTip` and `progress=1.000000`. This establishes the synchronized Bitcoin node state before merchant wallet configuration.
 
 ## Verified public and administrative ingress
 
@@ -86,13 +95,13 @@ After the hostname-specific rule was deployed, global Rocket Loader was re-enabl
 
 ## Current product state
 
-The BTCPay Server instance is online and the **Sprey Processing** store exists. The public and administrative ingress paths and the origin network perimeter have been verified. Bitcoin wallet setup and the first end-to-end production payment are the next product verification milestones.
+The BTCPay Server instance is online and the **Sprey Processing** store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin synchronization, pruning configuration, and host resource baseline have been verified. Bitcoin wallet setup and the first end-to-end production payment are the next product verification milestones.
 
 A payment method is not considered operational merely because its configuration page is available. It becomes part of the verified Sprey Processing reference only after the complete flow has been tested: merchant destination configured, invoice created, customer payment sent independently, network state observed by BTCPay, and invoice state reported correctly.
 
 ## Product verification path
 
-1. Complete Bitcoin node synchronization and verify BTCPay/NBXplorer health.
+1. Verify BTCPay/NBXplorer health against the synchronized Bitcoin node.
 2. Connect a merchant-controlled Bitcoin wallet to the reference store.
 3. Create an invoice.
 4. Send a real on-chain payment to the merchant-controlled destination.
