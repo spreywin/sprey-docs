@@ -35,6 +35,12 @@ WooCommerce stores the catalog, cart, checkout, and order data. BTCPay verifies 
 
 **Current / active service:** [pay.sprey.win](https://pay.sprey.win/)
 
+### Sprey Wallet
+
+**Planned.** A non-custodial wallet companion for Sprey Processing. The merchant remains in control of wallet keys and funds, while Sprey Processing remains responsible only for observing and reporting payment state. Compatible external wallets remain supported; Sprey Wallet is not intended to become a requirement for Processing.
+
+See [Sprey Wallet](/products/sprey-wallet/) for the established product direction. Detailed functionality will be defined in its dedicated product track.
+
 ### Sprey RPC
 
 **Planned.** RPC/eRPC gateway for TRON and EVM networks with provider aggregation, health checks, API keys, and plan-based billing.
@@ -115,6 +121,7 @@ Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 4. Operate and validate the Cloudflare Worker request-time failover configuration.
 5. Document backup, update, monitoring, and recovery procedures.
 6. Expand Processing automation and the future customer application.
-7. Add RPC and VPN stacks as those products move from Planned to implementation.
+7. Define the Sprey Wallet architecture and MVP as a non-custodial companion to Processing.
+8. Add RPC and VPN stacks as those products move from Planned to implementation.
 
 This document should be updated when an architectural decision changes, not merely when marketing copy changes.
