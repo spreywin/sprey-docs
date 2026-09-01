@@ -33,6 +33,7 @@ The current Sprey reference deployment uses:
 | Web ingress | Cloudflare Tunnel to the BTCPay nginx service |
 | Application health | `https://pay.sprey.win/api/v1/health`; verified HTTP 200 with `{"synchronized":true}` |
 | Monitoring approach | Native provider/component signals first; no additional monitoring stack on the BTCPay host at this checkpoint |
+| Planned external watchdog | Run outside `sprey-btcpay`, preferably from the future `sprey.win` application/server layer |
 | Automatic OS updates | `unattended-upgrades` enabled; automatic reboot not enabled |
 | BTCPay Server | v2.4.3, live |
 | Bitcoin | Mainnet, synchronized pruned node; prune target 25,000 MiB |
@@ -77,6 +78,30 @@ HTTP/2 200
 This request traverses Cloudflare and the Cloudflare Tunnel before reaching BTCPay, so it verifies the externally reachable Processing application path rather than only a localhost service.
 
 The canonical monitoring principle is to use native provider and component health signals first. A third-party agent, dashboard, or monitoring stack should be introduced only when a specific missing check justifies the added operational complexity. Filesystem fullness, swap behavior, Docker container state, updates, and other host details remain part of the compact manual maintenance checkpoint until an automated gap is deliberately selected and verified.
+
+### Planned external Processing watchdog
+
+The missing automated layer is intentionally small: an external watchdog should periodically request the public BTCPay health endpoint and alert only when the expected healthy state is not observed consistently.
+
+The watchdog must run **outside `sprey-btcpay`**. A monitor running on the payment host cannot report a complete host, network, Docker, or Tunnel outage after the host itself becomes unavailable. The preferred future location is the separate server/application layer behind `sprey.win`, once that layer is operational.
+
+The intended architecture is:
+
+```text
+sprey.win server/application layer
+   |
+   | periodic external request
+   v
+https://pay.sprey.win/api/v1/health
+   |
+   +-- HTTP 200 + {"synchronized":true} -> healthy, no alert
+   |
+   +-- repeated failure/unhealthy state -> operator alert
+```
+
+This watchdog is not yet deployed, so its polling interval, retry threshold, notification channel, and `status.sprey.win` integration are deliberately **pending implementation and verification**. The design goal is not to introduce another general-purpose monitoring platform: it is to add the smallest external check needed to detect loss of the Processing application path.
+
+A future `status.sprey.win` service may consume this external health state, but public status reporting must remain separate from administrative access and must not expose merchant data, credentials, internal topology, or sensitive diagnostics.
 
 ## Verified public and administrative ingress
 
