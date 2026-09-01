@@ -180,14 +180,29 @@ Use the `Emails` selector for a specific address. Do not confuse it with `Emails
 
 On the reference deployment Cloudflare Rocket Loader broke BTCPay login JavaScript under BTCPay's Content Security Policy. Browser diagnostics showed Rocket Loader involvement, and disabling Rocket Loader restored the affected BTCPay login-code flow.
 
-Rocket Loader should therefore be disabled for:
+The verified solution is a Cloudflare Configuration Rule named:
 
 ```text
-pay.sprey.win
-adminpay.sprey.win
+BTCPay - Disable Rocket Loader
 ```
 
-At the current verified checkpoint Rocket Loader is disabled globally for the Cloudflare zone. A hostname-specific Cloudflare Configuration Rule is the intended narrower configuration, but that rule has **not yet been implemented and verified**. Until it is, do not document the narrower rule as current state.
+It matches either BTCPay hostname:
+
+```text
+(http.host eq "pay.sprey.win" or http.host eq "adminpay.sprey.win")
+```
+
+and applies only:
+
+```text
+Rocket Loader: Off
+```
+
+Global Rocket Loader remains enabled for the rest of the `sprey.win` zone.
+
+**Verification:** after deploying the Configuration Rule and re-enabling global Rocket Loader, the BTCPay login-code flow on `pay.sprey.win` and the Cloudflare Access plus BTCPay login flow on `adminpay.sprey.win` were both tested successfully.
+
+Do not disable unrelated Cloudflare features in this rule. Its purpose is deliberately narrow: one compatibility exception for the two BTCPay hostnames.
 
 ## 7. Close direct web access to the origin
 
