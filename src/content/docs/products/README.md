@@ -1,4 +1,7 @@
-# Sprey Products
+---
+title: Sprey Products
+description: Overview of Sprey products, intended payment capabilities, and verification checkpoints.
+---
 
 The Products section documents live Sprey products, intended payment capabilities, and verification checkpoints.
 
