@@ -10,9 +10,10 @@ This page is the canonical map of the Sprey platform. It separates customer-faci
 - Services are separated by responsibility rather than placed on one monolithic server.
 - Documentation is static and independent from production VPS infrastructure.
 - Public websites, payment infrastructure, RPC infrastructure, VPN traffic nodes, monitoring, and documentation are separate concerns.
+- Sprey's payment category is **non-custodial crypto acquiring** for businesses accepting crypto payments online and in person.
 - Sprey Processing is non-custodial: merchant funds go to merchant-controlled wallets or payment destinations; Sprey does not initiate, route, receive, hold, or forward them.
 - The payment itself happens independently of Sprey. BTCPay observes the configured payment network, determines invoice state from network data, and reports that state to connected integrations.
-- WooCommerce owns products and orders; BTCPay remains separate payment infrastructure.
+- WooCommerce is one storefront integration, not the boundary of the acquiring product; online and in-person payment experiences may use different merchant-facing integrations while preserving the same custody boundary.
 - Lightning integrations use customer-controlled external nodes; operating a customer-specific node may be offered as a separate deployment service.
 - Planned components are documented as **Planned** until they exist in production.
 
@@ -22,12 +23,12 @@ The rules used to evolve this architecture are documented separately in [Enginee
 
 ### Sprey Processing
 
-Non-custodial payment infrastructure built around BTCPay Server. BTCPay remains separate from the WordPress storefront stack.
+Sprey Processing is the live reference implementation of Sprey's **non-custodial crypto acquiring** model, built around BTCPay Server. It is intended to support businesses accepting crypto payments online and in person while keeping merchant funds under merchant control. BTCPay remains separate from the WordPress storefront stack.
 
 The payment path is deliberately non-custodial:
 
 ```text
-WooCommerce order
+merchant sale / order
       |
       v
 BTCPay invoice
@@ -36,10 +37,10 @@ BTCPay invoice
       v
 merchant-controlled wallet / payment destination
 
-payment network -> BTCPay observes network state -> invoice state -> WooCommerce order status
+payment network -> BTCPay observes network state -> invoice state -> merchant integration
 ```
 
-WooCommerce stores the catalog, cart, checkout, and order data. The customer payment happens independently of Sprey to the merchant-controlled destination. BTCPay observes the relevant payment network, determines invoice state from network data, and reports that state back to the storefront. Sprey Processing is not the destination or intermediary for merchant funds.
+For WooCommerce, the storefront stores the catalog, cart, checkout, and order data. The customer payment happens independently of Sprey to the merchant-controlled destination. BTCPay observes the relevant payment network, determines invoice state from network data, and reports that state back to the integration. Sprey Processing is not the destination or intermediary for merchant funds.
 
 **Current / active service:** [pay.sprey.win](https://pay.sprey.win/)
 
@@ -132,7 +133,7 @@ Canonical public host: [docs.sprey.win](https://docs.sprey.win/)
 3. Validate the bundled WooCommerce and BTCPay for WooCommerce V2 integration against Sprey Processing, including direct merchant settlement and order-status synchronization.
 4. Operate and validate the Cloudflare Worker request-time failover configuration.
 5. Document backup, update, monitoring, and recovery procedures.
-6. Expand Processing operations and the future customer application without changing the non-custodial payment boundary.
+6. Expand Sprey's non-custodial crypto acquiring capabilities and future customer application without changing the custody boundary, including merchant experiences beyond online storefronts as they are implemented and verified.
 7. Define the Sprey Wallet architecture and MVP as a non-custodial companion to Processing.
 8. Add RPC and VPN stacks as those products move from Planned to implementation.
 
