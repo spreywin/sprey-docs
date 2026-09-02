@@ -1,11 +1,13 @@
 ---
 title: Sprey Processing
-description: Sprey's live non-custodial payment infrastructure and the reference deployment behind pay.sprey.win.
+description: Sprey's live non-custodial crypto acquiring infrastructure and the reference deployment behind pay.sprey.win.
 ---
 
-**Sprey Processing** is the first live Sprey product. The current reference deployment is available at [pay.sprey.win](https://pay.sprey.win/).
+**Sprey Processing** is the first live Sprey product and the reference implementation of Sprey's **non-custodial crypto acquiring** model. It is intended for businesses accepting crypto payments both **online and in person**. The current reference deployment is available at [pay.sprey.win](https://pay.sprey.win/).
 
-The product is built around BTCPay Server and is designed so that merchant funds go directly to merchant-controlled wallets or payment destinations. Sprey does not initiate, route, receive, hold, or forward merchant funds.
+In Sprey terminology, **non-custodial crypto acquiring** means infrastructure that lets a merchant accept crypto payments directly to a merchant-controlled wallet or payment destination while Sprey provides invoice, payment-state observation, and integration infrastructure. Sprey does not initiate, route, receive, hold, or forward merchant funds.
+
+BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one supported storefront integration, not the definition or boundary of the product; the acquiring model is intentionally broader than online commerce alone.
 
 ## Payment model
 
