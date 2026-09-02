@@ -6,6 +6,8 @@
 
 **Sprey Docs** is the canonical technical documentation portal for Sprey products, deployable stacks, integrations, architecture, and operations.
 
+Sprey's core payment product is positioned as **non-custodial crypto acquiring infrastructure for businesses accepting payments online and in person**. Merchant payments go directly to merchant-controlled wallets or payment destinations; Sprey does not initiate, route, receive, hold, or forward merchant funds.
+
 The documentation is designed to be fully static and hosted on GitHub Pages. No dedicated documentation server, database, or control panel is required.
 
 ## Scope
