@@ -18,12 +18,18 @@ hero:
 import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
 
 <div class="docs-badges" aria-label="Documentation qualities">
-  <span><Icon name="seti:clock" />Always up to date</span>
-  <span><Icon name="open-book" />Open source</span>
-  <span><Icon name="github" />GitHub-first</span>
-  <span><Icon name="laptop" />Self-hosted</span>
-  <span><svg class="docs-badge-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg>Non-custodial</span>
-  <span><Icon name="setting" />Automation-first</span>
+  <span><Icon name="seti:clock" /><span class="docs-badge-label">Always up to date</span></span>
+  <span><Icon name="open-book" /><span class="docs-badge-label">Open source</span></span>
+  <span><Icon name="github" /><span class="docs-badge-label">GitHub-first</span></span>
+  <span><Icon name="laptop" /><span class="docs-badge-label">Self-hosted</span></span>
+  <span><svg class="docs-badge-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg><span class="docs-badge-label">Non-custodial</span></span>
+  <span><Icon name="setting" /><span class="docs-badge-label">Automation-first</span></span>
+</div>
+
+<div class="docs-home-payment-model" role="note" aria-label="Non-custodial crypto acquiring model">
+  <strong>Non-custodial crypto acquiring</strong>
+  <span>Sprey is building non-custodial crypto acquiring infrastructure for businesses accepting payments online and in person. Payments go directly to merchant-controlled wallets or payment destinations. Sprey provides invoice, payment-state observation, and integration infrastructure without initiating, routing, receiving, holding, or forwarding merchant funds.</span>
+  <a href="/products/sprey-processing/">See Sprey Processing →</a>
 </div>
 
 ## One portal for the whole Sprey platform
@@ -41,7 +47,7 @@ import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
   <Card title={'<a class="docs-card-link" href="/operations/wp-stack-failover/">Operations</a>'} icon="setting">
     Security, backups, updates, monitoring, recovery, and production procedures.
   </Card>
-  <Card title={'<a class="docs-card-link" href="/integrations/cloudflare-worker-failover/">Integrations</a>'} icon="puzzle">
+  <Card title={'<a class="docs-card-link" href="/integrations/btcpay-woocommerce/">Integrations</a>'} icon="puzzle">
     BTCPay + WooCommerce, Cloudflare, webhooks, and cross-service integration guides.
   </Card>
   <Card title={'<a class="docs-card-link" href="/architecture/overview/#v1-roadmap">Roadmap</a>'} icon="seti:git">
