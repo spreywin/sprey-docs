@@ -11,17 +11,20 @@ BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one 
 
 ## Product scope
 
-Sprey Processing is designed around the standard BTCPay merchant model and is intended to support:
+Sprey Processing is designed around the standard BTCPay merchant model. The intended product boundary and current verification status are:
 
-- **Online commerce** — WooCommerce and other supported e-commerce integrations.
-- **In-person payments** — BTCPay Point of Sale flows on connected merchant devices.
-- **QR payments** — customer-facing QR payment flows for online or in-person acceptance.
-- **Payment Requests** — shareable payment requests independent of a shopping cart.
-- **Payment Buttons and donations** — direct payment entry points without a conventional online store.
-- **Crowdfunding** — BTCPay crowdfunding applications and campaigns.
-- **API and custom integrations** — merchant systems connected directly to BTCPay.
+| Capability | Product role | Current Sprey status |
+| --- | --- | --- |
+| Online stores | WooCommerce and other supported e-commerce integrations | Product scope; WooCommerce is the current prepared stack path |
+| Point of Sale | In-person acceptance from connected merchant devices | Product scope; verification pending |
+| QR payments | Customer-facing QR payment flows for online or in-person use | Product scope; verification pending |
+| Payment Requests | Shareable merchant payment requests independent of a cart | Product scope; verification pending |
+| Payment Buttons | Direct payment entry points embedded in merchant content | Product scope; verification pending |
+| Donations | Direct donation flows using BTCPay applications and buttons | Product scope; verification pending |
+| Crowdfunding | BTCPay crowdfunding applications and campaigns | Product scope; verification pending |
+| API/custom integrations | Direct merchant-system integration with BTCPay | Product scope; verification pending |
 
-These capabilities define the intended **product boundary and upstream BTCPay model**. A capability becomes a **verified Sprey Processing capability** only after it has been configured and tested on the reference deployment.
+A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
 
 ```text
                          SPREY PROCESSING
@@ -163,6 +166,8 @@ The canonical initial product verification path follows the merchant journey:
 NBXplorer remains an internal BTCPay component and can be inspected when troubleshooting requires it, but a standalone NBXplorer health check is no longer the first merchant product milestone.
 
 Lightning remains optional and separate from the initial on-chain Bitcoin verification path.
+
+The next product checkpoint is **Store configuration**, followed by the merchant-controlled wallet connection.
 
 ## Backup checkpoint
 
