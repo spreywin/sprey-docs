@@ -5,6 +5,32 @@ description: High-level Sprey architecture and product boundaries.
 
 Sprey is organized around a small number of independent product and infrastructure layers. The central payment product is **Sprey Processing**, available through `pay.sprey.win`.
 
+## Products
+
+### Sprey Processing
+
+**Live / active.** Sprey Processing is Sprey's non-custodial crypto payment infrastructure and the reference implementation of its **non-custodial crypto acquiring** model. The product is broader than any single storefront integration and is intended to serve online commerce, in-person Point of Sale and QR flows, Payment Requests, Payment Buttons and donations, crowdfunding, and API/custom integrations through `pay.sprey.win`.
+
+Merchant payments go directly to merchant-controlled wallets or payment destinations. Sprey provides invoice, payment-state observation, and integration infrastructure; it does not initiate, route, receive, hold, or forward merchant funds.
+
+### Sprey WP Stack
+
+**Live stack / online-commerce implementation.** WordPress + WooCommerce with the BTCPay integration required to connect a storefront to Sprey Processing. It is one ready-made implementation of the broader Processing product, not the boundary of `pay.sprey.win`.
+
+### Sprey Wallet
+
+**Planned.** A non-custodial wallet companion for Sprey Processing. Compatible external merchant-controlled wallets remain supported; Sprey Wallet is not intended to become a requirement for Processing.
+
+See [Sprey Wallet](/products/sprey-wallet/) for the established product direction.
+
+### Sprey RPC
+
+**Planned.** Independent RPC/eRPC infrastructure for TRON and EVM networks with provider aggregation, health checks, API access, and plan-based billing.
+
+### Sprey VPN
+
+**Planned.** Privacy-oriented VPN service with isolated traffic nodes and automated crypto billing. Traffic nodes remain separate from payment and web infrastructure.
+
 ## Sprey Processing boundary
 
 Sprey Processing is the reference implementation of Sprey's **non-custodial crypto acquiring** model: merchants accept crypto payments directly to merchant-controlled wallets or payment destinations while Sprey provides invoice, payment-state observation, and integration infrastructure.
@@ -139,3 +165,16 @@ A new component should be added to another product's host only when there is a c
 Architecture changes should follow the smallest-correct-change principle. Prefer native product capabilities and provider-level controls before adding custom middleware, panels, monitoring stacks, or tightly coupled services.
 
 See [Engineering Principles](/architecture/engineering-principles/) for the canonical Sprey engineering rules.
+
+## v1 roadmap
+
+1. Complete the merchant verification path on the live Sprey Processing reference deployment: Store -> merchant-controlled wallet -> Invoice -> real Bitcoin payment -> verified invoice state.
+2. Document each Processing capability only after it is configured and verified on `pay.sprey.win`, expanding from the initial on-chain Bitcoin flow to the standard BTCPay merchant use cases in a controlled sequence.
+3. Validate Sprey WP Stack against Sprey Processing as the ready-made WordPress/WooCommerce online-commerce implementation, including order-status synchronization and the non-custodial payment boundary.
+4. Finalize reproducible backup, restore, update, monitoring, and recovery procedures for the Processing reference deployment.
+5. Finalize the `sprey.win` public product/application layer and its request-time Cloudflare failover path without coupling it to payment infrastructure.
+6. Define the Sprey Wallet architecture and MVP as an optional non-custodial companion to Processing.
+7. Add `status.sprey.win` and the external Processing watchdog when the monitoring layer is implemented and verified.
+8. Add Sprey RPC and VPN stacks as those products move from **Planned** to implementation.
+
+This document should be updated when an architectural decision changes, not merely when marketing copy changes.
