@@ -1,61 +1,39 @@
-# Sprey Docs
+# Sprey Documentation
 
-[![Documentation](https://img.shields.io/badge/docs-docs.sprey.win-0b1120)](https://docs.sprey.win)
-[![GitHub Pages](https://img.shields.io/badge/hosting-GitHub%20Pages-222)](https://pages.github.com/)
-[![Astro Starlight](https://img.shields.io/badge/framework-Astro%20Starlight-BC52EE)](https://starlight.astro.build/)
+Canonical documentation for the Sprey project.
 
-**Sprey Docs** is the canonical technical documentation portal for Sprey products, deployable stacks, integrations, architecture, and operations.
+The documentation portal records architecture, product boundaries, deployment decisions, verified configuration, operational procedures, and recovery implications from the systems that are actually built and tested.
 
-Sprey's core payment product is positioned as **non-custodial crypto acquiring infrastructure for businesses accepting payments online and in person**. Merchant payments go directly to merchant-controlled wallets or payment destinations; Sprey does not initiate, route, receive, hold, or forward merchant funds.
+## Sprey Processing
 
-The documentation is designed to be fully static and hosted on GitHub Pages. No dedicated documentation server, database, or control panel is required.
+**Sprey Processing** is Sprey's live non-custodial crypto payment infrastructure and the reference implementation of its **non-custodial crypto acquiring** model.
 
-## Scope
+It is intended for businesses accepting crypto payments both **online and in person** through:
 
-The portal is structured around five long-lived areas:
+- online-store integrations such as WooCommerce;
+- Point of Sale and merchant-device payment flows;
+- QR payments;
+- Payment Requests;
+- Payment Buttons and donations;
+- crowdfunding;
+- API and custom integrations.
 
-- **Architecture** — platform map, domains, service boundaries, and roadmap.
-- **Products** — Sprey Processing, Sprey RPC, Sprey VPN, and future services.
-- **Stacks** — reproducible deployment stacks such as Sprey WP Stack and future BTCPay, RPC, and VPN stacks.
-- **Integrations** — BTCPay + WooCommerce, Cloudflare, webhooks, and related integrations.
-- **Operations** — deployment, security, backups, updates, monitoring, and recovery.
+Merchant payments go to merchant-controlled wallets or payment destinations. Sprey does not initiate, route, receive, hold, or forward merchant funds.
 
-## Platform principles
+`Sprey WP Stack` is a ready-made WordPress/WooCommerce online-commerce implementation connected to Sprey Processing. It is one use of `pay.sprey.win`, not the boundary of the Processing product.
 
-- Documentation source and publishing stay on GitHub.
-- GitHub Actions builds the static site and GitHub Pages serves it.
-- `docs.sprey.win` is the canonical public hostname.
-- English is the canonical source language; additional locales are supported through Starlight i18n.
-- Light, dark, and automatic system themes are supported.
-- The portal must remain responsive across desktop, tablet, and mobile devices.
-- Planned functionality is explicitly marked as planned and is never presented as already deployed.
-- Product documentation is separated from stack implementation repositories.
+## Documentation principle
 
-## Local development
+Upstream capability and verified Sprey capability are intentionally separated. A feature becomes canonical Sprey documentation only after its real behavior and operational implications are understood and verified.
 
-```bash
-npm install
-npm run dev
-```
+> **Build it. Verify it. Document it.**
 
-Production build:
+## Portal
 
-```bash
-npm run build
-```
+Canonical documentation: <https://docs.sprey.win/>
 
-## Repository relationship
+GitHub Pages mirror: <https://spreywin.github.io/sprey-docs/>
 
-This repository owns the shared Sprey documentation portal. Individual stack repositories remain focused on their implementation and link back to the corresponding section in this portal.
+## Technology
 
-Example:
-
-- [`spreywin/sprey-wp-stack`](https://github.com/spreywin/sprey-wp-stack) → `docs.sprey.win/stacks/wp-stack/`
-
-## Status
-
-Initial portal migration and Starlight setup are in progress.
-
----
-
-© 2026 Sprey
+The portal is built with Astro and Starlight and deployed through GitHub Pages.
