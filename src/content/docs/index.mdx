@@ -1,50 +1,67 @@
 ---
-title: Sprey Documentation
-description: Canonical documentation for Sprey infrastructure, products, stacks, integrations, and operations.
+title: Sprey Docs
+description: Build, connect, and operate the Sprey platform.
 template: splash
 hero:
-  title: Sprey Documentation
-  tagline: Build it. Verify it. Document it.
+  tagline: Canonical technical documentation for Sprey products, deployable stacks, integrations, architecture, and operations.
   actions:
-    - text: Sprey Processing
-      link: /products/sprey-processing/
+    - text: Explore architecture
+      link: /architecture/overview/
       icon: right-arrow
+      variant: primary
     - text: Browse stacks
       link: /stacks/wp-stack/
-      variant: minimal
+      icon: right-arrow
+      variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
 
-Sprey documentation is the canonical operational memory for the project. It records architecture, deployment choices, verified configuration, recovery implications, and product boundaries from the systems that are actually built and tested.
+<div class="docs-badges" aria-label="Documentation qualities">
+  <span><Icon name="seti:clock" />Always up to date</span>
+  <span><Icon name="open-book" />Open source</span>
+  <span><Icon name="github" />GitHub-first</span>
+  <span><Icon name="laptop" />Self-hosted</span>
+  <span><svg class="docs-badge-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg>Non-custodial</span>
+  <span><Icon name="setting" />Automation-first</span>
+</div>
 
-## Sprey Processing
-
-**Sprey Processing** is Sprey's live non-custodial crypto payment infrastructure and the reference implementation of its **non-custodial crypto acquiring** model.
-
-The product is intentionally broader than a single online-store integration. `pay.sprey.win` is intended to serve businesses accepting crypto **online and in person** through online-store integrations, Point of Sale, QR payment flows, Payment Requests, Payment Buttons and donations, crowdfunding, and API/custom integrations.
-
-Merchant payments go to merchant-controlled wallets or payment destinations. Sprey provides invoice, network-observation, payment-state, and integration infrastructure; it does not initiate, route, receive, hold, or forward merchant funds.
-
-`Sprey WP Stack` is one ready-made WordPress/WooCommerce implementation connected to this broader Processing product. It is not the boundary of `pay.sprey.win`.
+## One portal for the whole Sprey platform
 
 <CardGrid>
-  <Card title="Sprey Processing" icon="seti:config">
-    Product boundary, live reference deployment, verified infrastructure state, and the merchant verification path.
+  <Card title={'<a class="docs-card-link" href="/architecture/overview/">Architecture</a>'} icon="seti:config">
+    Platform map, service boundaries, domains, deployment roles, and roadmap.
   </Card>
-  <Card title="Self-host BTCPay Server" icon="server">
-    Reproducible operator guidance for running an independent BTCPay Server deployment.
+  <Card title={'<a class="docs-card-link" href="/architecture/overview/#products">Products</a>'} icon="rocket">
+    Sprey Processing, Sprey RPC, Sprey VPN, and future customer-facing services.
   </Card>
-  <Card title="Sprey WP Stack" icon="seti:wordpress">
-    WordPress + WooCommerce storefront stack and its BTCPay integration boundary.
+  <Card title={'<a class="docs-card-link" href="/stacks/wp-stack/">Stacks</a>'} icon="seti:docker">
+    Reproducible infrastructure such as Sprey WP Stack and future BTCPay, RPC, and VPN stacks.
   </Card>
-  <Card title="Architecture" icon="puzzle">
-    Product ownership, infrastructure boundaries, and Sprey engineering principles.
+  <Card title={'<a class="docs-card-link" href="/operations/wp-stack-failover/">Operations</a>'} icon="setting">
+    Security, backups, updates, monitoring, recovery, and production procedures.
+  </Card>
+  <Card title={'<a class="docs-card-link" href="/integrations/cloudflare-worker-failover/">Integrations</a>'} icon="puzzle">
+    BTCPay + WooCommerce, Cloudflare, webhooks, and cross-service integration guides.
+  </Card>
+  <Card title={'<a class="docs-card-link" href="/architecture/overview/#v1-roadmap">Roadmap</a>'} icon="seti:git">
+    Planned capabilities, dependencies, milestones, and long-term platform direction.
   </Card>
 </CardGrid>
 
-## Documentation model
+<div class="docs-metrics" aria-label="Sprey documentation model">
+  <div><a href="/architecture/overview/#products"><strong>3+</strong><span>Products</span></a></div>
+  <div><a href="/stacks/wp-stack/"><strong>4</strong><span>Stack families</span></a></div>
+  <div><a href="/"><strong>1</strong><span>Canonical portal</span></a></div>
+  <div><a href="https://github.com/spreywin/sprey-docs" target="_blank" rel="noopener noreferrer"><strong>100%</strong><span>Static on GitHub</span></a></div>
+</div>
 
-Upstream capabilities and verified Sprey capabilities are deliberately distinguished. A BTCPay feature may belong to the intended Sprey Processing scope before it is configured on `pay.sprey.win`; it becomes a verified Sprey capability only after the real reference deployment has been tested.
+## Documentation principles
 
-> **Build it. Verify it. Document it.**
+<div class="docs-principles">
+  <div><Icon name="document" /><strong>Canonical</strong><span>English is the canonical source language, with multilingual access layered on top.</span></div>
+  <div><Icon name="information" /><strong>Transparent</strong><span>Planned capabilities are clearly marked so documentation reflects what exists today.</span></div>
+  <div><Icon name="seti:git" /><strong>Reproducible</strong><span>Product documentation stays separate from implementation repositories so each stack can evolve independently.</span></div>
+</div>
+
+<div class="docs-home-footer">© 2026 <a href="https://sprey.win/" target="_blank" rel="noopener noreferrer">Sprey</a>. All rights reserved.</div>
