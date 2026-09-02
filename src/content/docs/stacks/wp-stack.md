@@ -1,146 +1,79 @@
 ---
 title: Sprey WP Stack
-description: Production-oriented WordPress and WooCommerce stack for a modest VPS.
+description: Sprey's ready-made WordPress and WooCommerce stack for online commerce, integrated with Sprey Processing.
 ---
 
-Sprey WP Stack is a compact Docker Compose deployment for WordPress and WooCommerce with the BTCPay payment integration bundled into the WordPress application image. It is intentionally a **website stack, not a server control panel**.
+**Sprey WP Stack** is Sprey's ready-made WordPress and WooCommerce implementation for **online commerce**. It packages the storefront layer needed to run a merchant site and connect WooCommerce to BTCPay Server.
 
-Repository: <a class="github-repository-badge" href="https://github.com/spreywin/sprey-wp-stack" target="_blank" rel="noopener noreferrer">spreywin/sprey-wp-stack</a>
+It is deliberately **not the boundary of Sprey Processing**.
 
-## Requirements
-
-- A Linux VPS with Docker Engine and Docker Compose v2.
-- A domain with `A` and, if used, `AAAA` records pointing to the VPS.
-- Firewall access for TCP `80`, TCP `443`, and UDP `443`; SSH should be restricted to your own IP or VPN where practical.
-
-## Components
-
-- Caddy as the only public web service, with automatic HTTPS and HTTP/3.
-- WordPress with Apache and PHP 8.4.
-- WooCommerce bundled in the WordPress image.
-- BTCPay for WooCommerce V2 bundled in the WordPress image.
-- MariaDB LTS on a private Docker network.
-- Optional phpMyAdmin profile bound to localhost only and disabled by default.
-- UFW configured by the installer for SSH, HTTP, HTTPS, and HTTP/3.
-- Bounded Docker container logs and the bundled `status.sh` resource overview.
-
-## Quick start
-
-Point DNS to the VPS first, then run on a new Ubuntu/Debian server:
-
-```bash
-git clone https://github.com/spreywin/sprey-wp-stack.git
-cd sprey-wp-stack
-sudo ./install.sh example.com admin@example.com
-```
-
-The installer installs Docker when needed, creates strong database passwords in `.env`, configures UFW without closing the active SSH port, builds the Sprey WordPress image with the tested WooCommerce and BTCPay plugin versions, and starts the stack. It refuses to replace an existing `.env` or run on an unsupported system.
-
-After the stack starts, open `https://YOUR_DOMAIN` and complete the WordPress installer. WooCommerce and BTCPay for WooCommerce V2 are then available to activate from WordPress Admin without downloading them separately.
-
-## Architecture
+Sprey Processing at `pay.sprey.win` is the broader non-custodial crypto payment infrastructure and acquiring model. It is intended to support online stores, in-person Point of Sale flows, QR payments, Payment Requests, Payment Buttons and donations, crowdfunding, and API/custom integrations. WP Stack is one prepared online-store path into that broader Processing product.
 
 ```text
-Internet
-   │
-   ▼
-Cloudflare Worker
-   ├── failure ──> sprey-outage.pages.dev
-   │
-   ▼ healthy
-Caddy :80/:443
-   │
-   ▼
+Sprey WP Stack
 WordPress + WooCommerce
-   + BTCPay for WooCommerce V2
-   │
-   ├── order / invoice status <──── BTCPay Server
-   │                                  │
-   │                                  └── observes payment
-   │
-   └──────────────────────────────> Merchant-controlled wallet / payment destination
-   │
-   ▼
-MariaDB LTS
+        |
+        | BTCPay integration
+        v
+Sprey Processing
+pay.sprey.win
 ```
 
-WooCommerce owns the catalog, cart, checkout, and orders. The BTCPay plugin creates invoices and synchronizes payment state with separate BTCPay Server infrastructure. The merchant controls the wallet or payment destination; Sprey Processing does not receive, hold, or forward merchant funds. WordPress and MariaDB remain behind Docker networking. phpMyAdmin is disabled by default and is intended for temporary local access over an SSH tunnel.
+## Responsibility boundary
 
-## BTCPay
+The storefront and payment infrastructure remain separate:
 
-BTCPay Server is **not** part of the WordPress stack. The official BTCPay for WooCommerce V2 plugin is bundled with the Sprey WordPress image and connects WooCommerce to separate BTCPay infrastructure.
+```text
+WooCommerce
+  |- products/catalog
+  |- cart/checkout
+  `- orders
+       |
+       `- asks BTCPay to create and track an invoice
 
-The payment model is non-custodial: products and orders remain in WooCommerce, customers pay the merchant-controlled payment destination configured for the BTCPay store, BTCPay observes the payment and invoice state, and WooCommerce receives the resulting status update.
-
-Recommended deployment flow:
-
-1. Deploy Sprey WP Stack and complete WordPress setup.
-2. Activate the bundled WooCommerce plugin and complete its initial store setup.
-3. Activate the bundled BTCPay for WooCommerce V2 plugin.
-4. Connect it to a BTCPay Server store. For Sprey deployments, <a href="https://pay.sprey.win/" target="_blank" rel="noopener noreferrer">pay.sprey.win</a> is the recommended hosted endpoint; follow [BTCPay for WooCommerce](/integrations/btcpay-woocommerce/) for the merchant-wallet, connection, and testing procedure.
-5. Run a test payment and verify both the WooCommerce order state and receipt at the merchant-controlled destination before accepting production orders.
-
-For evaluation without a production BTCPay host, the BTCPay Server project provides official <a href="https://mainnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">mainnet</a> and <a href="https://testnet.demo.btcpayserver.org/" target="_blank" rel="noopener noreferrer">testnet</a> demo servers. They are for testing and do not carry an uptime guarantee.
-
-:::caution
-Do not store BTCPay Server secrets, API keys, wallet seeds, private spending keys, or payment credentials in the repository. For Sprey-hosted BTCPay, custody must remain with the merchant.
-:::
-
-## Cloudflare
-
-Cloudflare production settings and static outage failover are part of v1. A Workers Route on `sprey.win/*` places the Cloudflare Worker before the primary WordPress VPS. The Worker forwards every request to primary and uses `sprey-outage.pages.dev` after a network error, bounded timeout, or selected `502/503/504`. It tries primary again on every new request, so recovery does not require a DNS change.
-
-:::note
-This is request-time failover on the Workers Free plan, not Cloudflare Load Balancing or an independent periodic health monitor. The outage page is an informational `503` response, not a live store: cart, checkout, accounts, orders, sessions, and payments require WordPress.
-:::
-
-Dynamic WooCommerce routes must not be treated as static cache content. Follow [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/) for a test-hostname-first rollout. Use [WP Stack failover operations](/operations/wp-stack-failover/) for validation, incident response, and rollback.
-
-## Operations
-
-For a quick VPS health snapshot:
-
-```bash
-./status.sh
+Customer
+  |
+  `- pays independently
+       |
+       v
+merchant-controlled wallet/payment destination
+       ^
+       |
+BTCPay observes the configured payment network
+  |
+  `- determines invoice state
+       |
+       v
+WooCommerce receives the payment state
 ```
 
-Common stack commands:
+The payment itself happens independently of Sprey. Sprey does not initiate, route, receive, hold, or forward merchant funds.
 
-```bash
-docker compose config --quiet
-docker compose ps
-docker compose logs -f caddy
-docker compose pull --ignore-buildable
-docker compose build wordpress
-docker compose up -d
-```
+## Stack components
 
-Review WordPress, WooCommerce, BTCPay plugin, and container release notes before upgrades. Back up both the MariaDB database and WordPress uploads before rebuilding or recreating production containers.
+The current stack is intentionally small and panel-free:
 
-:::danger
-Never run `docker compose down -v` on a production deployment unless permanent volume deletion is explicitly intended. It removes the named volumes containing the site, database, and Caddy certificates.
-:::
+- Caddy as the public web server and TLS endpoint.
+- WordPress with Apache and PHP.
+- WooCommerce for products, cart, checkout, and orders.
+- BTCPay Server WooCommerce integration for invoice creation and payment-state exchange.
+- MariaDB for WordPress data.
+- phpMyAdmin bound locally for maintenance rather than exposed publicly.
 
-For the edge path, monitor Worker exceptions, timeouts, fallback response counts, and Free-plan usage. A fallback response reports a failed request to primary; it is not by itself proof that every service on the VPS is down.
+The stack is intended to be reproducible with Docker Compose and understandable without a control panel.
 
-## Optional phpMyAdmin
+## Product relationship
 
-phpMyAdmin is intentionally off by default. Prefer SSH and the MariaDB CLI for routine database work.
+Use WP Stack when the merchant needs a complete WordPress/WooCommerce storefront.
 
-Start it only when needed:
+Do **not** require WP Stack when a merchant only needs another Sprey Processing flow such as Point of Sale, QR-based in-person acceptance, a Payment Request, Payment Button, donation flow, crowdfunding application, or a direct API integration.
 
-```bash
-docker compose --profile admin up -d phpmyadmin
-```
+This separation is intentional: the storefront can evolve independently while `pay.sprey.win` remains the shared payment infrastructure.
 
-From your own computer, create the local SSH tunnel and then open `http://localhost:8081`:
+## Verification rule
 
-```bash
-ssh -L 8081:127.0.0.1:8081 root@YOUR_SERVER
-```
+WP Stack capabilities are documented as verified only after the actual WordPress/WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
 
-Stop phpMyAdmin when finished:
+The operating rule is:
 
-```bash
-docker compose --profile admin stop phpmyadmin
-```
+> **Build it. Verify it. Document it.**
