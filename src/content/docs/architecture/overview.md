@@ -5,32 +5,6 @@ description: High-level Sprey architecture and product boundaries.
 
 Sprey is organized around a small number of independent product and infrastructure layers. The central payment product is **Sprey Processing**, available through `pay.sprey.win`.
 
-## Products
-
-### Sprey Processing
-
-**Live / active.** Sprey Processing is Sprey's non-custodial crypto payment infrastructure and the reference implementation of its **non-custodial crypto acquiring** model. The product is broader than any single storefront integration and is intended to serve online commerce, in-person Point of Sale and QR flows, Payment Requests, Payment Buttons and donations, crowdfunding, and API/custom integrations through `pay.sprey.win`.
-
-Merchant payments go directly to merchant-controlled wallets or payment destinations. Sprey provides invoice, payment-state observation, and integration infrastructure; it does not initiate, route, receive, hold, or forward merchant funds.
-
-### Sprey WP Stack
-
-**Live stack / online-commerce implementation.** WordPress + WooCommerce with the BTCPay integration required to connect a storefront to Sprey Processing. It is one ready-made implementation of the broader Processing product, not the boundary of `pay.sprey.win`.
-
-### Sprey Wallet
-
-**Planned.** A non-custodial wallet companion for Sprey Processing. Compatible external merchant-controlled wallets remain supported; Sprey Wallet is not intended to become a requirement for Processing.
-
-See [Sprey Wallet](/products/sprey-wallet/) for the established product direction.
-
-### Sprey RPC
-
-**Planned.** Independent RPC/eRPC infrastructure for TRON and EVM networks with provider aggregation, health checks, API access, and plan-based billing.
-
-### Sprey VPN
-
-**Planned.** Privacy-oriented VPN service with isolated traffic nodes and automated crypto billing. Traffic nodes remain separate from payment and web infrastructure.
-
 ## Sprey Processing boundary
 
 Sprey Processing is the reference implementation of Sprey's **non-custodial crypto acquiring** model: merchants accept crypto payments directly to merchant-controlled wallets or payment destinations while Sprey provides invoice, payment-state observation, and integration infrastructure.
@@ -145,6 +119,19 @@ invoice state verified
 ```
 
 Internal components such as NBXplorer remain part of the BTCPay implementation, but they are not treated as separate merchant-facing product milestones unless troubleshooting requires component-level inspection.
+
+## Products
+
+| Domain | Product / role | Status |
+| --- | --- | --- |
+| `sprey.win` | Public product site and WooCommerce storefront | Planned |
+| [pay.sprey.win](https://pay.sprey.win/) | Sprey Processing public payment endpoint | **Live** |
+| `adminpay.sprey.win` | Sprey Processing administrative endpoint behind Cloudflare Access | **Live** |
+| [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
+| `app.sprey.win` | Customer application / control plane | Planned |
+| `rpc.sprey.win` | Sprey RPC | Planned |
+| `status.sprey.win` | Public service status | Planned |
+| [docs.sprey.win](https://docs.sprey.win/) | Canonical documentation portal | **Live** |
 
 ## Separation of concerns
 
