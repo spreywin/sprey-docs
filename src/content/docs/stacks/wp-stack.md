@@ -19,6 +19,16 @@ Sprey Processing
 pay.sprey.win
 ```
 
+## Why Sprey WP Stack exists
+
+Earlier BTCPay Server deployment tooling exposed optional add-on services, including a self-hosted WooCommerce deployment with the BTCPay Server plugin pre-installed. The current BTCPay Server Configurator focuses its standard deployment wizard on BTCPay infrastructure and no longer exposes WooCommerce as a normal wizard choice. The underlying `btcpayserver-docker` project still retains the optional `opt-add-woocommerce` fragment, so this is a change in the standard configuration experience rather than the removal of WooCommerce support itself.
+
+Sprey WP Stack fills the practical gap with a dedicated, reproducible WordPress + WooCommerce stack designed to integrate with BTCPay Server while keeping the storefront and payment infrastructure separated.
+
+That separation is intentional. It reduces coupling and allows the storefront and BTCPay Server to be secured, updated, backed up, scaled, recovered, or replaced independently. It also keeps WordPress and its larger application surface away from the payment server itself.
+
+Sprey WP Stack adds a prepared commerce layer around that model: Docker Compose deployment, Caddy and TLS, WooCommerce, the BTCPay integration, MariaDB, locally bound maintenance tooling, and documentation for reproducing and operating the stack without a control panel.
+
 ## Responsibility boundary
 
 The storefront and payment infrastructure remain separate:
