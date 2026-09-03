@@ -15,7 +15,7 @@ The reference deployment uses three independent recovery layers:
 | --- | --- | --- |
 | Local BTCPay backup | Fast access to the latest native encrypted backup | Latest backup only |
 | Cloudflare R2 | Independent encrypted off-site history | 21 daily + 3 monthly |
-| Hetzner Backup | Full-VPS recovery checkpoint | Provider-managed |
+| Hetzner Backup | Full-VPS recovery checkpoint | 7 daily automatic backups + manual checkpoints |
 
 The local BTCPay backup is stored at:
 
