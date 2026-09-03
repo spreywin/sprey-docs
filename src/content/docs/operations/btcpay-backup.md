@@ -1,9 +1,9 @@
 ---
 title: BTCPay backup operations
-description: Create, encrypt, verify, and retain Sprey Processing BTCPay Server backups off-site.
+description: Create, encrypt, verify, retain, and restore Sprey Processing BTCPay Server backups.
 ---
 
-This runbook documents the verified backup path used by the current Sprey Processing reference deployment at `pay.sprey.win`.
+This runbook documents the verified backup and restore path used by the current Sprey Processing reference deployment at `pay.sprey.win`.
 
 The backup pipeline uses BTCPay Server's native backup format. Sprey does not create a proprietary backup format: `btcpay-backup.sh` creates the canonical backup, GPG encrypts it, and the Sprey wrapper delivers and verifies the encrypted archive in Cloudflare R2.
 
@@ -154,7 +154,7 @@ journalctl -u sprey-btcpay-backup.service -n 100 --no-pager
 
 A successful run must include the wrapper's remote verification success and must leave the BTCPay containers running.
 
-## Verified checkpoint
+## Verified backup checkpoint
 
 The following path was verified end to end on 2026-09-03:
 
@@ -182,15 +182,66 @@ The first verified encrypted archive was approximately 21 MB. Multiple timestamp
 
 The local backup directory was cleaned after verification so that only the latest encrypted `backup.tar.gz.gpg` remains as the normal local backup artifact.
 
-## Restore status
+## Verified restore checkpoint
 
-:::caution[Restore test pending]
-The backup creation, encryption, off-site delivery, and byte-for-byte read-back verification are proven. A complete BTCPay restore has **not yet been verified**. Do not describe the deployment as disaster-recovery verified until a full restore test succeeds.
-:::
+A native BTCPay restore was successfully tested on the production VPS on 2026-09-03 while the deployment had no merchant wallets or customer activity. A fresh manual Hetzner Backup was confirmed `Available` immediately before the test as the rollback checkpoint.
 
-The planned restore test must use a separate disposable server or otherwise isolated environment. Do not run a destructive restore test against the production `pay.sprey.win` deployment solely to prove that the backup works.
+The encrypted local backup was restored with BTCPay Server's native `btcpay-restore.sh` using the root-only recovery passphrase. The script successfully:
 
-The restore test should use a backup retrieved from R2, the independently stored encryption passphrase, and BTCPay Server's native `btcpay-restore.sh`. After restoration, verify the database, Sprey Processing store data, BTCPay configuration, containers, and application startup. Destroy the temporary environment after the test is recorded.
+1. Decrypted and extracted the GPG backup.
+2. Stopped the BTCPay deployment.
+3. Restored the backed-up Docker volumes.
+4. Started PostgreSQL and restored the database dump.
+5. Restarted the complete BTCPay deployment.
+6. Completed with exit status `0`.
+
+Post-restore verification confirmed:
+
+```text
+All BTCPay containers running
+Bitcoin chain: main
+Bitcoin blocks = headers: 965346
+Bitcoin verificationprogress: 1
+Bitcoin initialblockdownload: false
+Bitcoin pruned: true
+BTCPay /api/v1/health: {"synchronized":true}
+Sprey Processing store present and accessible
+```
+
+The existing pruned Bitcoin blockchain survived the native restore, so no full blockchain resynchronization was required.
+
+**Native BTCPay backup restore — VERIFIED.**
+
+This checkpoint proves that the current encrypted native backup can restore the BTCPay application state on the existing deployment. It does not replace a future clean-host disaster-recovery exercise. Once the service contains merchant wallets or customer activity, perform destructive restore testing only in an isolated environment rather than on production.
+
+## Restore procedure
+
+Before a production restore, confirm that a current independent recovery checkpoint exists and that the backup passphrase is available from its independent recovery copy.
+
+From the BTCPay Docker directory:
+
+```bash
+export BTCPAY_BACKUP_PASSPHRASE="$(cat /root/.config/sprey-backup/btcpay-backup-passphrase)"
+
+./btcpay-restore.sh \
+  /var/lib/docker/volumes/backup_datadir/_data/backup.tar.gz.gpg
+
+RESTORE_STATUS=$?
+unset BTCPAY_BACKUP_PASSPHRASE
+echo "Restore exit status: $RESTORE_STATUS"
+```
+
+Do not interrupt the restore while containers, volumes, or PostgreSQL are being restored. If the restore fails, inspect the failure before making further changes or invoking the provider-level rollback.
+
+After a successful restore, verify containers, Bitcoin state, and BTCPay health:
+
+```bash
+docker ps --format 'table {{.Names}}\t{{.Status}}'
+./bitcoin-cli.sh getblockchaininfo
+curl -fsS https://pay.sprey.win/api/v1/health && echo
+```
+
+Then verify the expected Store and configuration in the BTCPay UI.
 
 ## Operational boundary
 
