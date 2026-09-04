@@ -72,6 +72,23 @@ The current stack is intentionally small and panel-free:
 
 The stack is intended to be reproducible with Docker Compose and understandable without a control panel.
 
+## Before installation
+
+Deploy the stack on a current, fully patched operating system. On a fresh Ubuntu or Debian VPS, update installed packages before cloning and running Sprey WP Stack:
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+```
+
+If the upgrade installs a new kernel or `/var/run/reboot-required` exists, reboot the VPS and reconnect before starting the stack installation:
+
+```bash
+test -f /var/run/reboot-required && sudo reboot
+```
+
+This keeps the deployment baseline current before Docker, UFW, Caddy, WordPress, and the rest of the stack are installed.
+
 ## Product relationship
 
 Use WP Stack when the merchant needs a complete WordPress/WooCommerce storefront.
