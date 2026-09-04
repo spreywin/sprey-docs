@@ -115,6 +115,18 @@ When the installer finishes, open the configured hostname in a browser and compl
 
 For the canonical source and current installer implementation, see the [Sprey WP Stack repository](https://github.com/spreywin/sprey-wp-stack).
 
+## Verified clean-host deployment
+
+A clean deployment has been verified on a fresh Ubuntu 26.04 VPS using the documented installation path without manual fixes. The installer completed successfully, Caddy, MariaDB, and WordPress started normally, and the bundled WooCommerce and BTCPay for WooCommerce V2 plugins were successfully activated after the standard WordPress setup.
+
+Current verification boundary:
+
+- **Clean deployment — VERIFIED.**
+- **WooCommerce + BTCPay plugin activation — VERIFIED.**
+- **BTCPay payment integration — not yet verified.**
+
+The payment integration will be marked verified only after a WooCommerce order creates a BTCPay invoice, a real payment is observed, and the resulting payment state is reflected correctly in WooCommerce.
+
 ## Product relationship
 
 Use WP Stack when the merchant needs a complete WordPress/WooCommerce storefront.
@@ -125,7 +137,7 @@ This separation is intentional: the storefront can evolve independently while `p
 
 ## Verification rule
 
-WP Stack capabilities are documented as verified only after the actual WordPress/WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
+Deployment and bundled-plugin activation may be verified independently from payment integration. The BTCPay payment integration is documented as verified only after the actual WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
 
 The operating rule is:
 
