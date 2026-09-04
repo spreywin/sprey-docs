@@ -89,6 +89,32 @@ test -f /var/run/reboot-required && sudo reboot
 
 This keeps the deployment baseline current before Docker, UFW, Caddy, WordPress, and the rest of the stack are installed.
 
+## Installation
+
+Point the domain to the VPS first, then clone the Sprey WP Stack repository and run the installer with the production hostname and an administrative email address:
+
+```bash
+git clone https://github.com/spreywin/sprey-wp-stack.git
+cd sprey-wp-stack
+sudo ./install.sh example.com admin@example.com
+```
+
+Replace `example.com` and `admin@example.com` with the real deployment values.
+
+The installer:
+
+- installs Docker Engine and Docker Compose when they are not already present;
+- configures UFW while preserving the active SSH port;
+- allows HTTP, HTTPS, and HTTP/3 traffic;
+- creates the private `.env` file and generates strong database passwords;
+- builds the WordPress image with the tested WooCommerce and BTCPay for WooCommerce V2 plugin versions;
+- enables the bundled resource status helper;
+- starts the Docker Compose stack.
+
+When the installer finishes, open the configured hostname in a browser and complete the standard WordPress installation. WooCommerce and BTCPay for WooCommerce V2 are already bundled and can then be activated from the WordPress plugin screen.
+
+For the canonical source and current installer implementation, see the [Sprey WP Stack repository](https://github.com/spreywin/sprey-wp-stack).
+
 ## Product relationship
 
 Use WP Stack when the merchant needs a complete WordPress/WooCommerce storefront.
