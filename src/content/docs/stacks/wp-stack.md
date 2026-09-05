@@ -127,20 +127,29 @@ Current verification boundary:
 
 The payment integration will be marked verified only after a WooCommerce order creates a BTCPay invoice, a real payment is observed, and the resulting payment state is reflected correctly in WooCommerce.
 
+## Diagnostics and resource visibility
+
+The bundled `./status.sh` helper has been verified on the deployed WP Stack VPS. It reports both a static host profile and current resource state.
+
+The host profile includes hostname, OS, kernel, architecture, virtualization, vCPU count, CPU model, total RAM, total swap, root device, and root filesystem size. Runtime sections report system load, filesystem and inode usage, RAM/swap usage, Compose service state, container CPU/memory/network/block-I/O, and Docker disk usage.
+
+This keeps basic host identity and resource diagnostics available without a control panel or additional monitoring agent.
+
 ## Availability and failover
 
 WP Stack v1 uses a Cloudflare Worker in front of the proxied `sprey.win` origin. The Worker normally forwards each request to the WordPress VPS. On a network error, a five-second timeout, or an upstream `502`, `503`, `504`, or `521`, it serves the independent static outage page from `sprey-outage.pages.dev` as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and the `X-Sprey-Failover: static-outage-page` response header.
 
-The production failover path has been verified with a controlled Caddy stop/start cycle:
+The production failover path has been verified with multiple controlled origin interruptions:
 
 - healthy origin returned HTTP `200` through Caddy without `X-Sprey-Failover`;
 - stopping Caddy produced an origin-unavailable `521`, which the Worker converted to the static outage page with HTTP `503`;
 - starting Caddy restored the next request to normal WordPress service with HTTP `200` and no `X-Sprey-Failover` header;
-- no DNS change was required for either failover or recovery.
+- the same failover-and-recovery behavior was verified during a normal VPS reboot and a VPS hard reboot;
+- no DNS change was required for failover or recovery.
 
 This is request-time failover, not an independent periodic health monitor. The outage page is informational only and does not provide WooCommerce cart, checkout, account, order, or payment functionality while the origin is unavailable.
 
-Operational implementation and rollback details live in the [Cloudflare failover runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
+Configuration details live in [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/), operational diagnosis and rollback live in [WP Stack failover operations](/operations/wp-stack-failover/), and the canonical Worker source remains in the [WP Stack Cloudflare runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
 
 ## Backup status
 
@@ -158,7 +167,7 @@ This separation is intentional: the storefront can evolve independently while `p
 
 ## Verification rule
 
-Deployment, bundled-plugin activation, and failover may be verified independently from payment integration. The BTCPay payment integration is documented as verified only after the actual WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
+Deployment, bundled-plugin activation, diagnostics, and failover may be verified independently from payment integration. The BTCPay payment integration is documented as verified only after the actual WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
 
 The operating rule is:
 
