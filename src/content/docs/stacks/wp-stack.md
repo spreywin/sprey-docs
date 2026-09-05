@@ -127,6 +127,27 @@ Current verification boundary:
 
 The payment integration will be marked verified only after a WooCommerce order creates a BTCPay invoice, a real payment is observed, and the resulting payment state is reflected correctly in WooCommerce.
 
+## Availability and failover
+
+WP Stack v1 uses a Cloudflare Worker in front of the proxied `sprey.win` origin. The Worker normally forwards each request to the WordPress VPS. On a network error, a five-second timeout, or an upstream `502`, `503`, `504`, or `521`, it serves the independent static outage page from `sprey-outage.pages.dev` as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and the `X-Sprey-Failover: static-outage-page` response header.
+
+The production failover path has been verified with a controlled Caddy stop/start cycle:
+
+- healthy origin returned HTTP `200` through Caddy without `X-Sprey-Failover`;
+- stopping Caddy produced an origin-unavailable `521`, which the Worker converted to the static outage page with HTTP `503`;
+- starting Caddy restored the next request to normal WordPress service with HTTP `200` and no `X-Sprey-Failover` header;
+- no DNS change was required for either failover or recovery.
+
+This is request-time failover, not an independent periodic health monitor. The outage page is informational only and does not provide WooCommerce cart, checkout, account, order, or payment functionality while the origin is unavailable.
+
+Operational implementation and rollback details live in the [Cloudflare failover runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
+
+## Backup status
+
+Automated WordPress backup and restore workflow is **planned**. It is not yet implemented or verified.
+
+Until that workflow is implemented and tested, WP Stack documentation does not claim automated backup or restore capability.
+
 ## Product relationship
 
 Use WP Stack when the merchant needs a complete WordPress/WooCommerce storefront.
@@ -137,7 +158,7 @@ This separation is intentional: the storefront can evolve independently while `p
 
 ## Verification rule
 
-Deployment and bundled-plugin activation may be verified independently from payment integration. The BTCPay payment integration is documented as verified only after the actual WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
+Deployment, bundled-plugin activation, and failover may be verified independently from payment integration. The BTCPay payment integration is documented as verified only after the actual WooCommerce deployment and BTCPay integration have been tested end to end. Upstream BTCPay capabilities outside WooCommerce belong to the Sprey Processing product scope and are verified separately on `pay.sprey.win`.
 
 The operating rule is:
 
