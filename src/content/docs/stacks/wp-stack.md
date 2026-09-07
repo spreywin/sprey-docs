@@ -90,7 +90,7 @@ On the verified 10 GB test VPS, the completed installation used about 71% of the
 
 ## Verified manual ARM64 deployment
 
-The manual Compose path has now also been verified end to end on a separate clean ARM64 host running Ubuntu 26.04.1 LTS.
+The manual Compose path has also been verified end to end on a separate clean ARM64 host running Ubuntu 26.04.1 LTS.
 
 The verified host used `aarch64`, 2 OCPU, approximately 12 GB RAM, a 99 GB boot volume, Docker `29.1.3`, and Docker Compose `2.40.3`. No swap was configured for this manual test.
 
@@ -108,7 +108,7 @@ Verified manual-path behavior:
 - WooCommerce `11.1.0` and BTCPay For WooCommerce V2 `2.8.2` were present and activated successfully;
 - expected WooCommerce tables were created successfully;
 - phpMyAdmin `latest` pulled as `linux/arm64`, started from the `admin` profile, remained localhost-only on `127.0.0.1:8081`, and returned HTTP `200` locally;
-- after a normal host reboot, Caddy, WordPress, and MariaDB returned automatically, MariaDB was healthy, the public site returned HTTP `200`, and WordPress/database state persisted.
+- after a normal host reboot, Caddy, WordPress, MariaDB, and an active phpMyAdmin returned automatically; MariaDB was healthy, the public site returned HTTP `200`, phpMyAdmin remained localhost-only and returned local HTTP `200`, and WordPress/database state persisted.
 
 The complete verification record is maintained in [WP Stack verification — 2026-09-07](/operations/wp-stack-verification-2026-09-07/).
 
@@ -124,12 +124,12 @@ Current verification boundary:
 - **Plugin-file persistence across WordPress image rebuild/recreate — VERIFIED.**
 - **Automatic post-build cleanup in a complete fresh run — VERIFIED.**
 - **Cloudflare 525 failover and recovery — VERIFIED.**
+- **Cloudflare 526 failover and recovery — VERIFIED.**
 - **phpMyAdmin localhost + SSH tunnel + root login path — VERIFIED.**
 - **phpMyAdmin stop/start lifecycle — VERIFIED.**
 - **phpMyAdmin ARM64 image/start/local HTTP path — VERIFIED.**
-- **phpMyAdmin-active reboot behavior — pending verification.**
-- **Cloudflare 526 failover — configured, not yet explicitly verified.**
-- **BTCPay payment integration — not yet verified.**
+- **phpMyAdmin-active reboot behavior — VERIFIED.**
+- **BTCPay payment integration — not yet verified; tracked separately as payment-product integration work.**
 
 ## Diagnostics and resource visibility
 
@@ -174,17 +174,16 @@ Configured status coverage is currently:
 502 503 504 520 521 522 523 524 525 526
 ```
 
-Verified production behavior currently includes:
+Verified failover behavior includes:
 
 - healthy origin returned HTTP `200` through Caddy without `X-Sprey-Failover`;
 - stopping Caddy produced `521`, which the Worker converted to the static outage page with HTTP `503`;
 - starting Caddy restored the next request to normal WordPress service;
 - normal VPS reboot and hard reboot both produced the same failover/recovery behavior;
-- a controlled TLS-handshake failure verified the `525` path end to end: the Worker returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
-- after restoring Caddy, the next request returned normal WordPress as HTTP `200` without the failover header;
-- no DNS change was required for failover or recovery.
-
-`526` remains included in the configured failure set but has not yet been explicitly verified end to end.
+- a controlled TLS-handshake failure verified the `525` path end to end;
+- a controlled invalid-origin-certificate test under Cloudflare **Full (strict)** verified the `526` path end to end on an isolated proxied hostname;
+- both TLS-specific failure paths returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
+- after restoring Caddy, the next proxied request returned normal WordPress as HTTP `200` without the failover header.
 
 Configuration details live in [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/), operational diagnosis and rollback live in [WP Stack failover operations](/operations/wp-stack-failover/), and the canonical Worker source remains in the [WP Stack Cloudflare runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
 
@@ -192,17 +191,17 @@ Configuration details live in [Cloudflare Worker failover](/integrations/cloudfl
 
 The localhost-only access path is verified. phpMyAdmin starts from the `admin` Compose profile, publishes only to `127.0.0.1:8081`, opens successfully through an SSH tunnel, and can authenticate to MariaDB with credentials generated in the deployment `.env` file.
 
-The stop/start lifecycle is also verified: stopping phpMyAdmin removes the localhost listener, and starting it again restores `127.0.0.1:8081` with a successful local HTTP response.
+The stop/start lifecycle is verified: stopping phpMyAdmin removes the localhost listener, and starting it again restores `127.0.0.1:8081` with a successful local HTTP response.
 
-ARM64 behavior is also verified: `phpmyadmin:latest` pulled as `linux/arm64`, started successfully, and returned local HTTP `200` while MariaDB remained healthy.
+ARM64 behavior is verified: `phpmyadmin:latest` pulled as `linux/arm64`, started successfully, and returned local HTTP `200` while MariaDB remained healthy.
+
+Active-service reboot behavior is also verified: when phpMyAdmin was left running during a normal host reboot, it returned automatically, remained bound only to `127.0.0.1:8081`, and again returned local HTTP `200` while the core stack recovered normally.
 
 For the exact start command, SSH tunnel, password retrieval commands, login choices, stop/start steps, and security notes, use [WP Stack phpMyAdmin access](/operations/wp-stack-phpmyadmin/).
 
-phpMyAdmin-active reboot behavior remains pending until tested explicitly. In the verified ARM64 host reboot test, phpMyAdmin was intentionally stopped/removed before reboot because it is an optional maintenance service.
-
 ## Update behavior
 
-A new WordPress image build downloads the current stable WooCommerce and BTCPay for WooCommerce V2 releases. WordPress runtime data lives in the persistent `wordpress_data` volume.
+A new WordPress image build downloads the current stable WooCommerce and BTCPay for WooCommerce V2 releases. WordPress runtime data lives in a persistent volume.
 
 The rebuild/recreate path has been explicitly verified with existing plugin files in that persistent volume: a marker and the SHA-256 values of WooCommerce `11.1.0` and BTCPay For WooCommerce V2 `2.8.2` remained unchanged after rebuilding the WordPress image and force-recreating the WordPress container. MariaDB remained healthy and the public site returned HTTP `200`.
 
@@ -222,4 +221,4 @@ The operating rule is:
 
 > **Build it. Verify it. Document it.**
 
-Anything not tested end to end remains explicitly marked pending rather than being described as production-verified.
+The infrastructure/deployment checks targeted before the v1.0 release are closed. Anything outside that boundary remains explicitly separated rather than being described as verified.
