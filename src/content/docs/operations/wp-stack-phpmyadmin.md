@@ -99,7 +99,8 @@ The current WP Stack deployment has verified the following path end to end:
 - login as MariaDB `root` with `MYSQL_ROOT_PASSWORD` succeeded;
 - the `wordpress` database and MariaDB system schemas were visible after login;
 - stopping phpMyAdmin removed the localhost listener and `127.0.0.1:8081` became unreachable;
-- starting the same service again restored `127.0.0.1:8081` and the local HTTP check returned `200 OK` again.
+- starting the same service again restored `127.0.0.1:8081` and the local HTTP check returned `200 OK` again;
+- removing the stopped phpMyAdmin container and `phpmyadmin:latest` image on the verified 10 GB test VPS reduced root-filesystem usage from 78% to 71%, increased free space from about 2.2 GB to about 2.8 GB, and reduced Docker image accounting from about 2.484 GB across four images to about 1.78 GB across the three core images.
 
 The Compose service uses both `edge` and `app` networks so Docker can publish the localhost maintenance port while phpMyAdmin can still reach MariaDB on the private `app` network. MariaDB itself remains on `app` only.
 
@@ -137,7 +138,7 @@ The stop/start lifecycle is verified. Reboot behavior is intentionally tracked s
 
 On small VPS disks, phpMyAdmin is best treated as a temporary maintenance tool rather than a permanently retained image.
 
-A current 10 GB test host reached 78% root-filesystem usage after phpMyAdmin had been pulled and started. At that point Docker images accounted for about 2.48 GB, while the system journal used about 8 MB, `/var/log` about 9.6 MB, and the active container log files were only a few hundred kilobytes in total. This confirmed that reducing log-rotation limits would save very little compared with image/runtime storage.
+On the verified 10 GB test host, pulling and starting phpMyAdmin brought root-filesystem usage to 78% with about 2.2 GB free. At that point Docker reported about 2.484 GB of images across four images. The system journal used about 8 MB, `/var/log` about 9.6 MB, and the active container log files were only a few hundred kilobytes in total, confirming that log rotation was not the meaningful storage issue.
 
 After maintenance, stop and remove the phpMyAdmin container and, when disk headroom matters, remove its image as well:
 
@@ -155,6 +156,8 @@ docker system df
 df -h /
 ```
 
+On the verified host, that cleanup returned the root filesystem to 71% usage with about 2.8 GB free. Docker image accounting dropped to about 1.78 GB across the three core images. This behavior is therefore **VERIFIED** for the current test deployment.
+
 This does not remove the WordPress or MariaDB containers, volumes, or site data. The next time phpMyAdmin is needed, recreate it with:
 
 ```bash
@@ -163,7 +166,7 @@ docker compose --profile admin up -d phpmyadmin
 
 Docker will pull the image again if it is no longer present locally.
 
-The exact amount of disk space reclaimed by removing the phpMyAdmin image is deployment-specific and should be measured on the host rather than assumed from image-list output alone.
+The exact amount of space reclaimed can vary with image versions and shared layers, so measure each host rather than assuming the same number everywhere.
 
 ## Security notes
 
