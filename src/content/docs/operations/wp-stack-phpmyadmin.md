@@ -100,6 +100,7 @@ The current WP Stack deployment has verified the following path end to end:
 - the `wordpress` database and MariaDB system schemas were visible after login;
 - stopping phpMyAdmin removed the localhost listener and `127.0.0.1:8081` became unreachable;
 - starting the same service again restored `127.0.0.1:8081` and the local HTTP check returned `200 OK` again;
+- on the verified Ubuntu 26.04.1 ARM64 manual deployment, `phpmyadmin:latest` pulled as `linux/arm64`, started successfully from the same `admin` profile, remained bound to `127.0.0.1:8081`, returned local HTTP `200`, and left MariaDB healthy;
 - removing the stopped phpMyAdmin container and `phpmyadmin:latest` image on the verified 10 GB test VPS reduced root-filesystem usage from 78% to 71%, increased free space from about 2.2 GB to about 2.8 GB, and reduced Docker image accounting from about 2.484 GB across four images to about 1.78 GB across the three core images.
 
 The Compose service uses both `edge` and `app` networks so Docker can publish the localhost maintenance port while phpMyAdmin can still reach MariaDB on the private `app` network. MariaDB itself remains on `app` only.
@@ -132,7 +133,7 @@ docker compose --profile admin ps
 curl -I --max-time 5 http://127.0.0.1:8081/
 ```
 
-The stop/start lifecycle is verified. Reboot behavior is intentionally tracked separately and should not be described as verified until tested explicitly.
+The stop/start lifecycle is verified. phpMyAdmin-active reboot behavior is intentionally tracked separately and should not be described as verified until tested explicitly. In the verified ARM64 host reboot test, phpMyAdmin was stopped/removed before reboot.
 
 ## Small-disk cleanup
 
