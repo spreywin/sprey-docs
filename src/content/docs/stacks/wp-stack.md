@@ -76,22 +76,27 @@ Verified results:
 
 - the host had no swap before installation;
 - the installer created and activated 1 GiB swap;
+- the created swap remained active after a normal VPS reboot, confirming persistence through `/etc/fstab`;
 - Caddy, WordPress, and MariaDB started successfully;
 - MariaDB became healthy;
+- all three stack services returned automatically after the normal reboot;
 - WordPress had working outbound DNS and HTTPS through `edge`;
 - MariaDB remained isolated on `app`;
 - WordPress Site Health reported **Good** after setup, with only search-engine indexing intentionally disabled while the store remained private;
-- current stable WooCommerce and BTCPay for WooCommerce V2 were bundled into the clean build.
+- current stable WooCommerce and BTCPay for WooCommerce V2 were bundled into the clean build;
+- the automatic installer cleanup ran in the fresh deployment and left Docker builder cache at `0 B`.
 
-The post-build cleanup commands were also validated manually on the same clean host: Docker builder cache dropped from about 1.228 GB to 0 B without removing active images, containers, networks, or volumes. The installer now performs the same cleanup automatically, but one more full fresh-host pass is required before that automatic cleanup step is marked clean-install verified.
+On the verified 10 GB test VPS, the completed installation used about 71% of the root filesystem and left about 2.8 GB free. This confirms that a 10 GB disk is practical for testing but leaves limited production headroom.
 
 Current verification boundary:
 
 - **Automatic clean deployment — VERIFIED.**
 - **Swap creation when absent — VERIFIED.**
+- **Swap persistence after reboot — VERIFIED.**
+- **Automatic service recovery after normal reboot — VERIFIED.**
 - **WordPress outbound/loopback network model — VERIFIED.**
 - **WooCommerce + BTCPay plugin activation — VERIFIED.**
-- **Automatic post-build cleanup in a complete fresh run — pending re-verification.**
+- **Automatic post-build cleanup in a complete fresh run — VERIFIED.**
 - **Manual setup path — not yet re-verified.**
 - **phpMyAdmin maintenance flow — not yet re-verified.**
 - **BTCPay payment integration — not yet verified.**
