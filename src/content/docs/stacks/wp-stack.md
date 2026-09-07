@@ -97,8 +97,10 @@ Current verification boundary:
 - **WordPress outbound/loopback network model — VERIFIED.**
 - **WooCommerce + BTCPay plugin activation — VERIFIED.**
 - **Automatic post-build cleanup in a complete fresh run — VERIFIED.**
+- **Cloudflare 525 failover and recovery — VERIFIED.**
 - **Manual setup path — not yet re-verified.**
 - **phpMyAdmin maintenance flow — not yet re-verified.**
+- **Cloudflare 526 failover — configured, not yet explicitly verified.**
 - **BTCPay payment integration — not yet verified.**
 
 ## Diagnostics and resource visibility
@@ -131,9 +133,11 @@ Verified production behavior currently includes:
 - stopping Caddy produced `521`, which the Worker converted to the static outage page with HTTP `503`;
 - starting Caddy restored the next request to normal WordPress service;
 - normal VPS reboot and hard reboot both produced the same failover/recovery behavior;
-- no DNS change was required.
+- a controlled TLS-handshake failure verified the `525` path end to end: the Worker returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
+- after restoring Caddy, the next request returned normal WordPress as HTTP `200` without the failover header;
+- no DNS change was required for failover or recovery.
 
-A real Cloudflare `525` was observed during a clean VPS reinstall while the origin temporarily had the wrong hostname/TLS state. `525` and `526` are now included in the Worker configuration, but controlled fallback conversion for those TLS statuses is **not yet marked verified**.
+`526` remains included in the configured failure set but has not yet been explicitly verified end to end.
 
 Configuration details live in [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/), operational diagnosis and rollback live in [WP Stack failover operations](/operations/wp-stack-failover/), and the canonical Worker source remains in the [WP Stack Cloudflare runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
 
