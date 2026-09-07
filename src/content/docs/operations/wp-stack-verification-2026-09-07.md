@@ -59,11 +59,11 @@ The bundled plugins were present in the fresh build:
 
 WooCommerce was activated first, followed by BTCPay For WooCommerce V2. Both activated successfully. The BTCPay notice that the plugin was not configured yet was expected at this stage.
 
-After both plugins were activated, Site Health still reported **Good**. No REST API, loopback, DNS, or outbound HTTPS regression appeared.
+After both plugins were activated, Site Health had no critical issues. The final check showed only ordinary recommendations for inactive themes and intentionally discouraged search-engine indexing. No REST API, loopback, DNS, or outbound HTTPS regression remained.
 
-## phpMyAdmin — verified on fresh current main
+## phpMyAdmin — verified
 
-The phpMyAdmin network fix was re-tested from the fresh clone of current `main`, not from a locally modified deployment.
+The phpMyAdmin path was tested from current `main`.
 
 Verified behavior:
 
@@ -73,10 +73,12 @@ Verified behavior:
 - the UI opened through an SSH tunnel at `http://localhost:8081`;
 - MariaDB root login with the generated `MYSQL_ROOT_PASSWORD` succeeded;
 - the `wordpress` database was visible;
-- stop/start lifecycle had already been verified separately;
-- removing the stopped phpMyAdmin container and image on the 10 GB host reclaimed roughly 600 MB by `df`, returning the host from about 78% to about 71% root-filesystem use.
+- stop/start lifecycle was verified;
+- on the ARM64 host, `phpmyadmin:latest` pulled as `linux/arm64` and returned local HTTP `200`;
+- with phpMyAdmin left running, a normal host reboot was performed;
+- after reboot, phpMyAdmin returned automatically, remained bound only to `127.0.0.1:8081`, and again returned local HTTP `200`; Caddy, WordPress, and MariaDB also returned and MariaDB was healthy.
 
-phpMyAdmin reboot behavior remains intentionally unverified. It is not required for normal operation because phpMyAdmin is an optional maintenance service and is expected to be stopped or removed after use on small disks.
+This verifies phpMyAdmin-active reboot behavior in addition to the previously verified localhost, SSH-tunnel, login, stop/start, and ARM64 paths.
 
 ## Plugin persistence across rebuild/recreate — verified
 
@@ -124,7 +126,7 @@ Test host:
 - Docker `29.1.3`
 - Docker Compose `2.40.3`
 
-The deployment used a dedicated test hostname pointed directly at the host while TLS and application behavior were verified.
+The deployment used a dedicated test hostname while TLS and application behavior were verified.
 
 Verified manual-path behavior:
 
@@ -145,27 +147,38 @@ Verified manual-path behavior:
 - WooCommerce created its expected tables, including `wp_woocommerce_attribute_taxonomies`, `wp_wc_orders`, and `wp_actionscheduler_actions`;
 - one transient WooCommerce database notice appeared during first activation before the attribute table existed; the table was subsequently created and no continuing database/fatal error remained;
 - phpMyAdmin `latest` pulled as `linux/arm64`, started from the optional `admin` profile, remained bound to `127.0.0.1:8081`, and returned local HTTP `200`;
-- phpMyAdmin was stopped/removed before the reboot test;
-- after a normal host reboot, Caddy, WordPress, and MariaDB returned automatically, MariaDB was healthy, and the public site returned HTTP `200`;
+- after a normal host reboot, Caddy, WordPress, MariaDB, and phpMyAdmin returned automatically; MariaDB was healthy; the public site returned HTTP `200`; phpMyAdmin remained localhost-only and returned local HTTP `200`;
 - `wp-config.php`, bundled plugin directories, and WordPress/MariaDB data remained present after reboot.
 
 This verifies the current manual Compose deployment path on ARM64. It does not claim that the repository's manual commands provision host prerequisites automatically: the manual test installed/configured the host firewall and Docker before running the Compose sequence.
 
-## Previously verified availability behavior
+## Cloudflare failover — verified through 526
 
-The existing Cloudflare failover test record remains valid:
+The existing production failover behavior remains verified for:
 
-- healthy origin path — verified;
-- Caddy stop/start failover and recovery — verified;
-- normal VPS reboot failover/recovery — verified;
-- hard reboot failover/recovery — verified;
-- controlled TLS-handshake failure covering the `525` path — verified;
-- `526` remains configured but not explicitly verified end to end.
+- healthy origin path;
+- Caddy stop/start failover and recovery;
+- normal VPS reboot failover/recovery;
+- hard reboot failover/recovery;
+- controlled TLS-handshake failure covering the `525` path.
 
-## Still pending before release review
+A separate controlled `526` test was completed on the isolated proxied test hostname with the same failover Worker route and Cloudflare **Full (strict)** mode. Caddy was stopped and a temporary TLS listener with a self-signed certificate was bound to origin port `443`. The direct origin TLS connection succeeded, while Cloudflare rejected the invalid origin certificate. The Worker returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`. After the temporary listener was removed and Caddy was restarted, the next proxied request returned normal WordPress as HTTP `200` with no `X-Sprey-Failover` header.
 
-- release notes and GitHub tag/release review;
-- optional explicit `526` test if desired;
-- optional phpMyAdmin-active reboot test if desired.
+This verifies the configured `526` failover and recovery path end to end.
 
-A real BTCPay payment flow is tracked separately as payment-product integration work and does not redefine the verified deployment boundary of the WP Stack itself.
+## Release-review boundary
+
+Infrastructure/deployment verification gaps targeted for v1.0 are now closed:
+
+- automatic clean deployment — verified;
+- manual ARM64 deployment — verified;
+- service and data persistence across reboot — verified;
+- phpMyAdmin localhost, SSH-tunnel, stop/start, ARM64, and active-reboot behavior — verified;
+- Cloudflare failover including controlled `525` and `526` paths — verified;
+- plugin-file persistence across WordPress image rebuild/recreate — verified.
+
+Still outside this deployment-verification boundary:
+
+- release notes and GitHub tag/release creation;
+- a real BTCPay payment flow, tracked as payment-product integration work;
+- an in-admin upgrade-to-newer-plugin-version rollback test, which remains unclaimed because no newer upstream plugin version was available during the persistence test.
