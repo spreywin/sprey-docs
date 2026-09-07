@@ -133,10 +133,43 @@ curl -I --max-time 5 http://127.0.0.1:8081/
 
 The stop/start lifecycle is verified. Reboot behavior is intentionally tracked separately and should not be described as verified until tested explicitly.
 
+## Small-disk cleanup
+
+On small VPS disks, phpMyAdmin is best treated as a temporary maintenance tool rather than a permanently retained image.
+
+A current 10 GB test host reached 78% root-filesystem usage after phpMyAdmin had been pulled and started. At that point Docker images accounted for about 2.48 GB, while the system journal used about 8 MB, `/var/log` about 9.6 MB, and the active container log files were only a few hundred kilobytes in total. This confirmed that reducing log-rotation limits would save very little compared with image/runtime storage.
+
+After maintenance, stop and remove the phpMyAdmin container and, when disk headroom matters, remove its image as well:
+
+```bash
+cd /root/sprey-wp-stack
+docker compose --profile admin stop phpmyadmin
+docker compose --profile admin rm -f phpmyadmin
+docker image rm phpmyadmin:latest
+```
+
+Then check the result:
+
+```bash
+docker system df
+df -h /
+```
+
+This does not remove the WordPress or MariaDB containers, volumes, or site data. The next time phpMyAdmin is needed, recreate it with:
+
+```bash
+docker compose --profile admin up -d phpmyadmin
+```
+
+Docker will pull the image again if it is no longer present locally.
+
+The exact amount of disk space reclaimed by removing the phpMyAdmin image is deployment-specific and should be measured on the host rather than assumed from image-list output alone.
+
 ## Security notes
 
 - Keep TCP `8081` closed publicly.
 - Use SSH tunneling rather than publishing phpMyAdmin on `0.0.0.0`.
 - Start phpMyAdmin only when needed and stop it after maintenance.
+- On small VPS disks, consider removing the stopped phpMyAdmin container and image after maintenance.
 - Prefer the WordPress database user for routine inspection when full MariaDB root privileges are unnecessary.
 - Protect `.env`; it contains database credentials generated for the deployment.
