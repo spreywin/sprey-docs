@@ -97,11 +97,13 @@ The current WP Stack deployment has verified the following path end to end:
 - the VPS-local HTTP check returned `200 OK`;
 - the UI opened successfully through an SSH tunnel at `http://localhost:8081`;
 - login as MariaDB `root` with `MYSQL_ROOT_PASSWORD` succeeded;
-- the `wordpress` database and MariaDB system schemas were visible after login.
+- the `wordpress` database and MariaDB system schemas were visible after login;
+- stopping phpMyAdmin removed the localhost listener and `127.0.0.1:8081` became unreachable;
+- starting the same service again restored `127.0.0.1:8081` and the local HTTP check returned `200 OK` again.
 
 The Compose service uses both `edge` and `app` networks so Docker can publish the localhost maintenance port while phpMyAdmin can still reach MariaDB on the private `app` network. MariaDB itself remains on `app` only.
 
-## Stop phpMyAdmin
+## Stop and restart phpMyAdmin
 
 When maintenance is finished:
 
@@ -110,13 +112,26 @@ cd /root/sprey-wp-stack
 docker compose --profile admin stop phpmyadmin
 ```
 
-Then confirm that the local port is no longer reachable:
+Confirm that the local port is no longer reachable:
 
 ```bash
 curl -I --max-time 5 http://127.0.0.1:8081/
 ```
 
-The stop/start lifecycle and reboot behavior are still being verified separately. Until that test is complete, only the access and login path above is marked verified.
+To start the already-created maintenance container again:
+
+```bash
+docker compose --profile admin start phpmyadmin
+```
+
+Then verify:
+
+```bash
+docker compose --profile admin ps
+curl -I --max-time 5 http://127.0.0.1:8081/
+```
+
+The stop/start lifecycle is verified. Reboot behavior is intentionally tracked separately and should not be described as verified until tested explicitly.
 
 ## Security notes
 
