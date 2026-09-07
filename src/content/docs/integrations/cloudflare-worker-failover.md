@@ -64,21 +64,22 @@ Remove temporary DNS/Caddy configuration after testing if it is not meant to rem
 
 ## Verified production behavior
 
-The production route has been verified directly on `sprey.win` for the existing full-origin outage path:
+The production route has been verified directly on `sprey.win` for the full-origin outage path and for a controlled TLS-handshake failure:
 
 - healthy origin traffic returned HTTP `200` through Caddy with no `X-Sprey-Failover` header;
 - stopping Caddy produced Cloudflare `521`;
 - handling `521` returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
 - starting Caddy restored the next request to normal WordPress service without a DNS change;
-- the same failover-and-recovery behavior was verified during a normal VPS reboot and a VPS hard reboot.
+- the same failover-and-recovery behavior was verified during a normal VPS reboot and a VPS hard reboot;
+- a controlled TLS-handshake failure was created by stopping Caddy and temporarily binding a non-TLS listener to origin port `443`;
+- through the production Worker route, that TLS failure returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
+- removing the temporary listener and restarting Caddy restored the next request to normal WordPress as HTTP `200` without the failover header.
 
 ## TLS-specific 525/526 boundary
 
-A real Cloudflare `525` was observed during a clean WP Stack VPS reinstall while the origin temporarily used the wrong hostname/TLS configuration. This confirms that `525` is a realistic deployment/recovery failure for the storefront.
+The controlled TLS-handshake test verifies the `525` failover path end to end on the production `sprey.win/*` Worker route. The Worker intercepted the TLS-origin failure and served the Sprey static outage page instead of exposing Cloudflare's default TLS error page.
 
-The Worker now includes both `525` and `526` in its configured failure set. However, controlled conversion of those TLS-specific Cloudflare responses into the static fallback is **not yet marked verified**. A dedicated test must prove that the production Worker route receives/handles the status as expected and returns the Sprey outage page instead of Cloudflare's default error page.
-
-Until that controlled test is complete, documentation distinguishes **configured coverage** from **verified failover behavior**.
+`526` remains included in the configured failure set, but it has not yet been explicitly verified end to end. Documentation therefore marks `525` as verified and keeps `526` as configured-but-pending.
 
 ## Cache boundaries
 
