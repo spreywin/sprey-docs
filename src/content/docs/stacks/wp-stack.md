@@ -28,7 +28,7 @@ The current stack is intentionally small and panel-free:
 - MariaDB for persistent WordPress data.
 - optional phpMyAdmin bound to localhost and disabled by default.
 
-The network boundary is deliberate: Caddy uses `edge` + `app`, WordPress uses `edge` + `app`, and MariaDB stays on the internal `app` network only. This gives WordPress outbound access for updates, WordPress.org, WooCommerce, BTCPay API calls, and loopback checks without exposing MariaDB to the Internet.
+The network boundary is deliberate: Caddy uses `edge` + `app`, WordPress uses `edge` + `app`, phpMyAdmin uses `edge` + `app` when enabled, and MariaDB stays on the internal `app` network only. This gives WordPress outbound access for updates, WordPress.org, WooCommerce, BTCPay API calls, and loopback checks while MariaDB remains isolated from the Internet. phpMyAdmin publishes only to `127.0.0.1:8081` for SSH-tunneled maintenance access.
 
 ## Before installation
 
@@ -98,8 +98,9 @@ Current verification boundary:
 - **WooCommerce + BTCPay plugin activation — VERIFIED.**
 - **Automatic post-build cleanup in a complete fresh run — VERIFIED.**
 - **Cloudflare 525 failover and recovery — VERIFIED.**
+- **phpMyAdmin localhost + SSH tunnel + root login path — VERIFIED.**
+- **phpMyAdmin stop/start/reboot lifecycle — pending verification.**
 - **Manual setup path — not yet re-verified.**
-- **phpMyAdmin maintenance flow — not yet re-verified.**
 - **Cloudflare 526 failover — configured, not yet explicitly verified.**
 - **BTCPay payment integration — not yet verified.**
 
@@ -141,9 +142,13 @@ Verified production behavior currently includes:
 
 Configuration details live in [Cloudflare Worker failover](/integrations/cloudflare-worker-failover/), operational diagnosis and rollback live in [WP Stack failover operations](/operations/wp-stack-failover/), and the canonical Worker source remains in the [WP Stack Cloudflare runbook](https://github.com/spreywin/sprey-wp-stack/blob/main/cloudflare/README.md).
 
-## Optional phpMyAdmin — pending verification
+## Optional phpMyAdmin
 
-phpMyAdmin remains off by default and localhost-only when started. The intended SSH-tunnel maintenance flow is documented in the repository README, but the current flow still requires a fresh verification pass before it is marked verified.
+The localhost-only access path is verified. phpMyAdmin starts from the `admin` Compose profile, publishes only to `127.0.0.1:8081`, opens successfully through an SSH tunnel, and can authenticate to MariaDB with credentials generated in the deployment `.env` file.
+
+For the exact start command, SSH tunnel, password retrieval commands, login choices, and security notes, use [WP Stack phpMyAdmin access](/operations/wp-stack-phpmyadmin/).
+
+The stop/start/reboot lifecycle is still being verified separately before the whole maintenance lifecycle is marked complete.
 
 ## Update behavior — pending verification
 
