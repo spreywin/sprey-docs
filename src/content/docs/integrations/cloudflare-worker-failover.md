@@ -60,26 +60,32 @@ When the production storefront must remain uninterrupted, use a temporary hostna
 7. Confirm the Worker returns the static page with HTTP `503` and `X-Sprey-Failover: static-outage-page`.
 8. Restore primary and confirm the next request returns WordPress without a DNS change.
 
-Remove temporary DNS/Caddy configuration after testing if it is not meant to remain deployed.
+Remove temporary DNS/Caddy/Worker-route configuration after testing if it is not meant to remain deployed.
 
-## Verified production behavior
+## Verified failover behavior
 
-The production route has been verified directly on `sprey.win` for the full-origin outage path and for a controlled TLS-handshake failure:
+The production route has been verified directly on `sprey.win` for full-origin outages and the controlled `525` TLS-handshake path. A dedicated proxied test hostname using the same Worker was used to verify the controlled `526` invalid-origin-certificate path without disrupting the production storefront.
+
+Verified behavior includes:
 
 - healthy origin traffic returned HTTP `200` through Caddy with no `X-Sprey-Failover` header;
 - stopping Caddy produced Cloudflare `521`;
 - handling `521` returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
 - starting Caddy restored the next request to normal WordPress service without a DNS change;
 - the same failover-and-recovery behavior was verified during a normal VPS reboot and a VPS hard reboot;
-- a controlled TLS-handshake failure was created by stopping Caddy and temporarily binding a non-TLS listener to origin port `443`;
-- through the production Worker route, that TLS failure returned the static outage page as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
-- removing the temporary listener and restarting Caddy restored the next request to normal WordPress as HTTP `200` without the failover header.
+- a controlled TLS-handshake failure was created by stopping Caddy and temporarily binding a non-TLS listener to origin port `443`, verifying the configured `525` path end to end;
+- for `526`, Cloudflare **Full (strict)** was used on an isolated proxied test hostname; Caddy was stopped and a temporary TLS listener with a self-signed certificate was bound to origin port `443`; a direct origin connection established TLS successfully, while Cloudflare rejected the invalid certificate;
+- the Worker returned the static outage page for that invalid-certificate path as HTTP `503` with `Cache-Control: no-store`, `Retry-After: 60`, and `X-Sprey-Failover: static-outage-page`;
+- removing the temporary listener and restarting Caddy restored the next proxied request to normal WordPress as HTTP `200` without the failover header.
 
 ## TLS-specific 525/526 boundary
 
-The controlled TLS-handshake test verifies the `525` failover path end to end on the production `sprey.win/*` Worker route. The Worker intercepted the TLS-origin failure and served the Sprey static outage page instead of exposing Cloudflare's default TLS error page.
+Both TLS-specific paths in the configured failure set are now explicitly verified end to end:
 
-`526` remains included in the configured failure set, but it has not yet been explicitly verified end to end. Documentation therefore marks `525` as verified and keeps `526` as configured-but-pending.
+- `525` — TLS handshake failure at the origin path;
+- `526` — TLS connection succeeds, but Cloudflare Full (strict) rejects the invalid/self-signed origin certificate.
+
+In both cases, the Worker served the Sprey static outage page instead of exposing Cloudflare's default TLS error page, and normal WordPress service returned on the next request after the origin was restored.
 
 ## Cache boundaries
 
@@ -98,7 +104,7 @@ curl -sS -D - -o /dev/null https://sprey.win/
 
 Normal WordPress responses have no `X-Sprey-Failover` header. Controlled failover returns HTTP `503` and either `static-outage-page` or `fallback-unavailable` in that header.
 
-To roll back, remove or disable only the `sprey.win/*` Workers Route. Do not change DNS.
+To roll back, remove or disable only the relevant Workers Route. Do not change DNS.
 
 For operational diagnosis and incident handling, use [WP Stack failover operations](/operations/wp-stack-failover/).
 
