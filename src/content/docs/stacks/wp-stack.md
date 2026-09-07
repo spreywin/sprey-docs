@@ -99,7 +99,8 @@ Current verification boundary:
 - **Automatic post-build cleanup in a complete fresh run — VERIFIED.**
 - **Cloudflare 525 failover and recovery — VERIFIED.**
 - **phpMyAdmin localhost + SSH tunnel + root login path — VERIFIED.**
-- **phpMyAdmin stop/start/reboot lifecycle — pending verification.**
+- **phpMyAdmin stop/start lifecycle — VERIFIED.**
+- **phpMyAdmin reboot behavior — pending verification.**
 - **Manual setup path — not yet re-verified.**
 - **Cloudflare 526 failover — configured, not yet explicitly verified.**
 - **BTCPay payment integration — not yet verified.**
@@ -146,9 +147,11 @@ Configuration details live in [Cloudflare Worker failover](/integrations/cloudfl
 
 The localhost-only access path is verified. phpMyAdmin starts from the `admin` Compose profile, publishes only to `127.0.0.1:8081`, opens successfully through an SSH tunnel, and can authenticate to MariaDB with credentials generated in the deployment `.env` file.
 
-For the exact start command, SSH tunnel, password retrieval commands, login choices, and security notes, use [WP Stack phpMyAdmin access](/operations/wp-stack-phpmyadmin/).
+The stop/start lifecycle is also verified: stopping phpMyAdmin removes the localhost listener, and starting it again restores `127.0.0.1:8081` with a successful local HTTP response.
 
-The stop/start/reboot lifecycle is still being verified separately before the whole maintenance lifecycle is marked complete.
+For the exact start command, SSH tunnel, password retrieval commands, login choices, stop/start steps, and security notes, use [WP Stack phpMyAdmin access](/operations/wp-stack-phpmyadmin/).
+
+Reboot behavior remains pending until tested explicitly.
 
 ## Update behavior — pending verification
 
