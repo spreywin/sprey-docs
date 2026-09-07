@@ -1,11 +1,11 @@
 ---
 title: WP Stack verification — 2026-09-07
-description: Final clean-install verification record for Sprey WP Stack before the manual deployment test and v1.0 release review.
+description: Clean-install and manual ARM64 verification record for Sprey WP Stack before the v1.0 release review.
 ---
 
-This page records the final clean-install verification pass performed against the current `main` branch before the manual deployment test and release review.
+This page records the final clean-install verification pass and the separate manual ARM64 deployment test performed against the current `main` branch before release review.
 
-## Test host
+## Automatic-install test host
 
 - Ubuntu 26.04.1 LTS
 - kernel `7.0.0-31-generic`
@@ -35,7 +35,7 @@ Verified behavior:
 - Docker build cache was `0 B` after installation;
 - the completed 10 GB test deployment used about 71% of the root filesystem and left about 2.8 GB free.
 
-## Reboot — verified
+## Automatic-install reboot — verified
 
 After a normal VPS reboot:
 
@@ -108,6 +108,49 @@ This verifies that existing plugin files in `wordpress_data` are preserved acros
 
 This test did **not** claim an in-admin plugin upgrade to a newer upstream version because no newer plugin version was available during the test. The verified boundary is persistence of the existing plugin files across rebuild/recreate.
 
+## Manual ARM64 deployment — verified
+
+A separate clean manual deployment was completed on an ARM64 host using the manual Compose path from current `main`.
+
+Test host:
+
+- Ubuntu 26.04.1 LTS
+- kernel `7.0.0-1010-oracle`
+- architecture `aarch64`
+- 2 OCPU
+- approximately 12 GB RAM
+- 99 GB boot volume, approximately 95 GB root filesystem
+- no swap configured during this manual test
+- Docker `29.1.3`
+- Docker Compose `2.40.3`
+
+The deployment used a dedicated test hostname pointed directly at the host while TLS and application behavior were verified.
+
+Verified manual-path behavior:
+
+- `.env` was created from `.env.example` with the deployment hostname, ACME email, and generated database passwords;
+- `docker compose config --quiet` returned exit code `0`;
+- Caddy, MariaDB, and the custom WordPress image pulled/built successfully as `linux/arm64`;
+- the WordPress image build completed successfully on ARM64;
+- `docker compose up -d` created the expected `edge` and `app` networks and persistent volumes;
+- MariaDB became healthy;
+- Caddy exposed TCP 80, TCP 443, and UDP 443;
+- HTTP redirected to HTTPS;
+- Caddy obtained a valid Let's Encrypt certificate for the test hostname;
+- Caddy enabled HTTP/1.1, HTTP/2, and the HTTP/3 listener;
+- the standard WordPress installation completed successfully;
+- an initial transient Site Health DNS/loopback warning cleared after DNS/TLS initialization; direct tests from inside the WordPress container then resolved the site hostname and returned HTTP `200` over HTTPS;
+- final WordPress Site Health had no critical issues;
+- WooCommerce `11.1.0` and BTCPay For WooCommerce V2 `2.8.2` were present and activated successfully;
+- WooCommerce created its expected tables, including `wp_woocommerce_attribute_taxonomies`, `wp_wc_orders`, and `wp_actionscheduler_actions`;
+- one transient WooCommerce database notice appeared during first activation before the attribute table existed; the table was subsequently created and no continuing database/fatal error remained;
+- phpMyAdmin `latest` pulled as `linux/arm64`, started from the optional `admin` profile, remained bound to `127.0.0.1:8081`, and returned local HTTP `200`;
+- phpMyAdmin was stopped/removed before the reboot test;
+- after a normal host reboot, Caddy, WordPress, and MariaDB returned automatically, MariaDB was healthy, and the public site returned HTTP `200`;
+- `wp-config.php`, bundled plugin directories, and WordPress/MariaDB data remained present after reboot.
+
+This verifies the current manual Compose deployment path on ARM64. It does not claim that the repository's manual commands provision host prerequisites automatically: the manual test installed/configured the host firewall and Docker before running the Compose sequence.
+
 ## Previously verified availability behavior
 
 The existing Cloudflare failover test record remains valid:
@@ -121,9 +164,8 @@ The existing Cloudflare failover test record remains valid:
 
 ## Still pending before release review
 
-- manual Compose deployment path on a separate clean host / subdomain;
-- final README and canonical Sprey Docs synchronization after that manual test;
 - release notes and GitHub tag/release review;
-- optional explicit `526` test if desired.
+- optional explicit `526` test if desired;
+- optional phpMyAdmin-active reboot test if desired.
 
 A real BTCPay payment flow is tracked separately as payment-product integration work and does not redefine the verified deployment boundary of the WP Stack itself.
