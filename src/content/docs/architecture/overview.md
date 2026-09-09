@@ -156,7 +156,7 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 
 | Domain | Product / role | Status |
 | --- | --- | --- |
-| [sprey.win](https://sprey.win/) | Public product site and WooCommerce storefront | Planned |
+| [sprey.win](https://sprey.win/) | Public product site and WooCommerce storefront | **Live** |
 | [pay.sprey.win](https://pay.sprey.win/) | Sprey Processing public payment endpoint | **Live** |
 | [adminpay.sprey.win](https://adminpay.sprey.win/) | Sprey Processing administrative endpoint behind Cloudflare Access | **Live** |
 | [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
