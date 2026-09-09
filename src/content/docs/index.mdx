@@ -1,6 +1,6 @@
 ---
 title: Sprey Docs
-description: Build, connect, and operate the Sprey platform.
+description: Technical documentation for Sprey Processing, WordPress and WooCommerce stacks, BTCPay Server integrations, self-hosted infrastructure and operations.
 template: splash
 hero:
   tagline: Canonical technical documentation for Sprey products, deployable stacks, integrations, architecture, and operations.
@@ -38,7 +38,7 @@ import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
   <Card title={'<a class="docs-card-link" href="/architecture/overview/">Architecture</a>'} icon="seti:config">
     Platform map, service boundaries, domains, deployment roles, and roadmap.
   </Card>
-  <Card title={'<a class="docs-card-link" href="/architecture/overview/#products">Products</a>'} icon="rocket">
+  <Card title={'<a class="docs-card-link" href="/products/sprey-processing/">Products</a>'} icon="rocket">
     Sprey Processing, Sprey RPC, Sprey VPN, and future customer-facing services.
   </Card>
   <Card title={'<a class="docs-card-link" href="/stacks/wp-stack/">Stacks</a>'} icon="seti:docker">
@@ -54,6 +54,13 @@ import { Card, CardGrid, Icon } from '@astrojs/starlight/components';
     Planned capabilities, dependencies, milestones, and long-term platform direction.
   </Card>
 </CardGrid>
+
+<div class="docs-home-payment-model" role="note" aria-label="Sprey WP Stack">
+  <strong>Sprey WP Stack v1.0.0</strong>
+  <span>Production-ready WordPress and WooCommerce Docker stack with Caddy, MariaDB, optional phpMyAdmin, and BTCPay integration for small VPS deployments.</span>
+  <a href="/stacks/wp-stack/">Read the WP Stack documentation →</a>
+  <a href="https://wp-stack.sprey.win/" target="_blank" rel="noopener noreferrer">Open the WP Stack product page ↗</a>
+</div>
 
 <div class="docs-metrics" aria-label="Sprey documentation model">
   <div><a href="/products/readme/"><strong>3+</strong><span>Products</span></a></div>
