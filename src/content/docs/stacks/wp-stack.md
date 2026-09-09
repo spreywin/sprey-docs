@@ -1,9 +1,15 @@
 ---
-title: Sprey WP Stack
-description: Sprey's ready-made WordPress and WooCommerce stack for online commerce, integrated with Sprey Processing.
+title: Sprey WP Stack — WordPress & WooCommerce Docker Stack
+description: Production-ready WordPress and WooCommerce Docker stack with Caddy, MariaDB, phpMyAdmin and BTCPay Server integration for small VPS deployments.
 ---
 
-**Sprey WP Stack** is Sprey's ready-made WordPress and WooCommerce implementation for **online commerce**. It packages the storefront layer needed to run a merchant site and connect WooCommerce to BTCPay Server.
+**Sprey WP Stack** is Sprey's ready-made **WordPress + WooCommerce Docker stack** for online commerce. It packages the storefront layer needed to run a merchant site and connect WooCommerce to BTCPay Server.
+
+## Release status
+
+**Current stable release:** [v1.0.0](https://github.com/spreywin/sprey-wp-stack/releases/tag/v1.0.0) — released 2026-09-09.
+
+The stable release was published after final clean-host validation on Ubuntu 26.04.1 LTS, including the x86_64 ~1 GB RAM deployment path, localhost-only phpMyAdmin, and reboot persistence checks.
 
 It is deliberately **not the boundary of Sprey Processing**. Sprey Processing at `pay.sprey.win` is the broader non-custodial crypto payment infrastructure; WP Stack is one prepared online-store path into it.
 
@@ -221,4 +227,4 @@ The operating rule is:
 
 > **Build it. Verify it. Document it.**
 
-The infrastructure/deployment checks targeted before the v1.0 release are closed. Anything outside that boundary remains explicitly separated rather than being described as verified.
+**Sprey WP Stack v1.0.0 is released and is the current stable version.** It was published after the targeted infrastructure and deployment checks were completed. Anything outside that verified boundary remains explicitly separated rather than being described as verified.
