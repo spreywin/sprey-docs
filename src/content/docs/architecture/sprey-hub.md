@@ -79,6 +79,45 @@ Purpose:
 
 The Hub may contain several services, but they should still be separated by containers, data volumes, credentials, and explicit network boundaries.
 
+## Proposed Zurich resource layout
+
+The current preferred layout is to repurpose the already-tested Oracle Zurich ARM64 VM as the future Hub rather than use it as the public web host.
+
+Current candidate allocation:
+
+```text
+Oracle Zurich
+
+sprey-hub
+  current Oracle VM
+  2 OCPU
+  12 GB RAM
+  99 GB boot volume
+
+sprey-web
+  new Oracle VM
+  initial target: 1 OCPU / 4 GB RAM
+  50 GB boot volume
+
+remaining compute/storage capacity
+  kept uncommitted initially
+  may later be assigned to sprey-hub when real usage justifies it
+```
+
+The Hub is expected to benefit more from RAM and storage than the public WordPress host because it may hold Nextcloud files, file versions, collaboration data, Vaultwarden, dashboards, and later additional internal services.
+
+The public `sprey-web` host should start small but with enough memory headroom for WordPress, WooCommerce, MariaDB, Caddy, updates, and short traffic or maintenance spikes. The initial `1 OCPU / 4 GB RAM / 50 GB` target is therefore preferred over treating the previously verified approximately 1 GB test host as a production sizing recommendation.
+
+Any remaining Oracle compute capacity is a reserve rather than a separate product commitment. If Hub usage grows, spare CPU or RAM may be reassigned to `sprey-hub` before another service is created.
+
+### Oracle Always Free boundary — must be re-verified
+
+The current Oracle console has shown an Always Free allowance equivalent to an aggregate **4 OCPU / 24 GB RAM** for Ampere A1 and **200 GB** of free block/boot volume capacity in this tenancy.
+
+That observed allowance is useful for planning, but this document does **not** yet treat it as a permanent lifetime guarantee. Before relying on this layout for production, the current Oracle terms, tenancy limits, Always Free eligibility, and any conditions that could change or remove the allowance must be checked again against Oracle's current documentation and the live tenancy console.
+
+The architecture should remain viable even if the commercial or free-tier boundary changes later. Resource sizing and service separation are architectural decisions; dependence on a particular free allowance is not.
+
 ## Core service: Nextcloud Hub
 
 The planned center of the internal workspace is **Nextcloud Hub**.
@@ -316,16 +355,17 @@ Public reachability and authentication policy for each Hub service must be decid
 
 The Hub should be built incrementally rather than as one large stack.
 
-1. Finalize the Zurich VM/storage/network layout and confirm the resource boundary between `sprey-web` and `sprey-hub`.
-2. Create the dedicated `sprey-hub` host.
-3. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
-4. Define the company file taxonomy and migrate selected workstation data.
-5. Implement encrypted offsite backups and perform a restore test.
-6. Deploy Vaultwarden and verify backup/recovery before moving critical credentials.
-7. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
-8. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
-9. Add AI integration only after access control and internal data boundaries are clear.
-10. Design mail migration separately; keep Zoho until the replacement mail architecture is proven.
+1. Re-verify the Oracle tenancy's current Always Free resource terms and live limits before treating the proposed Zurich layout as a production dependency.
+2. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Oracle VM as `sprey-hub` and create a separate small `sprey-web` VM.
+3. Keep remaining compute/storage capacity uncommitted until real Hub or web usage justifies allocation; prefer expanding `sprey-hub` when internal storage or collaboration demand grows.
+4. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
+5. Define the company file taxonomy and migrate selected workstation data.
+6. Implement encrypted offsite backups and perform a restore test.
+7. Deploy Vaultwarden and verify backup/recovery before moving critical credentials.
+8. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
+9. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
+10. Add AI integration only after access control and internal data boundaries are clear.
+11. Design mail migration separately; keep Zoho until the replacement mail architecture is proven.
 
 ## Architecture rule
 
