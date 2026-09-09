@@ -95,22 +95,21 @@ sprey-hub
   99 GB boot volume
 
 sprey-web
-  new VM
-  initial target: 1 OCPU / 4 GB RAM
-  50 GB boot volume
+  new small VM
+  1 GB RAM
+  minimum practical boot volume
+  swap enabled as required by the verified WP Stack baseline
 
-remaining compute/storage capacity
+remaining storage capacity
   kept uncommitted initially
   may later be assigned to sprey-hub when real usage justifies it
 ```
 
 The Hub is expected to benefit more from RAM and storage than the public WordPress host because it may hold Nextcloud files, file versions, collaboration data, Vaultwarden, dashboards, and later additional internal services.
 
-The public `sprey-web` host should start small but with enough memory headroom for WordPress, WooCommerce, MariaDB, Caddy, updates, and short traffic or maintenance spikes. The initial `1 OCPU / 4 GB RAM / 50 GB` target is therefore preferred over treating the previously verified approximately 1 GB test host as a production sizing recommendation.
+The public `sprey-web` host is intentionally kept minimal. The Sprey WP Stack has already been verified on an approximately 1 GB host with swap, so this class of VM is considered a valid starting point for the public storefront. Production sizing should still be adjusted later if measured traffic, updates, or WooCommerce workloads show that more capacity is required.
 
-Any remaining compute or storage capacity is a reserve rather than a separate product commitment. If Hub usage grows, spare CPU, RAM, or storage may be reassigned to `sprey-hub` before another service is created.
-
-Provider-specific pricing, promotional programs, and account allowances are operational details rather than architectural dependencies and are intentionally not part of this design document. Before provisioning or resizing, the live provider console should be checked for currently available capacity.
+Any remaining storage capacity is a reserve rather than a separate product commitment. If Hub usage grows, spare storage should preferentially be assigned to `sprey-hub` before creating another storage-heavy service.
 
 ## Core service: Nextcloud Hub
 
@@ -349,17 +348,16 @@ Public reachability and authentication policy for each Hub service must be decid
 
 The Hub should be built incrementally rather than as one large stack.
 
-1. Confirm the current provider capacity available for the proposed Zurich layout before provisioning or resizing.
-2. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Zurich VM as `sprey-hub` and create a separate small `sprey-web` VM.
-3. Keep remaining compute/storage capacity uncommitted until real Hub or web usage justifies allocation; prefer expanding `sprey-hub` when internal storage or collaboration demand grows.
-4. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
-5. Define the company file taxonomy and migrate selected workstation data.
-6. Implement encrypted offsite backups and perform a restore test.
-7. Deploy Vaultwarden and verify backup/recovery before moving critical credentials.
-8. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
-9. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
-10. Add AI integration only after access control and internal data boundaries are clear.
-11. Design mail migration separately; keep Zoho until the replacement mail architecture is proven.
+1. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Zurich VM as `sprey-hub` and create a separate minimal `sprey-web` VM.
+2. Keep remaining storage capacity uncommitted until real Hub or web usage justifies allocation; prefer expanding `sprey-hub` when internal storage or collaboration demand grows.
+3. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
+4. Define the company file taxonomy and migrate selected workstation data.
+5. Implement encrypted offsite backups and perform a restore test.
+6. Deploy Vaultwarden and verify backup/recovery before moving critical credentials.
+7. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
+8. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
+9. Add AI integration only after access control and internal data boundaries are clear.
+10. Design mail migration separately; keep Zoho until the replacement mail architecture is proven.
 
 ## Architecture rule
 
