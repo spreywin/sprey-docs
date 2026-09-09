@@ -21,7 +21,7 @@ The target is a small, self-hosted internal platform with clear service boundari
         PUBLIC INFRA                 INTERNAL INFRA
              |                           |
          sprey-web                    sprey-hub
-      Oracle Zurich                 Oracle Zurich
+      Zurich, Switzerland          Zurich, Switzerland
              |                           |
          sprey.win                  hub.sprey.win
      WordPress/WooCommerce                |
@@ -81,21 +81,21 @@ The Hub may contain several services, but they should still be separated by cont
 
 ## Proposed Zurich resource layout
 
-The current preferred layout is to repurpose the already-tested Oracle Zurich ARM64 VM as the future Hub rather than use it as the public web host.
+The current preferred layout is to repurpose the already-tested Zurich ARM64 VM as the future Hub rather than use it as the public web host.
 
 Current candidate allocation:
 
 ```text
-Oracle Zurich
+Zurich, Switzerland
 
 sprey-hub
-  current Oracle VM
+  current VM
   2 OCPU
   12 GB RAM
   99 GB boot volume
 
 sprey-web
-  new Oracle VM
+  new VM
   initial target: 1 OCPU / 4 GB RAM
   50 GB boot volume
 
@@ -108,15 +108,9 @@ The Hub is expected to benefit more from RAM and storage than the public WordPre
 
 The public `sprey-web` host should start small but with enough memory headroom for WordPress, WooCommerce, MariaDB, Caddy, updates, and short traffic or maintenance spikes. The initial `1 OCPU / 4 GB RAM / 50 GB` target is therefore preferred over treating the previously verified approximately 1 GB test host as a production sizing recommendation.
 
-Any remaining Oracle compute capacity is a reserve rather than a separate product commitment. If Hub usage grows, spare CPU or RAM may be reassigned to `sprey-hub` before another service is created.
+Any remaining compute or storage capacity is a reserve rather than a separate product commitment. If Hub usage grows, spare CPU, RAM, or storage may be reassigned to `sprey-hub` before another service is created.
 
-### Oracle Always Free boundary — must be re-verified
-
-The current Oracle console has shown an Always Free allowance equivalent to an aggregate **4 OCPU / 24 GB RAM** for Ampere A1 and **200 GB** of free block/boot volume capacity in this tenancy.
-
-That observed allowance is useful for planning, but this document does **not** yet treat it as a permanent lifetime guarantee. Before relying on this layout for production, the current Oracle terms, tenancy limits, Always Free eligibility, and any conditions that could change or remove the allowance must be checked again against Oracle's current documentation and the live tenancy console.
-
-The architecture should remain viable even if the commercial or free-tier boundary changes later. Resource sizing and service separation are architectural decisions; dependence on a particular free allowance is not.
+Provider-specific pricing, promotional programs, and account allowances are operational details rather than architectural dependencies and are intentionally not part of this design document. Before provisioning or resizing, the live provider console should be checked for currently available capacity.
 
 ## Core service: Nextcloud Hub
 
@@ -330,7 +324,7 @@ At minimum, the backup scope should eventually include:
 - internal dashboard configuration;
 - future service-specific data.
 
-An independent storage target such as object storage or another provider should be preferred so that a single Oracle account, VM, disk, or operator mistake cannot destroy both the working copy and its backup.
+An independent storage target such as object storage or another provider should be preferred so that a single provider account, VM, disk, or operator mistake cannot destroy both the working copy and its backup.
 
 Backups are not considered complete until restore has been tested.
 
@@ -355,8 +349,8 @@ Public reachability and authentication policy for each Hub service must be decid
 
 The Hub should be built incrementally rather than as one large stack.
 
-1. Re-verify the Oracle tenancy's current Always Free resource terms and live limits before treating the proposed Zurich layout as a production dependency.
-2. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Oracle VM as `sprey-hub` and create a separate small `sprey-web` VM.
+1. Confirm the current provider capacity available for the proposed Zurich layout before provisioning or resizing.
+2. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Zurich VM as `sprey-hub` and create a separate small `sprey-web` VM.
 3. Keep remaining compute/storage capacity uncommitted until real Hub or web usage justifies allocation; prefer expanding `sprey-hub` when internal storage or collaboration demand grows.
 4. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
 5. Define the company file taxonomy and migrate selected workstation data.
