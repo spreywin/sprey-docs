@@ -33,6 +33,13 @@
 :root[data-has-hero] .docs-home-payment-model a { min-width: 0; justify-self: end; color: var(--sprey-purple-2); font-size: .9rem; font-weight: 600; text-align: end; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
 :root[data-has-hero] .docs-home-payment-model a:hover { text-decoration: underline; }
 
+/* WP Stack release banner: keep side actions vertically centered and the product CTA centered. */
+:root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] { grid-template-rows: auto auto; margin-top: 2rem; }
+:root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > strong { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+:root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > span { grid-column: 2; grid-row: 1; align-self: center; }
+:root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:first-of-type { grid-column: 3; grid-row: 1 / span 2; align-self: center; justify-self: center; text-align: center; }
+:root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:last-of-type { grid-column: 2; grid-row: 2; align-self: center; justify-self: center; text-align: center; }
+
 /* Homepage section cards. */
 :root[data-has-hero] .card-grid > article, :root[data-has-hero] .card-grid > .card, :root[data-has-hero] .sl-link-card { border-radius: 1rem; }
 :root[data-has-hero] .card-grid > * { overflow: hidden; border-radius: 1rem; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
@@ -75,7 +82,7 @@
 :root:not([data-theme='dark'])[data-has-hero] .docs-principles span, :root:not([data-theme='dark'])[data-has-hero] .docs-metrics span, :root:not([data-theme='dark'])[data-has-hero] .docs-home-footer { color: var(--sl-color-gray-1); }
 
 @media (prefers-reduced-motion: reduce) { :root[data-has-hero] .hero::after, :root[data-has-hero] .hero .actions a { animation: none !important; transition: none !important; } }
-@media (max-width: 60rem) { :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; } :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); } :root[data-has-hero] .hero h1 { white-space: normal; } :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model strong, :root[data-has-hero] .docs-home-payment-model a { justify-self: start; text-align: start; } }
+@media (max-width: 60rem) { :root[data-has-hero] .hero { grid-template-columns: 1fr; gap: 2rem; min-height: auto; padding: 3rem 0; } :root[data-has-hero] .hero::after { grid-column: 1; grid-row: auto; width: min(100%, 36rem); } :root[data-has-hero] .hero h1 { white-space: normal; } :root[data-has-hero] .docs-principles { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model { grid-template-columns: 1fr; } :root[data-has-hero] .docs-home-payment-model strong, :root[data-has-hero] .docs-home-payment-model a { justify-self: start; text-align: start; } :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > strong, :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > span, :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:first-of-type, :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:last-of-type { grid-column: 1; grid-row: auto; } :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:last-of-type { justify-self: center; text-align: center; } }
 @media (max-width: 50rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 34rem) { :root[data-has-hero] .hero .actions { flex-direction: column; align-items: center; } :root[data-has-hero] .hero .actions a { width: auto; } }
 @media (max-width: 32rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: 1fr; } }
