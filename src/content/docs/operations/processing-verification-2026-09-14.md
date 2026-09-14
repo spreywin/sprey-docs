@@ -296,6 +296,24 @@ Redirect Url: https://pay.sprey.win/
 
 This confirms that ordinary Store invoices inherit the customer return destination from the Store Website setting. The customer-facing return action now returns to Sprey Processing rather than the general marketing site.
 
+## Checkout payment-timing notice
+
+A customer-facing timing note was added to the `Sprey Processing` checkout footer after the real late-BTC-payment test and the invoice-expiry adjustment.
+
+The current English text is:
+
+> Your exchange rate is locked for 45 minutes. Late payments are monitored for up to 24 hours and processed once confirmed.
+
+The notice intentionally reflects the Store's current operational settings:
+
+```text
+Invoice expiry / rate-lock window: 45 minutes
+Post-expiry monitoring/invalid window: 1440 minutes (24 hours)
+Settlement requirement: at least 1 confirmation
+```
+
+The wording is informational rather than a guarantee that every late payment can be accepted under all conditions. Its purpose is to make the configured timing behavior visible to the customer before leaving the checkout page.
+
 ## Receipt follow-up
 
 BTCPay's built-in successful-payment receipt page was verified during the Ethereum and Polygon tests. It includes the amount paid, payment method, payment destination, date, and a printable receipt view.
@@ -392,6 +410,7 @@ Verified on the live reference deployment:
 - server SMTP delivery;
 - production Starter price restored to `$18.99/month`;
 - Store Website and new-invoice redirect set to `https://pay.sprey.win/`;
+- customer-facing checkout timing notice added for the 45-minute rate-lock and 24-hour late-payment monitoring behavior;
 - both internal regression users set to bypass monetization;
 - Lightning experiment cleanup completed: SamRock and Boltz removed, Nostr retained;
 - `Sprey Labs` created as a separate merchant-app/plugin test bench.
