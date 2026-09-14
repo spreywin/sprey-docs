@@ -143,6 +143,31 @@ With this checkpoint, the installed Tether USDt plugin has real paid-invoice ver
 
 **USDt on Polygon E2E: VERIFIED.**
 
+## Merchant-controlled wallet balance confirmation
+
+After the BTCPay payment tests, balances were checked independently through the merchant-controlled Tether WDK CLI wallet.
+
+The observed balances matched the real test payments exactly:
+
+```text
+Bitcoin   index 4   0.00010436 BTC
+TRON      index 0   9.99 USDT
+Ethereum  index 0   1.89 USDT
+Polygon   index 0   1.17 USDT0
+```
+
+For Polygon, the current WDK CLI token registry exposes Tether as `usdt0` / `USDT0`; both token spellings returned the same `1.17 USDT0` balance.
+
+This provides an independent wallet-side confirmation that the merchant-controlled destinations received the funds observed by BTCPay. The Bitcoin result also confirms that the WDK-derived BIP84 account used by BTCPay watch-only observation contains the exact real test payment at derived address index `4`.
+
+On Windows, successful WDK balance output was followed by this process-shutdown assertion on several commands:
+
+```text
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 94
+```
+
+The assertion occurred after the requested balances had already been returned. It is recorded as a CLI/runtime issue to track separately and did not prevent the observed balance checks from completing.
+
 ## Hosted-user onboarding root cause and fix
 
 The first paid hosted user was created successfully by Monetization but did not receive a usable account-setup path. The user existed, the subscription was active, and SMTP delivery worked, but the account had no password and the expected onboarding message did not arrive.
@@ -267,6 +292,7 @@ Verified on the live reference deployment:
 - real USDt settlement on TRON;
 - real USDt settlement on Ethereum;
 - real USDt settlement on Polygon;
+- independent WDK wallet-side confirmation of the exact BTC, TRON USDt, Ethereum USDt, and Polygon USDt balances received during the real tests;
 - real paid hosted-subscription activation;
 - email-confirmation onboarding for passwordless Monetization users;
 - password setup, login, Store creation, and password reset for the clean hosted test user;
