@@ -1,9 +1,9 @@
 ---
 title: Sprey Processing verification — 2026-09-14
-description: Real BTC and USDt payment verification, hosted-subscription onboarding fix, and Processing redirect checkpoint.
+description: Real BTC and USDt payment verification, hosted-subscription onboarding fix, wallet confirmation, and Processing/Labs split.
 ---
 
-This checkpoint records behavior directly verified on 2026-09-14 on the live `Sprey Processing` Store.
+This checkpoint records behavior directly verified on 2026-09-14 on the live `Sprey Processing` deployment.
 
 ## Backup checkpoint
 
@@ -160,6 +160,32 @@ For Polygon, the current WDK CLI token registry exposes Tether as `usdt0` / `USD
 
 This provides an independent wallet-side confirmation that the merchant-controlled destinations received the funds observed by BTCPay. The Bitcoin result also confirms that the WDK-derived BIP84 account used by BTCPay watch-only observation contains the exact real test payment at derived address index `4`.
 
+### Sparrow confirmation
+
+The merchant-side Sparrow wallet `Sprey Processing WDK BTC` was then allowed to load its transaction history. Sparrow independently found the same confirmed Bitcoin payment:
+
+```text
+Balance:      10,436 sats
+Mempool:      0 sats
+Transactions: 1
+```
+
+The incoming transaction value was `10,436 sats`, exactly equal to `0.00010436 BTC` reported by WDK at index `4` and by BTCPay for the settled invoice.
+
+The first Sparrow view showed `0 sats` because its network/backend connection was disabled. After enabling the connection and allowing history loading to finish, Sparrow displayed the confirmed transaction and correct balance. This was a connectivity state, not a wallet/xpub/derivation mismatch.
+
+The Bitcoin payment is therefore independently consistent across all three layers:
+
+```text
+BTCPay settled invoice
+        =
+WDK BTC index 4 balance
+        =
+Sparrow confirmed balance / UTXO
+        =
+0.00010436 BTC / 10,436 sats
+```
+
 On Windows, successful WDK balance output was followed by this process-shutdown assertion on several commands:
 
 ```text
@@ -235,10 +261,18 @@ The current responsibility split is:
 
 Two hosted test users are intentionally retained:
 
-1. the original control user created before email confirmation was required; its password was set manually;
-2. the clean reference user created after the corrected email-confirmation policy was enabled.
+1. the original control user created before email confirmation was required; its password was set manually and its email remains unconfirmed;
+2. the clean reference user created after the corrected email-confirmation policy was enabled; its email is confirmed.
 
-Both are useful for regression comparisons. The intended long-term internal-test treatment is to use the per-user **Bypass monetization** flag rather than assigning fake commercial Lifetime subscriptions or repeatedly paying Sprey itself.
+Both now have:
+
+```text
+Bypass monetization for this user = ON
+```
+
+They therefore remain available for regression and customer-journey testing without requiring repeated paid subscriptions or fake commercial Lifetime plans.
+
+Keeping the users different is intentional: the first preserves the pre-fix control case, while the second is the clean reference for the corrected onboarding flow.
 
 ## Store website and invoice redirect
 
@@ -268,20 +302,78 @@ BTCPay's built-in successful-payment receipt page was verified during the Ethere
 
 A remaining UX task is to determine the cleanest upstream-compatible way to deliver or link this receipt to the customer automatically without duplicating unnecessary email traffic.
 
-## Lightning status
+## Lightning status and plugin cleanup
 
 Lightning is **not** marked production-verified by this checkpoint.
 
-Verified/observed changes during evaluation:
+The evaluation produced the following decisions:
 
 - Flint was removed from the Store after the test wallet was confirmed empty;
 - the server-side-seed model used by Flint is not the preferred long-term Sprey ownership boundary;
-- Boltz was installed as a SamRock dependency, but the reference host and an external client both timed out reaching `api.boltz.exchange:443` during testing;
-- Boltz's Lightning-to-Liquid mode therefore was not completed or selected as the primary Sprey Lightning path;
-- SamRock Protocol remains installed as an optional client-controlled integration path;
-- Nostr support is installed as an optional merchant feature.
+- Boltz was tested indirectly through the SamRock dependency, but `api.boltz.exchange:443` timed out from both the reference host and an external client;
+- Boltz/Liquid was not selected as the primary Sprey Lightning path;
+- SamRock Protocol was evaluated but was not selected as the target integration for WDK Spark or hosted-client Lightning;
+- SamRock Protocol and Boltz were uninstalled after evaluation;
+- Nostr remains installed for NIP-05, zaps and future Nostr Wallet Connect use cases;
+- Tether USDt remains installed as the verified stablecoin payment plugin.
 
-The product direction remains that hosted users should control their own Lightning destination and liquidity rather than relying on a shared Sprey custodial wallet or shared internal Lightning node.
+Current installed-plugin baseline after cleanup:
+
+```text
+Nostr        1.1.21.0
+Tether USDt  0.6.1.0
+```
+
+The product direction remains **external/client-controlled Lightning** rather than a shared Sprey custodial wallet or shared internal Lightning node. NWC is a preferred standards-based direction for compatible external wallets. Direct WDK Spark integration remains future adapter/integration work rather than a currently verified BTCPay backend.
+
+## Sprey Processing / Sprey Labs Store separation
+
+A separate Store named **`Sprey Labs`** was created to keep experimental merchant apps, plugins and UX checks out of the production/reference Store.
+
+The Store-role split is now:
+
+```text
+Sprey Processing
+  production/reference Store
+  -> monetization
+  -> ordinary invoices
+  -> verified payment rails
+  -> email / receipt / redirect behavior
+  -> API / webhooks and core Processing behavior
+
+Sprey Labs
+  feature and plugin test bench
+  -> Pay Button
+  -> Crowdfund
+  -> Point of Sale
+  -> Satoshi Tickets
+  -> Nostr and other optional merchant apps
+  -> future plugin/app experiments
+
+Internal user Stores
+  customer-regression layer
+  -> non-admin UX
+  -> client-visible permissions and limits
+  -> customer Store creation/configuration behavior
+```
+
+`Sprey Labs` was created without wallets configured initially. The rule is to avoid attaching real payment destinations unless a specific end-to-end test requires them. Configuration-only behavior should be verified without unnecessary payment-wallet coupling; real settlement should be added only for the exact flow being tested.
+
+This separation also reflects BTCPay's own warning that Pay Button is intended for tips/donations rather than general e-commerce and should preferably be isolated from a commercial Store.
+
+## Merchant-app exploration status
+
+The following merchant entry points/apps are now explicitly in the verification queue, primarily under `Sprey Labs` unless the test is specifically about customer/non-admin behavior:
+
+- Pay Button;
+- Point of Sale;
+- Crowdfund;
+- Payment Requests;
+- Satoshi Tickets.
+
+Pay Button configuration was opened and its available modes were confirmed, including fixed/custom/slider amount options, email notifications, browser redirect, IPN, generated embed code, shareable link and LNURL. It is not yet marked end-to-end verified.
+
+Satoshi Tickets was installed and its event-creation flow was inspected. It exposes virtual-event configuration, description, event URL/location, post-purchase redirect, image, dates, currency and optional reminder email/template fields. No ticket-purchase E2E is claimed yet.
 
 ## End-of-day verified state
 
@@ -293,16 +385,21 @@ Verified on the live reference deployment:
 - real USDt settlement on Ethereum;
 - real USDt settlement on Polygon;
 - independent WDK wallet-side confirmation of the exact BTC, TRON USDt, Ethereum USDt, and Polygon USDt balances received during the real tests;
+- independent Sparrow confirmation of the same `10,436 sats` Bitcoin payment;
 - real paid hosted-subscription activation;
 - email-confirmation onboarding for passwordless Monetization users;
 - password setup, login, Store creation, and password reset for the clean hosted test user;
 - server SMTP delivery;
 - production Starter price restored to `$18.99/month`;
 - Store Website and new-invoice redirect set to `https://pay.sprey.win/`;
-- two internal regression users retained for future comparison.
+- both internal regression users set to bypass monetization;
+- Lightning experiment cleanup completed: SamRock and Boltz removed, Nostr retained;
+- `Sprey Labs` created as a separate merchant-app/plugin test bench.
 
-Still pending before the admin/reference Store is considered finished:
+Still pending before the admin/reference Processing setup is considered finished:
 
 - customer receipt delivery/linking UX;
-- final Lightning integration policy and verified Lightning E2E;
-- verification of the remaining built-in BTCPay merchant entry points and integrations one flow at a time.
+- remaining subscription lifecycle email checks;
+- final external-Lightning/NWC policy and a future verified Lightning E2E when a suitable client-controlled backend is selected;
+- verification of Pay Button, Point of Sale, Crowdfund, Payment Requests and Satoshi Tickets one flow at a time;
+- final consolidation into `products/sprey-processing.md` after configuration and verification work is complete.
