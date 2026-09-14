@@ -333,13 +333,33 @@ The evaluation produced the following decisions:
 - SamRock Protocol was evaluated but was not selected as the target integration for WDK Spark or hosted-client Lightning;
 - SamRock Protocol and Boltz were uninstalled after evaluation;
 - Nostr remains installed for NIP-05, zaps and future Nostr Wallet Connect use cases;
-- Tether USDt remains installed as the verified stablecoin payment plugin.
+- Tether USDt remains installed as the verified stablecoin payment plugin;
+- Satoshi Tickets is installed as an optional merchant-app/plugin for event-ticketing tests under `Sprey Labs`;
+- Stripe is installed as an optional client-facing fiat payment integration; it is not part of Sprey's core payment rail and is not configured as Sprey's own merchant account.
 
-Current installed-plugin baseline after cleanup:
+Current installed-plugin baseline:
 
 ```text
-Nostr        1.1.21.0
-Tether USDt  0.6.1.0
+Nostr            1.1.21.0
+Satoshi Tickets  1.5.0.0
+Stripe           1.0.13.0
+Tether USDt      0.6.1.0
+```
+
+The current role split is:
+
+```text
+Core / verified payment plugin
+  Tether USDt
+
+Standards / optional Lightning-Nostr integration
+  Nostr
+
+Optional merchant app / Labs use case
+  Satoshi Tickets
+
+Optional client fiat integration
+  Stripe
 ```
 
 The product direction remains **external/client-controlled Lightning** rather than a shared Sprey custodial wallet or shared internal Lightning node. NWC is a preferred standards-based direction for compatible external wallets. Direct WDK Spark integration remains future adapter/integration work rather than a currently verified BTCPay backend.
@@ -393,6 +413,8 @@ Pay Button configuration was opened and its available modes were confirmed, incl
 
 Satoshi Tickets was installed and its event-creation flow was inspected. It exposes virtual-event configuration, description, event URL/location, post-purchase redirect, image, dates, currency and optional reminder email/template fields. No ticket-purchase E2E is claimed yet.
 
+Stripe is installed so that supported client merchants can optionally connect their own Stripe accounts for fiat acceptance alongside crypto. No Stripe merchant configuration or Stripe payment E2E is claimed for Sprey itself.
+
 ## End-of-day verified state
 
 Verified on the live reference deployment:
@@ -413,6 +435,7 @@ Verified on the live reference deployment:
 - customer-facing checkout timing notice added for the 45-minute rate-lock and 24-hour late-payment monitoring behavior;
 - both internal regression users set to bypass monetization;
 - Lightning experiment cleanup completed: SamRock and Boltz removed, Nostr retained;
+- current installed-plugin baseline recorded as Nostr, Satoshi Tickets, Stripe and Tether USDt;
 - `Sprey Labs` created as a separate merchant-app/plugin test bench.
 
 Still pending before the admin/reference Processing setup is considered finished:
