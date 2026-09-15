@@ -1,6 +1,6 @@
 ---
 title: Sprey Processing verification — 2026-09-15
-description: Starter trial onboarding, subscription email lifecycle, and OpenReceive compatibility checkpoint.
+description: Starter trial onboarding, subscription email lifecycle, Lightning/NWC verification, and OpenReceive compatibility checkpoint.
 ---
 
 This checkpoint records behavior directly verified on 2026-09-15 on the live `Sprey Processing` deployment.
@@ -108,6 +108,7 @@ Sprey Processing
   -> monetization
   -> ordinary invoices
   -> verified BTC / USDt payment rails
+  -> verified external Lightning via NWC
   -> onboarding / email lifecycle
 
 Sprey Labs
@@ -133,6 +134,75 @@ For future Labs settlement isolation, the current direction is to keep Labs paym
 - separate USDt receive-address ranges for TRON / Ethereum / Polygon;
 - a separate Bitcoin BIP84 account/xpub for Labs rather than reusing the exact Processing account xpub;
 - no second master seed is required solely for this separation.
+
+## Direct Rizful / NWC Lightning verification
+
+A working external Lightning path was verified without OpenReceive by connecting Rizful directly to BTCPay through the installed Nostr plugin as a custom NWC Lightning backend.
+
+Working connection shape:
+
+```text
+BTCPay Store
+  -> Lightning custom node
+  -> Nostr Wallet Connect (NWC)
+  -> Rizful
+```
+
+The NWC connection negotiates `Nip44V2` successfully and BTCPay starts its Lightning listener against the Rizful NWC relay.
+
+An initial real payment from OKX reached Rizful, and BTCPay could see the resulting Lightning balance, but the related BTCPay invoice was not settled automatically. Restarting BTCPay did not reconcile that invoice.
+
+The Rizful BTCPay guidance notes that, when connection/payment handling problems occur, `Enable LNURL` should be disabled in BTCPay Lightning settings. After disabling the top-level `Enable LNURL` switch, a clean second test was run using a separate Rizful wallet as payer, removing OKX from the test path.
+
+Verified E2E test:
+
+```text
+Rizful test wallet
+  -> Lightning payment
+  -> Sprey Processing / BTCPay invoice
+  -> Rizful merchant wallet via NWC
+```
+
+Test amount:
+
+```text
+99 sats
+```
+
+Observed behavior:
+
+- BTCPay created a fresh Lightning-only invoice successfully;
+- the second Rizful wallet parsed and sent the BOLT11 invoice immediately;
+- Rizful reported payment attempt started, payment received, and payment attempt succeeded;
+- payment arrived almost immediately;
+- the BTCPay checkout changed to `Invoice paid` automatically;
+- the BTCPay invoice state changed to `Settled` automatically;
+- the built-in receipt page showed the payment method as `BTC-LN` and the full paid amount;
+- no manual invoice-state change or recovery action was required.
+
+The sender-side transaction view showed very small fees for this test:
+
+```text
+Platform fee: 1 sat
+Routing fee:  1 sat
+```
+
+This was dramatically cheaper and faster than the earlier OKX Lightning withdrawal path used for testing.
+
+Current operational conclusion:
+
+```text
+External Lightning backend: working
+Backend provider: Rizful
+Connection: direct NWC through BTCPay Nostr plugin
+LNURL: disabled
+Automatic invoice settlement: verified
+Receipt generation: verified
+```
+
+This direct Rizful/NWC path is accepted as the current working Lightning option for Sprey Processing and as a supported client pattern while a future native Sprey/WDK Spark integration is developed and verified.
+
+The preferred security direction remains least privilege. Where the backend/provider permits it, receive-oriented NWC permissions should be preferred over unnecessary spend authority.
 
 ## OpenReceive / receive-only NWC test
 
@@ -176,10 +246,10 @@ Current conclusion:
 ```text
 OpenReceive/NWC architecture: promising / validated through preflight
 OpenReceive 0.4.7.0 on BTCPay 2.4.4: blocked by plugin API incompatibility
-Production Lightning status: not yet verified
+Direct Nostr-plugin NWC path: verified and working
 ```
 
-BTCPay will not be downgraded solely to accommodate this plugin.
+BTCPay will not be downgraded solely to accommodate OpenReceive.
 
 ## Current verified state
 
@@ -197,6 +267,10 @@ Verified on the live reference deployment:
 - receipt-in-confirmation-email customization is deferred;
 - OpenReceive receive-only Rizful/NWC preflight succeeds;
 - OpenReceive `0.4.7.0` is disabled because of BTCPay `2.4.4` payment-method API incompatibility;
+- direct Rizful NWC through the Nostr plugin is verified for real Lightning receive and automatic settlement;
+- BTCPay `Enable LNURL` is disabled for the verified Rizful/NWC configuration;
+- a separate Rizful payer successfully paid a 99-sat invoice and BTCPay automatically marked it `Settled`;
+- built-in Lightning receipt generation is verified;
 - `Sprey Labs` remains the future live-demo Store and `sprey.win` is the planned public demo surface.
 
 ## Pending natural lifecycle verification
