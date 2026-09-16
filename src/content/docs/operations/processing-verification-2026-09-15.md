@@ -206,7 +206,7 @@ The preferred security direction remains least privilege. Where the backend/prov
 
 ## OpenReceive / receive-only NWC test
 
-OpenReceive `0.4.7.0` was installed and tested on BTCPay Server `2.4.4` using a receive-only Rizful NWC connection.
+OpenReceive `0.4.7.0` was initially installed and tested on BTCPay Server `2.4.4` using a receive-only Rizful NWC connection.
 
 The NWC preflight succeeded. OpenReceive negotiated `nip44_v2` and detected the expected receive-oriented methods:
 
@@ -218,38 +218,30 @@ lookup_invoice
 make_invoice
 ```
 
-This is important because it validates the intended external/client-controlled NWC direction independently of the later plugin failure.
-
-However, when OpenReceive attempted to save itself as the Store Lightning backend, BTCPay threw:
+However, when `0.4.7.0` attempted to save itself as the Store Lightning backend, BTCPay threw:
 
 ```text
 System.MissingMethodException:
 Method not found: PaymentMethodConfigValidationContext..ctor(...)
 ```
 
-The failure occurs inside `OpenReceiveSettingsService.UseAsLightningNodeAsync(...)` after successful NWC preflight.
+The failure occurred inside `OpenReceiveSettingsService.UseAsLightningNodeAsync(...)` after successful NWC preflight. The issue was reported upstream with the exact stack trace.
 
-The effective compatibility issue is that OpenReceive `0.4.7.0` expects an older `PaymentMethodConfigValidationContext` constructor, while BTCPay Server `2.4.4` now requires the additional Store context argument.
+The OpenReceive developer released `0.4.8.0` with a compatibility fix. That version was then installed and tested against the same BTCPay Server `2.4.4` deployment and the previously failing setup path worked successfully.
 
-Observed result:
-
-- NWC/Rizful connection itself passes preflight;
-- OpenReceive then crashes while registering the Lightning payment method;
-- BTCPay automatically disables OpenReceive and restarts;
-- the USDt listener cancellation messages during restart are shutdown side effects, not a separate USDt incident;
-- after restart, the normal BTC/USDt services recover and continue running.
-
-OpenReceive is therefore intentionally left **disabled** pending an upstream compatibility fix. The exact error summary was sent to the plugin developer.
+After verification, OpenReceive was removed again because the simpler direct Nostr-plugin + Rizful NWC path is already fully verified and is the preferred production/reference configuration.
 
 Current conclusion:
 
 ```text
-OpenReceive/NWC architecture: promising / validated through preflight
-OpenReceive 0.4.7.0 on BTCPay 2.4.4: blocked by plugin API incompatibility
-Direct Nostr-plugin NWC path: verified and working
+OpenReceive/NWC architecture: verified
+OpenReceive 0.4.7.0 on BTCPay 2.4.4: incompatible
+OpenReceive 0.4.8.0 on BTCPay 2.4.4: compatibility fix verified
+Production/reference Lightning path: direct Nostr plugin + Rizful NWC
+OpenReceive current status: removed / not required for core Lightning
 ```
 
-BTCPay will not be downgraded solely to accommodate OpenReceive.
+OpenReceive remains relevant as an optional future component where its receive-only model or swap features provide value, but it is not needed in the current minimal Lightning stack.
 
 ## Current verified state
 
@@ -265,12 +257,11 @@ Verified on the live reference deployment:
 - reminder timing finalized at `1 day before expiration`;
 - Expired-phase email rule is constrained to `Subscriber.Phase == "Expired"`;
 - receipt-in-confirmation-email customization is deferred;
-- OpenReceive receive-only Rizful/NWC preflight succeeds;
-- OpenReceive `0.4.7.0` is disabled because of BTCPay `2.4.4` payment-method API incompatibility;
 - direct Rizful NWC through the Nostr plugin is verified for real Lightning receive and automatic settlement;
 - BTCPay `Enable LNURL` is disabled for the verified Rizful/NWC configuration;
 - a separate Rizful payer successfully paid a 99-sat invoice and BTCPay automatically marked it `Settled`;
 - built-in Lightning receipt generation is verified;
+- OpenReceive `0.4.8.0` compatibility with BTCPay `2.4.4` was verified after the upstream fix, then OpenReceive was removed in favor of the simpler direct Nostr/Rizful path;
 - `Sprey Labs` remains the future live-demo Store and `sprey.win` is the planned public demo surface.
 
 ## Pending natural lifecycle verification
