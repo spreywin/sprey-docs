@@ -43,7 +43,7 @@ Separate infrastructure:
 
 pay.sprey.win   -> Sprey Processing / BTCPay host
 docs.sprey.win  -> canonical public documentation
-mail            -> separate mail architecture decision
+mail            -> Zoho-hosted business mail; SMTP used by Hub services
 ```
 
 The important boundary is simple:
@@ -64,7 +64,7 @@ Purpose:
 - Caddy;
 - only the services required by the public storefront.
 
-The public web host should remain deliberately boring and isolated. Internal collaboration tools, password managers, mail servers, and AI services should not be added to it merely because capacity exists.
+The public web host should remain deliberately boring and isolated. Internal collaboration tools, password managers, and AI services should not be added to it merely because capacity exists. Business mail remains externally hosted on Zoho.
 
 ### `sprey-hub`
 
@@ -264,35 +264,26 @@ Potential later uses:
 
 AI access must respect the same credential, data-classification, and least-privilege rules as the rest of the Hub.
 
-## Mail boundary
+## Mail integration
 
-Moving Sprey mail away from Zoho is a separate infrastructure project and should not be bundled casually into the first Hub deployment.
+Sprey business mail remains on **Zoho**. Self-hosting the mail server is not part of the current Sprey architecture or roadmap.
 
-Running reliable business mail requires more than starting an SMTP container. It requires deliberate handling of:
+Hub applications use Zoho as the external mail provider when they need to send notifications or system email. For example, Nextcloud should use the appropriate Zoho SMTP account rather than running its own SMTP service.
 
-- reverse DNS / PTR;
-- SPF;
-- DKIM;
-- DMARC;
-- IP reputation;
-- abuse and spam controls;
-- blacklist monitoring;
-- outbound SMTP/provider restrictions;
-- backup and recovery;
-- delivery monitoring;
-- operational continuity.
-
-Therefore the initial architecture is:
+The boundary is:
 
 ```text
-Sprey Hub       -> self-host internal workspace
-Current mail    -> remains on Zoho during initial Hub rollout
-Future mail     -> separate design, host/IP/reputation decision
+Zoho Mail
+   |
+   | SMTP / authenticated mail delivery
+   v
+Nextcloud and other Sprey services
+
+Sprey Hub -> no self-hosted mail server
+sprey-web -> no self-hosted mail server
 ```
 
-A future dedicated mail host or a hybrid design with an outbound relay can be evaluated after the Hub and public web infrastructure are stable.
-
-Mail should not be placed on `sprey-web`.
+Mail credentials should be stored and managed as service secrets, with only the minimum access required by each application.
 
 ## Backup is a separate layer
 
@@ -357,7 +348,7 @@ The Hub should be built incrementally rather than as one large stack.
 7. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
 8. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
 9. Add AI integration only after access control and internal data boundaries are clear.
-10. Design mail migration separately; keep Zoho until the replacement mail architecture is proven.
+10. Configure and verify Zoho SMTP for Hub applications that require outbound email; do not deploy a local mail server.
 
 ## Architecture rule
 
