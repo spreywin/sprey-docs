@@ -264,14 +264,47 @@ Verified on the live reference deployment:
 - OpenReceive `0.4.8.0` compatibility with BTCPay `2.4.4` was verified after the upstream fix, then OpenReceive was removed in favor of the simpler direct Nostr/Rizful path;
 - `Sprey Labs` remains the future live-demo Store and `sprey.win` is the planned public demo surface.
 
-## Pending natural lifecycle verification
+## Subscription lifecycle follow-up — 2026-09-21
 
-The current trial user(s) are intentionally left unchanged so the following can be observed naturally:
+A dedicated internal plan, `QA Lifecycle Test — DO NOT BUY!`, was used to complete the expiry and recovery portion of the hosted-subscription lifecycle test.
 
-1. Payment Reminder email at `1 day before expiration`;
-2. `Trial -> Expired` transition;
-3. Expired email delivery;
-4. actual account/access lockout after unpaid trial expiration;
-5. renewal/recovery behavior from the subscription portal.
+The test exposed one important configuration dependency: the plan-level `Renewable` option had been disabled. With `Renewable` disabled, the plan could expire but was not configured for the intended renewal flow. `Renewable` was enabled and `Optimistic activation` was intentionally left disabled for the test.
 
-After these checks, the results should be consolidated into `products/sprey-processing.md` together with the final production/reference configuration.
+Observed expired state before recovery:
+
+- the subscription showed `Inactive`;
+- the portal displayed `Access expired`;
+- the account exposed a `Pay Now` recovery action;
+- the plan price was `$0.18`;
+- an existing `$0.18` credit balance was recognized and shown as applied;
+- `Auto renewal` was enabled in the subscriber portal.
+
+A new `$0.18` payment was then initiated from the subscription portal. BTCPay created a Lightning invoice for `213 sats`, which was paid through the already verified external Rizful/NWC Lightning path.
+
+Observed recovery behavior:
+
+- the Lightning payment completed successfully;
+- BTCPay reported the invoice as `settled`;
+- the subscription portal displayed `The plan has been started.`;
+- the subscription returned to `Active`;
+- the next billing date became `2026-10-21`;
+- the subscriber retained a `$0.18` credit balance after the payment;
+- the admin subscriber view showed the recovered subscriber as `Normal / Active`;
+- at the checkpoint, the offering showed `2` active subscribers and `$0.36` monthly revenue.
+
+This test also repeated the real-world Lightning micropayment path at a very small value. The `213 sat` / `$0.18` payment was delivered and settled quickly, reinforcing the earlier 99-sat verification that the direct Rizful/NWC path is suitable for low-value Lightning payments.
+
+Current lifecycle conclusion:
+
+```text
+Expired access state: verified
+Plan-level Renewable dependency: verified
+Manual recovery from subscriber portal: verified
+Lightning payment for recovery: verified
+Automatic invoice settlement: verified
+Return to Active after payment: verified
+Next billing recalculation: verified
+Low-value Lightning payments: repeatedly verified
+```
+
+The expiry/recovery QA checkpoint is therefore closed. Any future subscription work should be treated as product refinement or regression testing rather than as a blocker for the base Sprey Processing lifecycle.
