@@ -163,7 +163,8 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 | [hub.sprey.win](https://hub.sprey.win/) | Sprey Hub internal workspace entry point | Planned |
 | [cloud.sprey.win](https://cloud.sprey.win/) | Nextcloud-based internal files and collaboration | **Live** |
 | [bw.cloud.sprey.win](https://bw.cloud.sprey.win/) | Vaultwarden password manager and secrets service | **Live** |
-| [ai.sprey.win](https://ai.sprey.win/) | Sprey AI Gateway / internal AI endpoint | Planned |
+| [ai.sprey.win](https://ai.sprey.win/) | Future Sprey AI Hub / unified AI workspace and gateway | Planned |
+| [ai.cloud.sprey.win](https://ai.cloud.sprey.win/) | Local AI service on Sprey Hub / Nextcloud infrastructure | **Live** |
 | [wallet.sprey.win](https://wallet.sprey.win/) | Sprey Wallet product endpoint | Planned |
 | [app.sprey.win](https://app.sprey.win/) | Customer application / control plane | Planned |
 | [rpc.sprey.win](https://rpc.sprey.win/) | Sprey RPC | Planned |
