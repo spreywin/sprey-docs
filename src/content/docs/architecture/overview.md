@@ -161,9 +161,10 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 | [adminpay.sprey.win](https://adminpay.sprey.win/) | Sprey Processing administrative endpoint behind Cloudflare Access | **Live** |
 | [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
 | [hub.sprey.win](https://hub.sprey.win/) | Sprey Hub internal workspace entry point | Planned |
-| [cloud.sprey.win](https://cloud.sprey.win/) | Nextcloud-based internal files and collaboration | Planned |
-| [vault.sprey.win](https://vault.sprey.win/) | Internal password and secrets service | Planned |
-| [ai.sprey.win](https://ai.sprey.win/) | Future internal AI workspace | Planned |
+| [cloud.sprey.win](https://cloud.sprey.win/) | Nextcloud-based internal files and collaboration | **Live** |
+| [bw.cloud.sprey.win](https://bw.cloud.sprey.win/) | Vaultwarden password manager and secrets service | **Live** |
+| [ai.sprey.win](https://ai.sprey.win/) | Sprey AI Gateway / internal AI endpoint | Planned |
+| [wallet.sprey.win](https://wallet.sprey.win/) | Sprey Wallet product endpoint | Planned |
 | [app.sprey.win](https://app.sprey.win/) | Customer application / control plane | Planned |
 | [rpc.sprey.win](https://rpc.sprey.win/) | Sprey RPC | Planned |
 | [status.sprey.win](https://status.sprey.win/) | Public service status | Planned |
