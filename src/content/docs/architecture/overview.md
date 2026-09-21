@@ -196,15 +196,15 @@ See [Engineering Principles](/architecture/engineering-principles/) for the cano
 
 ## v1 roadmap
 
-1. Complete the merchant verification path on the live Sprey Processing reference deployment: Store -> merchant-controlled wallet -> Invoice -> real Bitcoin payment -> verified invoice state.
-2. Document each Processing capability only after it is configured and verified on `pay.sprey.win`, expanding from the initial on-chain Bitcoin flow to the standard BTCPay merchant use cases in a controlled sequence.
-3. Validate Sprey WP Stack against Sprey Processing as the ready-made WordPress/WooCommerce online-commerce implementation, including order-status synchronization and the non-custodial payment boundary.
-4. Finalize reproducible backup, restore, update, monitoring, and recovery procedures for the Processing reference deployment.
-5. Finalize the `sprey.win` public product/application layer and its request-time Cloudflare failover path without coupling it to payment infrastructure.
-6. Design and deploy the initial Sprey Hub on a separate internal-workspace host, starting with Nextcloud, workstation file resilience, encrypted offsite backup, Vaultwarden, and a minimal `hub.sprey.win` dashboard.
-7. Keep mail migration as a separate architecture decision until delivery, reputation, DNS, backup, and recovery requirements are proven.
-8. Define the Sprey Wallet architecture and MVP as an optional non-custodial companion to Processing.
-9. Add `status.sprey.win` and the external Processing watchdog when the monitoring layer is implemented and verified.
-10. Add Sprey RPC and VPN stacks as those products move from **Planned** to implementation.
+1. **Finish Sprey Hub.** Complete the current Local AI setup at `ai.cloud.sprey.win`, then finish Nextcloud configuration, workstation synchronization, access policy, and the remaining Hub operational checks.
+2. **Complete the Hub entry layer.** Build the minimal `hub.sprey.win` dashboard around the live Nextcloud, Vaultwarden, documentation, Processing, and Local AI services.
+3. **Keep Processing stable and verified.** The core payment paths for BTC, USDt, Lightning/NWC, hosted subscriptions, and Payment Requests are already verified; continue testing the remaining merchant-facing BTCPay apps and integrations one flow at a time.
+4. **Finish recovery verification.** The automated encrypted Cloudflare R2 backup path is live and verified; complete an isolated full restore test and document the recovery result.
+5. **Maintain Sprey WP Stack as the reference storefront implementation.** Continue validating WordPress/WooCommerce integration against Sprey Processing without coupling the storefront runtime to payment infrastructure.
+6. **Develop the Sprey AI layer.** Use the working Local AI service as the first backend, then introduce the planned `ai.sprey.win` AI Hub / OpenAI-compatible gateway for routing between local and external models.
+7. **Define and build Sprey Wallet MVP.** Continue the non-custodial wallet track as an optional companion to Processing, with merchant-controlled keys and external-wallet compatibility preserved.
+8. **Add Sprey RPC when the current Hub and Processing work is stable.** Keep `rpc.sprey.win` as a separate service boundary with its own availability, authentication, and monitoring model.
+9. **Add `status.sprey.win` and external service monitoring.** Monitoring should remain independent of the services it observes.
+10. **Keep mail migration separate.** Do not move business mail into the Hub until delivery, reputation, DNS, backup, and recovery requirements are proven.
 
 This document should be updated when an architectural decision changes, not merely when marketing copy changes.
