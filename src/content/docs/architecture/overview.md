@@ -79,7 +79,7 @@ The target Zurich layout is:
                                          `-- AI workspace later
 ```
 
-The initial Hub plan centers on Nextcloud for synchronized files and collaboration, Vaultwarden for passwords and shared credentials, and a minimal internal dashboard as the future team's entry point. Mail migration is deliberately treated as a separate infrastructure project rather than bundled into the first Hub deployment.
+The Hub centers on Nextcloud for synchronized files and collaboration, Vaultwarden for passwords and shared credentials, and a minimal internal dashboard as the future team's entry point. Sprey business mail remains on Zoho; Hub services use Zoho SMTP where outbound email is required.
 
 The Hub also introduces a workstation-resilience goal: selected company files should live in a synchronized, structured workspace with independent encrypted offsite backup so that a clean Windows reinstall does not become a data-loss event.
 
@@ -184,7 +184,7 @@ Sprey components should remain loosely coupled where practical:
 - **docs.sprey.win** — canonical operational documentation.
 - **status.sprey.win** — planned public service status layer.
 
-A new component should be added to another product's host only when there is a concrete operational reason. Shared branding does not require shared runtime infrastructure. In particular, internal collaboration tools and mail should not be added to `sprey-web` merely because the host has spare capacity.
+A new component should be added to another product's host only when there is a concrete operational reason. Shared branding does not require shared runtime infrastructure. In particular, internal collaboration tools should not be added to `sprey-web` merely because the host has spare capacity.
 
 ## Engineering rule
 
@@ -205,6 +205,5 @@ See [Engineering Principles](/architecture/engineering-principles/) for the cano
 7. **Define and build Sprey Wallet MVP.** Continue the non-custodial wallet track as an optional companion to Processing, with merchant-controlled keys and external-wallet compatibility preserved.
 8. **Add Sprey RPC when the current Hub and Processing work is stable.** Keep `rpc.sprey.win` as a separate service boundary with its own availability, authentication, and monitoring model.
 9. **Add `status.sprey.win` and external service monitoring.** Monitoring should remain independent of the services it observes.
-10. **Keep mail migration separate.** Do not move business mail into the Hub until delivery, reputation, DNS, backup, and recovery requirements are proven.
 
 This document should be updated when an architectural decision changes, not merely when marketing copy changes.
