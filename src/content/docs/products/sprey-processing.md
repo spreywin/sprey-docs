@@ -18,14 +18,14 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 | Online stores | WooCommerce and other supported e-commerce integrations | Product scope; WooCommerce is the current prepared stack path |
 | Point of Sale | In-person acceptance from connected merchant devices | Product scope; verification pending |
 | QR payments | Customer-facing QR payment flows for online or in-person use | Product scope; verification pending |
-| Payment Requests | Shareable merchant payment requests independent of a cart | Product scope; verification pending |
+| Payment Requests | Shareable merchant payment requests independent of a cart | **Verified on the reference deployment** |
 | Payment Buttons | Direct payment entry points embedded in merchant content | Product scope; verification pending |
 | Donations | Direct donation flows using BTCPay applications and buttons | Product scope; verification pending |
 | Crowdfunding | BTCPay crowdfunding applications and campaigns | Product scope; verification pending |
 | API/custom integrations | Direct merchant-system integration with BTCPay | Product scope; verification pending |
 | Multilingual interface | BTCPay language packs selectable by users | Installed on the reference deployment; sample language switching verified |
 | Hosted subscriptions | Paid access to the shared BTCPay instance | Trial, expiry, portal recovery, Lightning payment, invoice settlement, return to Active, and next-billing recalculation verified |
-| USDt | TRON, Ethereum and Polygon through the installed Tether USDt plugin | Merchant-controlled 10-address pools configured; node/balance connectivity verified; real paid invoice test pending |
+| USDt | TRON, Ethereum and Polygon through the installed Tether USDt plugin | **Real paid-invoice E2E verified on TRON, Ethereum and Polygon; merchant-controlled address pools confirmed independently through WDK** |
 
 A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
 
@@ -97,7 +97,7 @@ The current Sprey reference deployment uses:
 | Bitcoin | Mainnet, synchronized pruned node; automatic pruning enabled with a 25 GiB target; Store wallet is watch-only |
 | Merchant BTC spending wallet | Sparrow desktop wallet; signing authority remains outside BTCPay |
 | Lightning | External client-controlled Lightning verified via direct Rizful NWC through the BTCPay Nostr plugin; LNURL disabled for the verified configuration |
-| USDt | Tether USDt v0.6.1.0; 10-address merchant pools configured for TRON, Ethereum and Polygon; node/balance connectivity healthy |
+| USDt | Tether USDt v0.6.1.0; 10-address merchant pools configured for TRON, Ethereum and Polygon; real paid-invoice E2E verified on all three networks |
 | USDt merchant wallet tooling | Tether WDK CLI; TRON and EVM address derivation verified; seed/private keys remain outside BTCPay |
 | SMTP | Server SMTP verified by real delivery; Stores inherit server SMTP by default and may override it |
 | Multilingual UI | Stable language packs installed; English default; sample public login switching verified |
@@ -219,13 +219,21 @@ The node/balance layer has been verified on all three networks:
 
 All three USDt payment methods show healthy/green state in the live Store. Seed phrases and private keys remain outside BTCPay; only public addresses are provided to the payment plugin.
 
-USDt is **not yet considered production-verified end to end**. The next required checkpoint is a real paid invoice, beginning with the priority TRON path, followed by confirmation that BTCPay observes the transfer, updates invoice state correctly, and releases the reserved address after settlement.
+Real paid-invoice testing is complete on all three currently exposed networks:
+
+- **TRON:** hosted-subscription payment received, confirmations observed, invoice settled, and subscription activated;
+- **Ethereum:** exact hosted-subscription amount received, successful `USDT-ETHEREUM` receipt produced, and subscription activated;
+- **Polygon:** exact invoice amount received and successful `USDT-POLYGON` receipt produced.
+
+The merchant-controlled WDK wallet independently showed the received balances from the real tests, confirming that settlement reached the merchant-controlled destinations rather than a Sprey-custodied wallet.
+
+**USDt on TRON, Ethereum and Polygon is verified end to end on the reference deployment.**
 
 See [WDK CLI wallet operations](/operations/wdk-cli-wallet/) for the merchant-wallet command reference.
 
 ## Current product state
 
-The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, subscription expiry/recovery lifecycle, watch-only Bitcoin wallet model, external Lightning/NWC settlement path, and USDt address-pool/node-connectivity layer have been verified to their stated checkpoints.
+The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, subscription expiry/recovery lifecycle, watch-only Bitcoin wallet model, external Lightning/NWC settlement path, Payment Requests, and real USDt settlement on TRON, Ethereum and Polygon have been verified to their stated checkpoints.
 
 A payment method is not considered operational merely because its configuration page is available. It becomes part of the verified Sprey Processing reference only after the complete merchant flow has been tested: merchant destination configured, invoice created, customer payment sent independently, network state observed by BTCPay, and invoice state reported correctly.
 
@@ -233,25 +241,26 @@ For the detailed operational records, see:
 
 - [Sprey Processing verification — 2026-09-10](/operations/processing-verification-2026-09-10/);
 - [Sprey Processing verification — 2026-09-11](/operations/processing-verification-2026-09-11/);
-- [Sprey Processing verification — 2026-09-15](/operations/processing-verification-2026-09-15/), including the 2026-09-21 subscription lifecycle follow-up.
+- [Sprey Processing verification — 2026-09-14](/operations/processing-verification-2026-09-14/), including real BTC and USDt E2E tests;
+- [Sprey Processing verification — 2026-09-15](/operations/processing-verification-2026-09-15/), including Lightning/NWC and the 2026-09-21 subscription lifecycle follow-up.
 
 ## Product verification path
 
 The canonical initial product verification path follows the merchant journey:
 
-1. **Bitcoin Core — verified.** Confirm mainnet synchronization, out-of-IBD state, pruning configuration, and absence of warnings.
-2. **Store — configured.** Verify the `Sprey Processing` Store and hosted defaults.
-3. **Merchant-controlled wallet — configured.** Use BTCPay watch-only observation for BTC and merchant-controlled WDK-derived public pools for USDt without exposing signing authority to BTCPay.
-4. **Invoice — created.** Create a real invoice through BTCPay.
-5. **Real payment — pending.** Send a small real payment independently of Sprey.
-6. **Network observation — pending.** Verify that BTCPay observes the relevant network and determines the correct invoice state.
-7. **Invoice state — pending.** Verify the resulting paid invoice lifecycle and merchant-facing status.
-8. **Extend payment methods.** Complete real USDt tests, then Lightning, one complete flow at a time.
-9. **Document and integrate.** Record verified behavior, then complete storefront/API integration tests.
+1. **Bitcoin Core — verified.** Mainnet synchronization, out-of-IBD state, pruning configuration, and absence of warnings are confirmed.
+2. **Store — verified baseline.** The `Sprey Processing` Store and hosted defaults are configured and exercised by real customer/subscriber flows.
+3. **Merchant-controlled wallets — verified.** BTC uses watch-only observation with external signing authority; USDt uses merchant-controlled WDK-derived address pools without exposing private keys to BTCPay.
+4. **Invoices and Payment Requests — verified.** Real invoice/request creation and customer payment entry points have been exercised on the reference deployment.
+5. **Real payments — verified.** BTC on-chain, USDt on TRON/Ethereum/Polygon, and external Lightning/NWC have all completed real payment tests.
+6. **Network observation — verified.** BTCPay observed the relevant payment networks and determined payment state correctly in the verified tests.
+7. **Invoice settlement — verified.** Paid invoice lifecycle and merchant-facing settlement state have been confirmed on the verified payment rails.
+8. **Hosted subscription lifecycle — verified.** Trial, expiry, recovery payment, return to `Active`, and next-billing recalculation are confirmed.
+9. **Continue merchant-app verification.** Point of Sale, QR-specific merchant flows, Payment Buttons, Crowdfunding, Satoshi Tickets, and API/custom integration should move to verified status one flow at a time.
 
 NBXplorer remains an internal BTCPay component and can be inspected when troubleshooting requires it, but a standalone NBXplorer health check is no longer the first merchant product milestone.
 
-Lightning remains separate from the initial on-chain Bitcoin verification path. The current preferred direction is a client-controlled nodeless flow rather than exposing a shared internal Lightning node to hosted tenants; the exact SamRock/Boltz installation path remains pending verification.
+Lightning remains separate from the on-chain Bitcoin path, but the preferred client-controlled model is now verified: the reference deployment uses direct Nostr Wallet Connect (NWC) to an external Rizful wallet/backend, with automatic invoice settlement confirmed. A shared Sprey custodial Lightning wallet or shared internal Lightning node is not required for hosted tenants.
 
 ## Backup checkpoint
 
