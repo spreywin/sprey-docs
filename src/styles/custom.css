@@ -209,6 +209,7 @@ body {
 .sl-markdown-content a[href^='https://cloud.sprey.win'],
 .sl-markdown-content a[href^='https://bw.cloud.sprey.win'],
 .sl-markdown-content a[href^='https://ai.sprey.win'],
+.sl-markdown-content a[href^='https://ai.cloud.sprey.win'],
 .sl-markdown-content a[href^='https://wallet.sprey.win'] {
   display: inline-flex;
   align-items: center;
@@ -233,6 +234,7 @@ body {
 .sl-markdown-content a[href^='https://cloud.sprey.win']::after,
 .sl-markdown-content a[href^='https://bw.cloud.sprey.win']::after,
 .sl-markdown-content a[href^='https://ai.sprey.win']::after,
+.sl-markdown-content a[href^='https://ai.cloud.sprey.win']::after,
 .sl-markdown-content a[href^='https://wallet.sprey.win']::after {
   content: '↗';
   font-family: var(--sl-font-system);
@@ -246,6 +248,7 @@ body {
 .sl-markdown-content a[href^='https://cloud.sprey.win']:hover,
 .sl-markdown-content a[href^='https://bw.cloud.sprey.win']:hover,
 .sl-markdown-content a[href^='https://ai.sprey.win']:hover,
+.sl-markdown-content a[href^='https://ai.cloud.sprey.win']:hover,
 .sl-markdown-content a[href^='https://wallet.sprey.win']:hover {
   transform: translateY(-1px);
   background: #000000;
@@ -258,6 +261,7 @@ body {
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://cloud.sprey.win'],
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://bw.cloud.sprey.win'],
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.cloud.sprey.win'],
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://wallet.sprey.win'] {
   border-color: #e5e7eb;
   background: #f8fafc;
@@ -270,6 +274,7 @@ body {
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://cloud.sprey.win']:hover,
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://bw.cloud.sprey.win']:hover,
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.cloud.sprey.win']:hover,
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://wallet.sprey.win']:hover {
   background: #ffffff;
   box-shadow: 0 .3rem .9rem rgb(255 255 255 / 10%);
