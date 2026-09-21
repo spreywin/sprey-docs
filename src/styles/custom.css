@@ -205,7 +205,11 @@ body {
 /* Live service links: compact inverse pills instead of default underlined links. */
 .sl-markdown-content a[href^='https://pay.sprey.win'],
 .sl-markdown-content a[href^='https://docs.sprey.win'],
-.sl-markdown-content a[href^='https://wp-stack.sprey.win'] {
+.sl-markdown-content a[href^='https://wp-stack.sprey.win'],
+.sl-markdown-content a[href^='https://cloud.sprey.win'],
+.sl-markdown-content a[href^='https://bw.cloud.sprey.win'],
+.sl-markdown-content a[href^='https://ai.sprey.win'],
+.sl-markdown-content a[href^='https://wallet.sprey.win'] {
   display: inline-flex;
   align-items: center;
   gap: .28rem;
@@ -225,7 +229,11 @@ body {
 
 .sl-markdown-content a[href^='https://pay.sprey.win']::after,
 .sl-markdown-content a[href^='https://docs.sprey.win']::after,
-.sl-markdown-content a[href^='https://wp-stack.sprey.win']::after {
+.sl-markdown-content a[href^='https://wp-stack.sprey.win']::after,
+.sl-markdown-content a[href^='https://cloud.sprey.win']::after,
+.sl-markdown-content a[href^='https://bw.cloud.sprey.win']::after,
+.sl-markdown-content a[href^='https://ai.sprey.win']::after,
+.sl-markdown-content a[href^='https://wallet.sprey.win']::after {
   content: '↗';
   font-family: var(--sl-font-system);
   font-size: .78em;
@@ -234,7 +242,11 @@ body {
 
 .sl-markdown-content a[href^='https://pay.sprey.win']:hover,
 .sl-markdown-content a[href^='https://docs.sprey.win']:hover,
-.sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover {
+.sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover,
+.sl-markdown-content a[href^='https://cloud.sprey.win']:hover,
+.sl-markdown-content a[href^='https://bw.cloud.sprey.win']:hover,
+.sl-markdown-content a[href^='https://ai.sprey.win']:hover,
+.sl-markdown-content a[href^='https://wallet.sprey.win']:hover {
   transform: translateY(-1px);
   background: #000000;
   box-shadow: 0 .3rem .8rem rgb(15 23 42 / 16%);
@@ -242,7 +254,11 @@ body {
 
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win'],
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win'],
-:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win'] {
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://cloud.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://bw.cloud.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.sprey.win'],
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wallet.sprey.win'] {
   border-color: #e5e7eb;
   background: #f8fafc;
   color: #111827 !important;
@@ -250,7 +266,11 @@ body {
 
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://pay.sprey.win']:hover,
 :root[data-theme='dark'] .sl-markdown-content a[href^='https://docs.sprey.win']:hover,
-:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover {
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wp-stack.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://cloud.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://bw.cloud.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://ai.sprey.win']:hover,
+:root[data-theme='dark'] .sl-markdown-content a[href^='https://wallet.sprey.win']:hover {
   background: #ffffff;
   box-shadow: 0 .3rem .9rem rgb(255 255 255 / 10%);
 }
