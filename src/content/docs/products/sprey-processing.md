@@ -102,8 +102,8 @@ The current Sprey reference deployment uses:
 | SMTP | Server SMTP verified by real delivery; Stores inherit server SMTP by default and may override it |
 | Multilingual UI | Stable language packs installed; English default; sample public login switching verified |
 | Monetization | `Sprey Processing Access` offering configured with monthly, quarterly, yearly and limited Lifetime plans |
-| VPS backups | Hetzner Backups enabled; fresh manual pre-plugin checkpoint created and available |
-| Application backup | A local legacy `backup.sh` run completed successfully; restore testing and the canonical long-term backup workflow remain pending |
+| VPS backups | Hetzner Backups enabled as an independent full-VPS recovery layer |
+| Application backup | BTCPay native encrypted backup automated daily to private Cloudflare R2 with read-back SHA256 verification; full restore test remains pending |
 
 ## Verified Bitcoin Core checkpoint
 
@@ -159,19 +159,19 @@ The public Processing instance is being prepared as a paid hosted BTCPay service
 The verified server baseline currently includes:
 
 - public registration enabled;
-- up to **3 Stores per non-admin user**;
+- each hosted non-admin subscriber can create up to **3 BTCPay Stores**;
 - a configured default Store template;
-- non-admin access to the shared internal Lightning node disabled;
-- non-admin hot-wallet creation disabled;
-- non-admin cold-wallet creation disabled;
-- non-admin User Creation API access disabled;
+- hosted non-admin users cannot use a shared internal Sprey Lightning node;
+- hosted non-admin users cannot create server-managed hot wallets;
+- hosted non-admin users cannot create new BTCPay cold-wallet configurations;
+- hosted non-admin users cannot create other server users through the User Creation API;
 - server SMTP available to Stores by default, with Store-level override supported.
 
 The active monetization offering is **Sprey Processing Access**. Four plan periods are configured: monthly, quarterly, yearly, and a limited/temporary Lifetime option.
 
 An expired unpaid plan invoice was tested. The invoice correctly expired and no active subscriber was created, although the subsequent default redirect displayed a misleading generic `Payment Successful` page. The backend access state was correct; the redirect behavior remains an upstream UX issue to investigate.
 
-The hosted subscription lifecycle was later completed with the internal `QA Lifecycle Test — DO NOT BUY!` plan. The plan-level `Renewable` setting was found disabled and was enabled; `Optimistic activation` remained disabled. From an `Inactive / Access expired` state, the subscriber portal successfully created a new `$0.18` Lightning payment request. The resulting `213 sat` payment settled automatically through the verified Rizful/NWC path, the plan returned to `Active`, and the next billing date recalculated to `2026-10-21`. The subscriber view retained a `$0.18` credit balance after the payment. This closes the base expiry/recovery lifecycle checkpoint and also provides another successful low-value Lightning payment test.
+The hosted subscription lifecycle has been exercised through a broad set of QA scenarios, including trial access, expiry, renewal/recovery, credit handling, Lightning payment, automatic invoice settlement, return to active access, and next-billing recalculation. The base hosted-access lifecycle is verified. Detailed test amounts and individual QA cases are kept in the dated operational verification records rather than on this product overview page.
 
 ## Multilingual interface
 
@@ -264,14 +264,17 @@ Lightning remains separate from the on-chain Bitcoin path, but the preferred cli
 
 ## Backup checkpoint
 
-The reference host currently has two distinct backup layers:
+The reference deployment now uses three independent recovery layers:
 
-1. **Hetzner Backups** provide the provider-level VPS backup layer. A fresh manual backup was also created before the translation/plugin changes and reached `Available` status.
-2. A local BTCPay application backup was produced by the deployment's existing legacy `backup.sh`, which dumped PostgreSQL, stopped the BTCPay Docker stack, archived the selected application data, restarted the stack, and completed successfully.
+1. **Local encrypted BTCPay backup** — the latest native BTCPay backup is retained locally in encrypted form.
+2. **Cloudflare R2 off-site backup** — the native BTCPay archive is encrypted, uploaded automatically each day to the private `sprey-backups` bucket, read back from R2, and verified byte-for-byte by SHA256 comparison. Retention is managed by R2 lifecycle rules for daily and monthly history.
+3. **Hetzner Backups** — an independent provider-level full-VPS recovery layer.
 
-After that application-backup restart, `https://pay.sprey.win/api/v1/health` again returned `{"synchronized":true}`.
+The production backup wrapper uses BTCPay's native backup format rather than a proprietary archive. The automated path covers backup creation, encryption, upload, remote read-back, and integrity verification.
 
-This does **not** close the application backup work. Restore has not yet been tested, and the canonical long-term BTCPay backup/restore workflow has not yet been selected and verified. Until restore testing succeeds, the local archive is evidence of a successful backup run, not a verified disaster-recovery procedure.
+A complete restore into an isolated disposable environment is still pending. Until that succeeds, the deployment should be described as **backup-verified**, not fully **disaster-recovery verified**.
+
+See [BTCPay backup operations](/operations/btcpay-backup/) for the verified Cloudflare R2 workflow, retention model, encryption boundary, and restore procedure.
 
 ## Self-host BTCPay Server
 
