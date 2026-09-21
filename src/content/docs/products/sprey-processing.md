@@ -24,7 +24,7 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 | Crowdfunding | BTCPay crowdfunding applications and campaigns | Product scope; verification pending |
 | API/custom integrations | Direct merchant-system integration with BTCPay | Product scope; verification pending |
 | Multilingual interface | BTCPay language packs selectable by users | Installed on the reference deployment; sample language switching verified |
-| Hosted subscriptions | Paid access to the shared BTCPay instance | Monetization configured; first real paid subscriber flow still pending |
+| Hosted subscriptions | Paid access to the shared BTCPay instance | Trial, expiry, portal recovery, Lightning payment, invoice settlement, return to Active, and next-billing recalculation verified |
 | USDt | TRON, Ethereum and Polygon through the installed Tether USDt plugin | Merchant-controlled 10-address pools configured; node/balance connectivity verified; real paid invoice test pending |
 
 A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
@@ -96,7 +96,7 @@ The current Sprey reference deployment uses:
 | BTCPay Server | v2.4.4, live |
 | Bitcoin | Mainnet, synchronized pruned node; automatic pruning enabled with a 25 GiB target; Store wallet is watch-only |
 | Merchant BTC spending wallet | Sparrow desktop wallet; signing authority remains outside BTCPay |
-| Lightning | Not configured; SamRock + Boltz nodeless path under evaluation |
+| Lightning | External client-controlled Lightning verified via direct Rizful NWC through the BTCPay Nostr plugin; LNURL disabled for the verified configuration |
 | USDt | Tether USDt v0.6.1.0; 10-address merchant pools configured for TRON, Ethereum and Polygon; node/balance connectivity healthy |
 | USDt merchant wallet tooling | Tether WDK CLI; TRON and EVM address derivation verified; seed/private keys remain outside BTCPay |
 | SMTP | Server SMTP verified by real delivery; Stores inherit server SMTP by default and may override it |
@@ -171,6 +171,8 @@ The active monetization offering is **Sprey Processing Access**. Four plan perio
 
 An expired unpaid plan invoice was tested. The invoice correctly expired and no active subscriber was created, although the subsequent default redirect displayed a misleading generic `Payment Successful` page. The backend access state was correct; the redirect behavior remains an upstream UX issue to investigate.
 
+The hosted subscription lifecycle was later completed with the internal `QA Lifecycle Test — DO NOT BUY!` plan. The plan-level `Renewable` setting was found disabled and was enabled; `Optimistic activation` remained disabled. From an `Inactive / Access expired` state, the subscriber portal successfully created a new `$0.18` Lightning payment request. The resulting `213 sat` payment settled automatically through the verified Rizful/NWC path, the plan returned to `Active`, and the next billing date recalculated to `2026-10-21`. The subscriber view retained a `$0.18` credit balance after the payment. This closes the base expiry/recovery lifecycle checkpoint and also provides another successful low-value Lightning payment test.
+
 ## Multilingual interface
 
 All stable language packs visible in the current BTCPay translation catalog were installed on the reference deployment. English remains the default language.
@@ -223,14 +225,15 @@ See [WDK CLI wallet operations](/operations/wdk-cli-wallet/) for the merchant-wa
 
 ## Current product state
 
-The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, watch-only Bitcoin wallet model, and USDt address-pool/node-connectivity layer have been verified to their stated checkpoints.
+The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, subscription expiry/recovery lifecycle, watch-only Bitcoin wallet model, external Lightning/NWC settlement path, and USDt address-pool/node-connectivity layer have been verified to their stated checkpoints.
 
 A payment method is not considered operational merely because its configuration page is available. It becomes part of the verified Sprey Processing reference only after the complete merchant flow has been tested: merchant destination configured, invoice created, customer payment sent independently, network state observed by BTCPay, and invoice state reported correctly.
 
 For the detailed operational records, see:
 
 - [Sprey Processing verification — 2026-09-10](/operations/processing-verification-2026-09-10/);
-- [Sprey Processing verification — 2026-09-11](/operations/processing-verification-2026-09-11/).
+- [Sprey Processing verification — 2026-09-11](/operations/processing-verification-2026-09-11/);
+- [Sprey Processing verification — 2026-09-15](/operations/processing-verification-2026-09-15/), including the 2026-09-21 subscription lifecycle follow-up.
 
 ## Product verification path
 
