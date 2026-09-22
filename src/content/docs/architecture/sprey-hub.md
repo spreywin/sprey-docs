@@ -1,13 +1,13 @@
 ---
 title: Sprey Hub — Internal Workspace Architecture
-description: Planned internal workspace for Sprey files, team collaboration, passwords, dashboards, and future AI services.
+description: Current internal workspace architecture for Sprey files, collaboration, passwords, dashboards, and AI services.
 ---
 
-**Sprey Hub** is the planned internal workspace for Sprey. It is intentionally separate from the public storefront and payment infrastructure.
+**Sprey Hub** is Sprey's internal workspace under active deployment. It is intentionally separate from the public storefront and payment infrastructure.
 
 The goal is to give Sprey a durable working environment that is not tied to one Windows installation, one browser profile, or one SaaS provider. The Hub should become the internal entry point for files, collaboration, credentials, documentation, boards, and later selected AI-assisted workflows.
 
-This page describes the intended architecture before deployment. Components remain **planned** until they are installed, secured, backed up, and verified.
+This page describes the current architecture and remaining rollout work. Components move from **Planned** to **Verified** only after they are installed, secured, tested, and included in a recovery plan.
 
 ## Design goal
 
@@ -37,7 +37,11 @@ The target is a small, self-hosted internal platform with clear service boundari
                                          |
                                          +-- boards / tasks / notes
                                          |
-                                         `-- AI workspace later
+                                         +-- ai.cloud.sprey.win
+                                         |   LocalAI backend
+                                         |
+                                         `-- ai.sprey.win
+                                             Sprey AI Gateway
 
 Separate infrastructure:
 
@@ -113,7 +117,7 @@ Any remaining storage capacity is a reserve rather than a separate product commi
 
 ## Core service: Nextcloud Hub
 
-The planned center of the internal workspace is **Nextcloud Hub**.
+The current center of the internal workspace is **Nextcloud Hub** at `cloud.sprey.win`.
 
 Initial functions:
 
@@ -244,23 +248,45 @@ If the team later needs deeper planning, issue relationships, time tracking, roa
 
 The operating principle is to avoid deploying a separate service until a real workflow requires it.
 
-## AI workspace — later phase
+## AI workspace and gateway
 
-A future internal AI endpoint may be added, for example:
+The AI layer is now active and separated into local inference, gateway/routing, and client layers:
 
 ```text
-ai.sprey.win
+Nextcloud Assistant
+        |
+        v
+https://ai.sprey.win/v1
+Sprey AI Gateway / LiteLLM
+        |
+        +--> external model groups via OpenRouter
+        |
+        `--> LocalAI at ai.cloud.sprey.win
+             local Gemma fallback
 ```
 
-The Zurich Hub host is not intended to run a large production language model locally merely because it has available RAM. A more practical first architecture is a lightweight internal interface connected to selected external or remote model APIs.
+The gateway uses LiteLLM with PostgreSQL-backed configuration, model groups, credentials, virtual keys, health checks, and routing. Nextcloud uses a dedicated virtual key and the public router name `sprey-assistant`; it does not receive the LiteLLM master key or the OpenRouter provider key.
 
-Potential later uses:
+The verified capabilities are:
 
-- help with internal documentation;
-- search and question answering over approved company knowledge;
-- infrastructure assistance;
-- product support knowledge;
-- internal RAG over selected Sprey documents.
+- text chat through the `external-free` model group;
+- image analysis through the `external-vision` model group;
+- modality-aware routing through `sprey-assistant`;
+- multiple external deployments for redundancy;
+- LocalAI / Gemma as a local fallback for text;
+- private LiteLLM administration through an SSH tunnel rather than a public admin endpoint.
+
+The public route is deliberately split:
+
+```text
+https://ai.sprey.win/       -> Sprey AI landing
+https://ai.sprey.win/v1/*   -> LiteLLM OpenAI-compatible API
+127.0.0.1:4000/ui           -> Admin UI through SSH tunnel
+```
+
+Speech-to-Text, Text-to-Speech, image generation, and later RAG/MCP-assisted workflows remain follow-up work.
+
+See [Sprey AI Gateway](/architecture/ai-gateway/) for the current gateway topology, routing model, credential boundaries, backup scope, and remaining AI roadmap.
 
 AI access must respect the same credential, data-classification, and least-privilege rules as the rest of the Hub.
 
@@ -333,22 +359,22 @@ Sprey Hub should follow the existing Sprey engineering model:
 - no secrets committed to Git;
 - no assumption that an internal dashboard itself provides authentication or authorization.
 
-Public reachability and authentication policy for each Hub service must be decided before production exposure. Cloudflare Access, VPN-only access, application-native authentication, or combinations of those controls can be evaluated per service.
+Public reachability and authentication policy for each Hub service must be decided before production exposure. Cloudflare Access, application-native authentication, SSH tunneling for private administration, or combinations of those controls can be evaluated per service.
 
-## Proposed rollout
+## Current rollout status
 
-The Hub should be built incrementally rather than as one large stack.
+The Hub is being built incrementally rather than as one large stack.
 
-1. Confirm the role swap: repurpose the current 2 OCPU / 12 GB / 99 GB Zurich VM as `sprey-hub` and create a separate minimal `sprey-web` VM.
-2. Keep remaining storage capacity uncommitted until real Hub or web usage justifies allocation; prefer expanding `sprey-hub` when internal storage or collaboration demand grows.
-3. Deploy Nextcloud and verify desktop/mobile synchronization, persistence, upgrade behavior, and recovery boundaries.
-4. Define the company file taxonomy and migrate selected workstation data.
-5. Implement encrypted offsite backups and perform a restore test.
-6. Deploy Vaultwarden and verify backup/recovery before moving critical credentials.
-7. Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
-8. Enable Nextcloud Deck and other collaboration functions only as workflows require them.
-9. Add AI integration only after access control and internal data boundaries are clear.
-10. Configure and verify Zoho SMTP for Hub applications that require outbound email; do not deploy a local mail server.
+1. **Verified:** Nextcloud is live at `cloud.sprey.win`; continue the remaining application configuration, synchronization, access-policy, and operational checks.
+2. **Next:** Define the company file taxonomy and migrate selected workstation data into a deliberate internal structure.
+3. **Verified:** Vaultwarden is live; keep backup/recovery verification as part of the security checklist.
+4. **Verified:** LocalAI is live at `ai.cloud.sprey.win`.
+5. **Verified:** The Sprey AI Gateway is live at `ai.sprey.win` with LiteLLM, PostgreSQL, OpenRouter, LocalAI fallback, text routing, and image analysis.
+6. **Next:** Add Speech-to-Text and Text-to-Speech only after the current text/vision gateway state is documented and backed up.
+7. **Next:** Complete encrypted offsite backup and restore verification for Hub and AI stateful data.
+8. **Next:** Create the minimal `hub.sprey.win` dashboard using the existing Sprey visual language.
+9. **As needed:** Enable Nextcloud Deck and other collaboration functions only when workflows require them.
+10. **Verified direction:** Keep business mail on Zoho and use authenticated Zoho SMTP for Hub applications; do not deploy a local mail server.
 
 ## Architecture rule
 
