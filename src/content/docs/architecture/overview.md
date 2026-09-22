@@ -55,7 +55,7 @@ WP Stack owns the WordPress/WooCommerce storefront layer. It is not required for
 
 ## Sprey Hub boundary
 
-**Sprey Hub** is the planned internal workspace for Sprey. It is intentionally separate from both the public storefront and payment infrastructure.
+**Sprey Hub** is Sprey's internal workspace under active deployment. It is intentionally separate from both the public storefront and payment infrastructure.
 
 The target Zurich layout is:
 
@@ -76,14 +76,17 @@ The target Zurich layout is:
                                          |   Vaultwarden
                                          +-- internal dashboard
                                          +-- boards / files / calendar
-                                         `-- AI workspace later
+                                         +-- ai.cloud.sprey.win
+                                         |   LocalAI backend
+                                         `-- ai.sprey.win
+                                             Sprey AI Gateway
 ```
 
-The Hub centers on Nextcloud for synchronized files and collaboration, Vaultwarden for passwords and shared credentials, and a minimal internal dashboard as the future team's entry point. Sprey business mail remains on Zoho; Hub services use Zoho SMTP where outbound email is required.
+The Hub centers on Nextcloud for synchronized files and collaboration, Vaultwarden for passwords and shared credentials, and a minimal internal dashboard as the future team's entry point. Its AI layer now uses LocalAI as the local backend and `ai.sprey.win` as the unified OpenAI-compatible gateway for local and external models. Sprey business mail remains on Zoho; Hub services use Zoho SMTP where outbound email is required.
 
 The Hub also introduces a workstation-resilience goal: selected company files should live in a synchronized, structured workspace with independent encrypted offsite backup so that a clean Windows reinstall does not become a data-loss event.
 
-See [Sprey Hub — Internal Workspace Architecture](/architecture/sprey-hub/) for the planned services, security boundaries, backup model, workstation migration approach, and rollout sequence.
+See [Sprey Hub — Internal Workspace Architecture](/architecture/sprey-hub/) for the current Hub state, security boundaries, backup model, workstation migration approach, and rollout sequence. See [Sprey AI Gateway](/architecture/ai-gateway/) for the verified AI routing architecture.
 
 ## Payment ownership
 
@@ -163,7 +166,7 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 | [hub.sprey.win](https://hub.sprey.win/) | Sprey Hub internal workspace entry point | Planned |
 | [cloud.sprey.win](https://cloud.sprey.win/) | Nextcloud-based internal files and collaboration | **Live** |
 | [bw.cloud.sprey.win](https://bw.cloud.sprey.win/) | Vaultwarden password manager and secrets service | **Live** |
-| [ai.sprey.win](https://ai.sprey.win/) | Future Sprey AI Hub / unified AI workspace and gateway | Planned |
+| [ai.sprey.win](https://ai.sprey.win/) | Sprey AI Gateway / OpenAI-compatible API and landing | **Live** |
 | [ai.cloud.sprey.win](https://ai.cloud.sprey.win/) | Local AI service on Sprey Hub / Nextcloud infrastructure | **Live** |
 | [wallet.sprey.win](https://wallet.sprey.win/) | Sprey Wallet product endpoint | Planned |
 | [app.sprey.win](https://app.sprey.win/) | Customer application / control plane | Planned |
@@ -177,7 +180,7 @@ Sprey components should remain loosely coupled where practical:
 
 - **Sprey Processing** — payment infrastructure and merchant payment flows.
 - **Sprey WP Stack** — WordPress/WooCommerce storefront implementation.
-- **Sprey Hub** — internal files, collaboration, credentials, team dashboard, and future internal AI workspace.
+- **Sprey Hub** — internal files, collaboration, credentials, team dashboard, LocalAI, and AI-assisted workflows.
 - **Sprey Wallet** — wallet guidance and merchant custody boundary.
 - **Sprey RPC** — future independent RPC/API infrastructure.
 - **sprey.win** — public product and application layer.
@@ -196,12 +199,12 @@ See [Engineering Principles](/architecture/engineering-principles/) for the cano
 
 ## v1 roadmap
 
-1. **Finish Sprey Hub.** Complete the current Local AI setup at `ai.cloud.sprey.win`, then finish Nextcloud configuration, workstation synchronization, access policy, and the remaining Hub operational checks.
-2. **Complete the Hub entry layer.** Build the minimal `hub.sprey.win` dashboard around the live Nextcloud, Vaultwarden, documentation, Processing, and Local AI services.
-3. **Keep Processing stable and verified.** The core payment paths for BTC, USDt, Lightning/NWC, hosted subscriptions, and Payment Requests are already verified; continue testing the remaining merchant-facing BTCPay apps and integrations one flow at a time.
-4. **Finish recovery verification.** The automated encrypted Cloudflare R2 backup path is live and verified; complete an isolated full restore test and document the recovery result.
-5. **Maintain Sprey WP Stack as the reference storefront implementation.** Continue validating WordPress/WooCommerce integration against Sprey Processing without coupling the storefront runtime to payment infrastructure.
-6. **Develop the Sprey AI layer.** Use the working Local AI service as the first backend, then introduce the planned `ai.sprey.win` AI Hub / OpenAI-compatible gateway for routing between local and external models.
+1. **Finish Sprey Hub.** Complete the remaining Nextcloud configuration, internal file/folder structure, workstation synchronization, access policy, and operational checks.
+2. **Complete the Hub entry layer.** Build the minimal `hub.sprey.win` dashboard around the live Nextcloud, Vaultwarden, documentation, Processing, LocalAI, and Sprey AI Gateway services.
+3. **Stabilize and document the Sprey AI layer.** The LiteLLM/PostgreSQL gateway at `ai.sprey.win`, OpenRouter integration, LocalAI fallback, unified `sprey-assistant` router, text routing, and image analysis are verified. Next AI milestones are Speech-to-Text, Text-to-Speech, backup/recovery verification, and continued documentation.
+4. **Keep Processing stable and verified.** The core payment paths for BTC, USDt, Lightning/NWC, hosted subscriptions, and Payment Requests are already verified; continue testing the remaining merchant-facing BTCPay apps and integrations one flow at a time.
+5. **Finish recovery verification.** Maintain independent backups for each stateful service and complete isolated restore tests, including the Hub and AI Gateway state held in PostgreSQL.
+6. **Maintain Sprey WP Stack as the reference storefront implementation.** Continue validating WordPress/WooCommerce integration against Sprey Processing without coupling the storefront runtime to payment infrastructure.
 7. **Define and build Sprey Wallet MVP.** Continue the non-custodial wallet track as an optional companion to Processing, with merchant-controlled keys and external-wallet compatibility preserved.
 8. **Add Sprey RPC when the current Hub and Processing work is stable.** Keep `rpc.sprey.win` as a separate service boundary with its own availability, authentication, and monitoring model.
 9. **Add `status.sprey.win` and external service monitoring.** Monitoring should remain independent of the services it observes.
