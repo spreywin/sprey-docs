@@ -3,11 +3,11 @@ title: Architecture Overview
 description: High-level Sprey architecture and product boundaries.
 ---
 
-Sprey is organized around a small number of independent product and infrastructure layers. The central payment product is **Sprey Processing**, available through `pay.sprey.win`.
+Sprey is organized around a small number of independent product and infrastructure layers. **Sprey Processing**, available through `pay.sprey.win`, gives merchants their own non-custodial payment infrastructure — hosted and managed by Sprey.
 
 ## Sprey Processing boundary
 
-Sprey Processing is the reference implementation of Sprey's **non-custodial crypto acquiring** model: merchants accept crypto payments directly to merchant-controlled wallets or payment destinations while Sprey provides invoice, payment-state observation, and integration infrastructure.
+Sprey Processing provides managed hosting for merchant-owned, non-custodial payment infrastructure. Merchants accept payments directly to merchant-controlled wallets or payment destinations while Sprey provides software hosting, blockchain and payment-state observation, and integration infrastructure.
 
 The product boundary is broader than WooCommerce. `pay.sprey.win` is intended to support the standard BTCPay merchant use cases across online and in-person payment flows:
 
@@ -113,7 +113,7 @@ BTCPay observes the Bitcoin blockchain or another configured payment network
 merchant-facing integration receives status
 ```
 
-Sprey does not initiate, route, receive, hold, or forward merchant funds.
+Sprey does not receive, hold, exchange, transfer, or otherwise control merchant funds.
 
 ## Verification boundary
 
@@ -178,7 +178,7 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 
 Sprey components should remain loosely coupled where practical:
 
-- **Sprey Processing** — payment infrastructure and merchant payment flows.
+- **Sprey Processing** — managed hosting for merchant-owned, non-custodial payment infrastructure.
 - **Sprey WP Stack** — WordPress/WooCommerce storefront implementation.
 - **Sprey Hub** — internal files, collaboration, credentials, team dashboard, LocalAI, and AI-assisted workflows.
 - **Sprey Wallet** — wallet guidance and merchant custody boundary.
