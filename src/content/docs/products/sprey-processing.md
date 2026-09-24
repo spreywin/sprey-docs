@@ -1,11 +1,11 @@
 ---
 title: Sprey Processing
-description: Sprey's live non-custodial crypto payment infrastructure and reference deployment behind pay.sprey.win.
+description: Managed hosting for merchant-owned, non-custodial payment infrastructure behind pay.sprey.win.
 ---
 
-**Sprey Processing** is Sprey's live non-custodial crypto payment infrastructure and the reference implementation of its **non-custodial crypto acquiring** model. It is intended for businesses accepting crypto payments both **online and in person** through `pay.sprey.win`.
+**Sprey Processing** gives merchants **their own non-custodial payment infrastructure — hosted and managed by Sprey.** It is intended for businesses accepting crypto payments both **online and in person** through `pay.sprey.win`.
 
-In Sprey terminology, **non-custodial crypto acquiring** means infrastructure that lets a merchant accept crypto payments directly to a merchant-controlled wallet or payment destination while Sprey provides invoice, payment-state observation, and integration infrastructure. Sprey does not initiate, route, receive, hold, or forward merchant funds.
+Merchant payments go directly to merchant-controlled wallets or payment destinations. Sprey provides software hosting, blockchain and payment-state observation, and related integration infrastructure. Sprey does not receive, hold, exchange, transfer, or otherwise control merchant funds.
 
 BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one supported storefront integration, not the definition or boundary of the product.
 
@@ -67,7 +67,7 @@ pay.sprey.win
 
 ## Payment model
 
-The payment itself happens independently of Sprey. BTCPay observes the Bitcoin blockchain or another configured payment network, determines invoice state from network data, and reports that state to the connected storefront or integration.
+The payment itself happens independently of Sprey. Customers pay merchant-controlled destinations directly. BTCPay observes the Bitcoin blockchain or another configured payment network, determines invoice state from network data, and reports that state to the connected storefront or integration.
 
 For WooCommerce, products, cart, checkout, and orders remain in WooCommerce. BTCPay is separate payment infrastructure.
 
