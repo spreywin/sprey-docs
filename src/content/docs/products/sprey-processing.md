@@ -9,6 +9,10 @@ Merchant payments go directly to merchant-controlled wallets or payment destinat
 
 BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one supported storefront integration, not the definition or boundary of the product.
 
+**Product overview:** [Sprey Processing promo landing](https://wp-stack.sprey.win/promo/)  
+**Live service:** [pay.sprey.win](https://pay.sprey.win/)  
+**Prepared storefront path:** [Sprey WP Stack](https://wp-stack.sprey.win/)
+
 ## Product scope
 
 Sprey Processing is designed around the standard BTCPay merchant model. The intended product boundary and current verification status are:
@@ -275,6 +279,13 @@ The production backup wrapper uses BTCPay's native backup format rather than a p
 A complete restore into an isolated disposable environment is still pending. Until that succeeds, the deployment should be described as **backup-verified**, not fully **disaster-recovery verified**.
 
 See [BTCPay backup operations](/operations/btcpay-backup/) for the verified Cloudflare R2 workflow, retention model, encryption boundary, and restore procedure.
+
+## Related product links
+
+- [Sprey Processing promo landing](https://wp-stack.sprey.win/promo/) — concise product-oriented overview.
+- [Sprey WP Stack](https://wp-stack.sprey.win/) — prepared WordPress/WooCommerce storefront path.
+- [Live Sprey Processing](https://pay.sprey.win/) — public payment service.
+- [Sprey Docs](https://docs.sprey.win/) — canonical technical and operational documentation.
 
 ## Self-host BTCPay Server
 
