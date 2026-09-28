@@ -29,7 +29,7 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 | API/custom integrations | Direct merchant-system integration with BTCPay | Product scope; verification pending |
 | Multilingual interface | BTCPay language packs selectable by users | Installed on the reference deployment; sample language switching verified |
 | Hosted subscriptions | Paid access to the shared BTCPay instance | Trial, expiry, portal recovery, Lightning payment, invoice settlement, return to Active, and next-billing recalculation verified |
-| USDt | TRON, Ethereum and Polygon through the installed Tether USDt plugin | **Real paid-invoice E2E verified on TRON, Ethereum and Polygon; merchant-controlled address pools confirmed independently through WDK** |
+| USDt | TRON, Ethereum, Polygon and BSC through the installed Tether USDt plugin | **Real paid-invoice E2E verified on TRON, Ethereum, Polygon and BSC; merchant-controlled address pools confirmed independently through WDK** |
 
 A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
 
@@ -211,33 +211,36 @@ The installed Tether USDt plugin currently exposes:
 
 - USDt on TRON;
 - USDt on Ethereum;
-- USDt on Polygon.
+- USDt on Polygon;
+- USDt on BSC.
 
-The reference Store now has **10 merchant-controlled public addresses configured for each supported USDt network**. TRON uses a dedicated 10-address `T...` pool; Ethereum and Polygon use the same 10-address EVM pool derived from the merchant-controlled WDK wallet.
+The reference Store now has **10 merchant-controlled public addresses configured for each supported USDt network**. TRON uses a dedicated 10-address `T...` pool; Ethereum, Polygon and BSC use the same 10-address EVM pool derived from the merchant-controlled WDK wallet.
 
 The node/balance layer has been verified on all three networks:
 
 - TRON uses `https://tron-evm-rpc.publicnode.com` and returns balances for all configured addresses;
 - Ethereum returns balances for all configured addresses;
 - Polygon uses `https://polygon-bor-rpc.publicnode.com` and returns balances for all configured addresses.
+- BSC requires an RPC endpoint that supports historical `eth_getLogs`; the default public BSC endpoint was rejected after returning `limit exceeded: eth_getLogs` during the live test. A keyed BSC RPC restored listener progress and payment detection.
 
 All three USDt payment methods show healthy/green state in the live Store. Seed phrases and private keys remain outside BTCPay; only public addresses are provided to the payment plugin.
 
-Real paid-invoice testing is complete on all three currently exposed networks:
+Real paid-invoice testing is complete on all four currently exposed networks:
 
 - **TRON:** hosted-subscription payment received, confirmations observed, invoice settled, and subscription activated;
 - **Ethereum:** exact hosted-subscription amount received, successful `USDT-ETHEREUM` receipt produced, and subscription activated;
-- **Polygon:** exact invoice amount received and successful `USDT-POLYGON` receipt produced.
+- **Polygon:** exact invoice amount received and successful `USDT-POLYGON` receipt produced;
+- **BSC:** exact `5.49 USDt` invoice amount received at the merchant-controlled EVM destination. Detection was delayed by an RPC `eth_getLogs` limit; after switching to a BSC RPC endpoint that supports historical log queries, the listener caught up, matched the transfer, recorded the full paid amount, and BTCPay correctly classified the invoice as `Expired (paid late)`.
 
 The merchant-controlled WDK wallet independently showed the received balances from the real tests, confirming that settlement reached the merchant-controlled destinations rather than a Sprey-custodied wallet.
 
-**USDt on TRON, Ethereum and Polygon is verified end to end on the reference deployment.**
+**USDt on TRON, Ethereum, Polygon and BSC is verified end to end on the reference deployment.**
 
 See [WDK CLI wallet operations](/operations/wdk-cli-wallet/) for the merchant-wallet command reference.
 
 ## Current product state
 
-The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, subscription expiry/recovery lifecycle, watch-only Bitcoin wallet model, external Lightning/NWC settlement path, Payment Requests, and real USDt settlement on TRON, Ethereum and Polygon have been verified to their stated checkpoints.
+The BTCPay Server instance is online and the **Sprey Processing** Store exists. The public and administrative ingress paths, origin network perimeter, Bitcoin Core synchronization and pruning state, public BTCPay health endpoint, server SMTP delivery, multilingual interface baseline, hosted monetization configuration, subscription expiry/recovery lifecycle, watch-only Bitcoin wallet model, external Lightning/NWC settlement path, Payment Requests, and real USDt settlement on TRON, Ethereum, Polygon and BSC have been verified to their stated checkpoints.
 
 A payment method is not considered operational merely because its configuration page is available. It becomes part of the verified Sprey Processing reference only after the complete merchant flow has been tested: merchant destination configured, invoice created, customer payment sent independently, network state observed by BTCPay, and invoice state reported correctly.
 
@@ -246,7 +249,8 @@ For the detailed operational records, see:
 - [Sprey Processing verification — 2026-09-10](/operations/processing-verification-2026-09-10/);
 - [Sprey Processing verification — 2026-09-11](/operations/processing-verification-2026-09-11/);
 - [Sprey Processing verification — 2026-09-14](/operations/processing-verification-2026-09-14/), including real BTC and USDt E2E tests;
-- [Sprey Processing verification — 2026-09-15](/operations/processing-verification-2026-09-15/), including Lightning/NWC and the 2026-09-21 subscription lifecycle follow-up.
+- [Sprey Processing verification — 2026-09-15](/operations/processing-verification-2026-09-15/), including Lightning/NWC and the 2026-09-21 subscription lifecycle follow-up;
+- [Sprey Processing verification — 2026-09-28](/operations/processing-verification-2026-09-28/), including USDt on BSC E2E, RPC `eth_getLogs` requirements, and paid-late recovery.
 
 ## Product verification path
 
@@ -256,7 +260,7 @@ The canonical initial product verification path follows the merchant journey:
 2. **Store — verified baseline.** The `Sprey Processing` Store and hosted defaults are configured and exercised by real customer/subscriber flows.
 3. **Merchant-controlled wallets — verified.** BTC uses watch-only observation with external signing authority; USDt uses merchant-controlled WDK-derived address pools without exposing private keys to BTCPay.
 4. **Invoices and Payment Requests — verified.** Real invoice/request creation and customer payment entry points have been exercised on the reference deployment.
-5. **Real payments — verified.** BTC on-chain, USDt on TRON/Ethereum/Polygon, and external Lightning/NWC have all completed real payment tests.
+5. **Real payments — verified.** BTC on-chain, USDt on TRON/Ethereum/Polygon/BSC, and external Lightning/NWC have all completed real payment tests.
 6. **Network observation — verified.** BTCPay observed the relevant payment networks and determined payment state correctly in the verified tests.
 7. **Invoice settlement — verified.** Paid invoice lifecycle and merchant-facing settlement state have been confirmed on the verified payment rails.
 8. **Hosted subscription lifecycle — verified.** Trial, expiry, recovery payment, return to `Active`, and next-billing recalculation are confirmed.
