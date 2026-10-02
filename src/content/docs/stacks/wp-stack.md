@@ -7,7 +7,7 @@ description: Production-ready WordPress and WooCommerce Docker stack with Caddy,
 
 ## Release status
 
-**Current stable release:** [v1.0.0](https://github.com/spreywin/sprey-wp-stack/releases/tag/v1.0.0) — released 2026-09-09.
+**Current stable release:** [v1.1.0](https://github.com/spreywin/sprey-wp-stack/releases/tag/v1.1.0) — released 2026-10-02.
 
 The stable release was published after final clean-host validation on Ubuntu 26.04.1 LTS, including the x86_64 ~1 GB RAM deployment path, localhost-only phpMyAdmin, and reboot persistence checks.
 
@@ -227,4 +227,4 @@ The operating rule is:
 
 > **Build it. Verify it. Document it.**
 
-**Sprey WP Stack v1.0.0 is released and is the current stable version.** It was published after the targeted infrastructure and deployment checks were completed. Anything outside that verified boundary remains explicitly separated rather than being described as verified.
+**Sprey WP Stack v1.1.0 is released and is the current stable version.** It was published after the targeted infrastructure and deployment checks were completed. Anything outside that verified boundary remains explicitly separated rather than being described as verified.
