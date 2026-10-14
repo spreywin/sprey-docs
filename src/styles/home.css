@@ -40,18 +40,6 @@
 :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:first-of-type { grid-column: 3; grid-row: 1 / span 2; align-self: center; justify-self: center; text-align: center; }
 :root[data-has-hero] .docs-home-payment-model[aria-label='Sprey WP Stack'] > a:last-of-type { grid-column: 2; grid-row: 2; align-self: center; justify-self: center; text-align: center; }
 
-/* Sprey Lab: replace the supported Starlight icon in its normal icon slot with our custom flask. */
-:root[data-has-hero] .card-grid > :nth-child(3) .icon svg { display: none; }
-:root[data-has-hero] .card-grid > :nth-child(3) .icon::after {
-  content: '';
-  display: block;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: currentColor;
-  -webkit-mask: url('/flask.svg') center / contain no-repeat;
-  mask: url('/flask.svg') center / contain no-repeat;
-}
-
 /* Homepage section cards. */
 :root[data-has-hero] .card-grid > article, :root[data-has-hero] .card-grid > .card, :root[data-has-hero] .sl-link-card { border-radius: 1rem; }
 :root[data-has-hero] .card-grid > * { overflow: hidden; border-radius: 1rem; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
