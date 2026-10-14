@@ -11,13 +11,14 @@ description: Experimental BTCPay applications and plugin-based payment flows tes
 
 ## Verification record
 
-The following scenarios were reported as practically tested in the Sprey Lab Store on **2026-10-13**. This record reflects the reported test results; it is not an independent rerun by the documentation author.
+The following scenarios were reported as practically tested in the Sprey Lab Store on **2026-10-13 and 2026-10-14**. This record reflects the reported test results; it is not an independent rerun by the documentation author.
 
 | Scenario | Status | Verification boundary |
 | --- | --- | --- |
 | QR payment | **Verified in Lab** | The reported QR payment flow worked in the Lab test context. |
 | Crowdfunding | **Verified in Lab** | The reported crowdfunding flow worked. |
 | Point of Sale / payment terminal | **Verified in Lab** | The reported terminal flow worked. |
+| POS product-linked payment button — **Choose Your Amount / Sprey Point of Sale** | **Verified in Lab** | A payment button linked to a product from the Point of Sale system was added and reported working; this is a specific POS-linked flow, separate from the general Payment Button test. |
 | Payment Button | **Verified in Lab** | The reported button-based payment flow worked. |
 | Swap application/plugin | **Verified in Lab; details to capture** | Swap was reported working through a plugin. Exact plugin identifier, version, and tested route still need to be recorded from the live configuration. |
 | Lightning through OpenReceive with Rizful | **Configured / test invoices prepared** | Wallet connection, invoice creation, available payment methods, and test invoice/donation preparation were reported complete. Do not infer that every Lightning payment route or edge case has been tested. |
