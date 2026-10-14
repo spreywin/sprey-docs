@@ -20,12 +20,12 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 | Capability | Product role | Current Sprey status |
 | --- | --- | --- |
 | Online stores | WooCommerce and other supported e-commerce integrations | Product scope; WooCommerce is the current prepared stack path |
-| Point of Sale | In-person acceptance from connected merchant devices | Product scope; verification pending |
-| QR payments | Customer-facing QR payment flows for online or in-person use | Product scope; verification pending |
+| Point of Sale | In-person acceptance from connected merchant devices | **Verified in Lab; Processing verification pending** |
+| QR payments | Customer-facing QR payment flows for online or in-person use | **Verified in Lab; Processing verification pending** |
 | Payment Requests | Shareable merchant payment requests independent of a cart | **Verified on the reference deployment** |
-| Payment Buttons | Direct payment entry points embedded in merchant content | Product scope; verification pending |
+| Payment Buttons | Direct payment entry points embedded in merchant content | **Verified in Lab; Processing verification pending** |
 | Donations | Direct donation flows using BTCPay applications and buttons | Product scope; verification pending |
-| Crowdfunding | BTCPay crowdfunding applications and campaigns | Product scope; verification pending |
+| Crowdfunding | BTCPay crowdfunding applications and campaigns | **Verified in Lab; Processing verification pending** |
 | API/custom integrations | Direct merchant-system integration with BTCPay | Product scope; verification pending |
 | Multilingual interface | BTCPay language packs selectable by users | Installed on the reference deployment; sample language switching verified |
 | Hosted subscriptions | Paid access to the shared BTCPay instance | Trial, expiry, portal recovery, Lightning payment, invoice settlement, return to Active, and next-billing recalculation verified |
