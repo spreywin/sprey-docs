@@ -16,6 +16,49 @@ import Default from '@astrojs/starlight/components/SocialIcons.astro';
 </script>
 
 <style>
+  .sprey-site-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    min-height: 2.25rem;
+    padding: .48rem .8rem;
+    border: 1px solid color-mix(in srgb, var(--sprey-purple) 72%, var(--sl-color-gray-4));
+    border-radius: 6px;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff !important;
+    font-size: .82rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none !important;
+    white-space: nowrap;
+    box-shadow: 0 3px 12px color-mix(in srgb, var(--sprey-purple) 24%, transparent);
+    transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  }
+
+  .sprey-site-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 5px 16px color-mix(in srgb, var(--sprey-purple) 34%, transparent);
+  }
+
+  .sprey-site-button:focus-visible {
+    outline: 2px solid var(--sprey-purple-2);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 50rem) {
+    .sprey-site-button {
+      min-height: 2rem;
+      padding: .42rem .58rem;
+      font-size: .76rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sprey-site-button { transition: none; }
+  }
+
   .gtranslate_wrapper {
     position: relative;
     margin-inline-start: 1rem;
