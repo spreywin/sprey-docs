@@ -3,8 +3,6 @@ title: Sprey Processing Tor Access Verification — 2026-10-14
 description: Operational record for enabling and verifying Tor onion access on the Sprey BTCPay Server reference deployment.
 ---
 
-# Sprey Processing Tor Access Verification — 2026-10-14
-
 ## Result
 
 **Verified by the operator on 2026-10-14:** the onion address appeared in the BTCPay administration interface, opened successfully, and the operator confirmed that the service worked through it.
