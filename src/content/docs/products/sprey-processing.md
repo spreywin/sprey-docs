@@ -33,7 +33,7 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 
 A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
 
-**Important verification boundary:** QR payment, Point of Sale/terminal, Payment Button, crowdfunding, and Swap scenarios were reported as tested in the separate Sprey Lab Store on 2026-10-13. These are recorded in [Sprey Lab](/products/sprey-lab/). They are not automatically marked as verified for the commercial Processing product because the test context and merchant workflow are different. The exact Swap plugin name/version and its precise tested flow still need to be captured from the live configuration.
+**Important verification boundary:** QR payment, Point of Sale/terminal, Payment Button, crowdfunding, and Swap scenarios were reported as tested in the separate Sprey Lab Store on 2026-10-13 and 2026-10-14, including the POS-linked “Choose Your Amount / Sprey Point of Sale” payment-button flow. These are recorded in [Sprey Lab](/products/sprey-lab/). They are not automatically marked as verified for the commercial Processing product because the test context and merchant workflow are different. The exact Swap plugin name/version and its precise tested flow still need to be captured from the live configuration.
 
 ```text
                          SPREY PROCESSING
