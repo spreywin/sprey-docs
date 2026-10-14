@@ -9,7 +9,7 @@ Merchant payments go directly to merchant-controlled wallets or payment destinat
 
 BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one supported storefront integration, not the definition or boundary of the product.
 
-**Product overview:** [Sprey Processing promo landing](https://wp-stack.sprey.win/promo/)  
+**Product overview:** [Sprey Promo landing](https://www.sprey.win/)  
 **Live service:** [pay.sprey.win](https://pay.sprey.win/)  
 **Prepared storefront path:** [Sprey WP Stack](https://wp-stack.sprey.win/)
 
@@ -32,6 +32,8 @@ Sprey Processing is designed around the standard BTCPay merchant model. The inte
 | USDt | TRON, Ethereum, Polygon and BSC through the installed Tether USDt plugin | **Real paid-invoice E2E verified on TRON, Ethereum, Polygon and BSC; merchant-controlled address pools confirmed independently through WDK** |
 
 A capability may belong to the intended product boundary because it is supported by upstream BTCPay Server. It becomes a **verified Sprey Processing capability** only after its complete merchant flow has been configured and tested on the reference deployment.
+
+**Important verification boundary:** QR payment, Point of Sale/terminal, Payment Button, crowdfunding, and Swap scenarios were reported as tested in the separate Sprey Lab Store on 2026-10-13. These are recorded in [Sprey Lab](/products/sprey-lab/). They are not automatically marked as verified for the commercial Processing product because the test context and merchant workflow are different. The exact Swap plugin name/version and its precise tested flow still need to be captured from the live configuration.
 
 ```text
                          SPREY PROCESSING
