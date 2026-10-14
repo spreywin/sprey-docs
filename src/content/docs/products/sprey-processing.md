@@ -99,7 +99,7 @@ The current Sprey reference deployment uses:
 | Monitoring approach | Native provider/component signals first; no additional monitoring stack on the BTCPay host at this checkpoint |
 | Planned external watchdog | Run outside `sprey-btcpay`, preferably from the future `sprey.win` application/server layer |
 | Automatic OS updates | `unattended-upgrades` enabled; automatic reboot not enabled |
-| BTCPay Server | v2.4.4, live |
+| BTCPay Server | v2.4.5, live (verified 2026-10-14) |
 | Bitcoin | Mainnet, synchronized pruned node; automatic pruning enabled with a 25 GiB target; Store wallet is watch-only |
 | Merchant BTC spending wallet | Sparrow desktop wallet; signing authority remains outside BTCPay |
 | Lightning | External client-controlled Lightning verified via direct Rizful NWC through the BTCPay Nostr plugin; LNURL disabled for the verified configuration |
@@ -157,6 +157,22 @@ Cloudflare Tunnel
 `pay.sprey.win` remains public because merchant, customer, API, webhook, and invoice traffic must reach BTCPay without an interactive Access login.
 
 `adminpay.sprey.win` is configured as an additional BTCPay host and is protected by Cloudflare Access.
+
+
+## Tor / onion access
+
+Tor access is enabled on the live Sprey Processing reference deployment and was verified by the operator on **2026-10-14**. The onion URL appeared in the BTCPay administration interface, opened in Tor Browser, and the operator confirmed that the service worked through it.
+
+- **Onion URL:** [http://ouzdv6adywyfehbnmnrekyfmkqj2vsugqvxeihzw7e5r64y4ouvteryd.onion](http://ouzdv6adywyfehbnmnrekyfmkqj2vsugqvxeihzw7e5r64y4ouvteryd.onion)
+- **BTCPay fragment:** `opt-add-tor` — enabled by default on this reference deployment.
+- **Tor relay:** `opt-add-tor-relay` — not enabled; Sprey is not operating a Tor relay as part of this change.
+- **Cloudflare Tunnel:** `opt-add-cloudflared` — remains enabled for the normal clearnet endpoints.
+- **Optional Nginx routes:** `btcpay-routes show` returned empty `optionalRoutes` and `enabledRoutes` arrays; the onion endpoint was available independently of those optional routes.
+- **Network exposure:** Docker reports no host-published ports for Tor's 9050/SOCKS and 9051/control ports. Tor logs show the listeners bound to `0.0.0.0` inside the container, so container-network access remains a separate security boundary to review; these ports were not published to the host by Docker.
+
+Use **Tor Browser** to open the onion URL. Tor adds an alternative access path and can improve network-level privacy, but it does not guarantee user anonymity: account login, browser behavior, application data, and user actions still matter. The onion address is a live operational endpoint and must be rechecked after major BTCPay/Docker reconfiguration or recovery.
+
+See [Tor access verification — 2026-10-14](/operations/processing-tor-verification-2026-10-14/) for the change record and checks.
 
 ## Hosted access and Store defaults
 
