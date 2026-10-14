@@ -187,7 +187,9 @@ Sprey components should remain loosely coupled where practical:
 - **Sprey Hub** — internal files, collaboration, credentials, team dashboard, LocalAI, and AI-assisted workflows.
 - **Sprey Wallet** — wallet guidance and merchant custody boundary.
 - **Sprey RPC** — future independent RPC/API infrastructure.
-- **www.sprey.win** — public promotional landing.\n- **sprey.win/store** — WooCommerce Store.\n- **pay.sprey.win** — Sprey Processing and its separate Sprey Lab experimental area.
+- **[www.sprey.win](https://www.sprey.win/)** — public promotional landing.
+- **[sprey.win/store](https://sprey.win/store/)** — WooCommerce Store.
+- **[pay.sprey.win](https://pay.sprey.win/)** — Sprey Processing and its separate Sprey Lab experimental area.
 - **docs.sprey.win** — canonical operational documentation.
 - **status.sprey.win** — planned public service status layer.
 
