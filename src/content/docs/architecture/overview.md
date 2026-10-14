@@ -3,7 +3,7 @@ title: Architecture Overview
 description: High-level Sprey architecture and product boundaries.
 ---
 
-Sprey is organized around a small number of independent product and infrastructure layers. **Sprey Processing**, available through `pay.sprey.win`, gives merchants their own non-custodial payment infrastructure — hosted and managed by Sprey.
+Sprey is organized around independent product and infrastructure layers. The public promotional landing is [www.sprey.win](https://www.sprey.win/); the WooCommerce store is available at [sprey.win/store](https://sprey.win/store/); and **Sprey Processing**, including its BTCPay Store and experimental Sprey Lab applications, is available through [pay.sprey.win](https://pay.sprey.win/). Sprey Processing gives merchants their own non-custodial payment infrastructure — hosted and managed by Sprey.
 
 ## Sprey Processing boundary
 
@@ -36,6 +36,10 @@ The product boundary is broader than WooCommerce. `pay.sprey.win` is intended to
 ```
 
 API and custom integrations can connect merchant systems directly to the Processing layer without requiring WordPress or WooCommerce.
+
+## Sprey Lab boundary
+
+**Sprey Lab** is the experimental product area built on the BTCPay Store at `pay.sprey.win`. It is separate from the core commercial Processing offer: Lab experiments may use BTCPay applications and plugins to explore donation, crowdfunding, QR, Point of Sale, payment-button, and swap flows. A test completed in Lab confirms only the specific Lab scenario tested; it does not automatically certify the same feature for every merchant-facing Processing workflow. See [Sprey Lab](/products/sprey-lab/) for the current test record and verification boundaries.
 
 ## Sprey WP Stack boundary
 
@@ -159,8 +163,8 @@ Internal components such as NBXplorer remain part of the BTCPay implementation, 
 
 | Domain | Product / role | Status |
 | --- | --- | --- |
-| [sprey.win](https://sprey.win/) | Public product site and WooCommerce storefront | **Live** |
-| [pay.sprey.win](https://pay.sprey.win/) | Sprey Processing public payment endpoint | **Live** |
+| [www.sprey.win](https://www.sprey.win/) | Public promotional landing for Sprey Processing and Sprey Lab | **Live** |\n| [sprey.win/store](https://sprey.win/store/) | WooCommerce Store | **Live** |
+| [pay.sprey.win](https://pay.sprey.win/) | Sprey Processing BTCPay endpoint and Sprey Lab Store/apps | **Live** |
 | [adminpay.sprey.win](https://adminpay.sprey.win/) | Sprey Processing administrative endpoint behind Cloudflare Access | **Live** |
 | [wp-stack.sprey.win](https://wp-stack.sprey.win/) | Sprey WP Stack product landing | **Live** |
 | [hub.sprey.win](https://hub.sprey.win/) | Sprey Hub internal workspace entry point | Planned |
@@ -183,7 +187,7 @@ Sprey components should remain loosely coupled where practical:
 - **Sprey Hub** — internal files, collaboration, credentials, team dashboard, LocalAI, and AI-assisted workflows.
 - **Sprey Wallet** — wallet guidance and merchant custody boundary.
 - **Sprey RPC** — future independent RPC/API infrastructure.
-- **sprey.win** — public product and application layer.
+- **www.sprey.win** — public promotional landing.\n- **sprey.win/store** — WooCommerce Store.\n- **pay.sprey.win** — Sprey Processing and its separate Sprey Lab experimental area.
 - **docs.sprey.win** — canonical operational documentation.
 - **status.sprey.win** — planned public service status layer.
 
