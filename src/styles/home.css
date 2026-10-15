@@ -86,3 +86,76 @@
 @media (max-width: 50rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 34rem) { :root[data-has-hero] .hero .actions { flex-direction: column; align-items: center; } :root[data-has-hero] .hero .actions a { width: auto; } }
 @media (max-width: 32rem) { :root[data-has-hero] .docs-metrics { grid-template-columns: 1fr; } }
+
+
+/* Reuse the homepage's polished trial callout on internal documentation pages. */
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .7rem 1.1rem;
+  margin: 1.75rem 0 2.5rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 40%, var(--sl-color-gray-5));
+  border-inline-start: 3px solid var(--sprey-purple-2);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sprey-purple) 11%, var(--sl-color-bg-nav)), color-mix(in srgb, var(--sl-color-bg-nav) 92%, transparent));
+  box-shadow: 0 .45rem 1.4rem color-mix(in srgb, var(--sprey-purple) 8%, transparent);
+}
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > strong {
+  flex: 1 1 14rem;
+  color: var(--sprey-purple-2);
+  font-size: 1.08rem;
+  letter-spacing: -.015em;
+}
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > span {
+  flex: 2 1 24rem;
+  color: var(--sl-color-gray-2);
+  font-size: .95rem;
+  line-height: 1.6;
+}
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: .55rem .85rem;
+  border: 1px solid color-mix(in srgb, var(--sprey-purple) 35%, var(--sl-color-gray-5));
+  border-radius: .55rem;
+  color: var(--sprey-purple-2);
+  font-size: .9rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
+  background: color-mix(in srgb, var(--sprey-purple) 16%, var(--sl-color-bg));
+}
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:hover {
+  border-color: var(--sprey-purple-2);
+  background: color-mix(in srgb, var(--sprey-purple) 23%, var(--sl-color-bg));
+  transform: translateY(-1px);
+}
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] {
+  border-color: color-mix(in srgb, var(--sprey-purple) 30%, var(--sl-color-gray-5));
+  border-inline-start-color: #7c3aed;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sprey-purple) 8%, #ffffff), #ffffff);
+  box-shadow: 0 .35rem 1.1rem rgb(15 23 42 / 7%);
+}
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > strong,
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a {
+  color: #7c3aed;
+}
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > span {
+  color: var(--sl-color-gray-1);
+}
+@media (max-width: 40rem) {
+  :root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  :root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a {
+    align-self: flex-start;
+  }
+}
