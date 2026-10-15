@@ -13,6 +13,14 @@ BTCPay Server is the current foundation of Sprey Processing. WooCommerce is one 
 **Live service:** [pay.sprey.win](https://pay.sprey.win/)  
 **Prepared storefront path:** [Sprey WP Stack](https://wp-stack.sprey.win/)
 
+## Trial and plugins
+
+- **7-day free trial:** New users can explore Sprey Processing for seven days.
+- **Plugin selection:** Each account includes access to a broad selection of available plugins.
+- **Additional plugins on request:** If you need a plugin that is not currently available in your account, contact Sprey to request it. Requests are reviewed for compatibility, security, and operational fit; availability is not guaranteed.
+
+The trial provides time to evaluate the service before choosing a paid plan. See the live service for current registration and plan details.
+
 ## Product scope
 
 Sprey Processing is designed around the standard BTCPay merchant model. The intended product boundary and current verification status are:
