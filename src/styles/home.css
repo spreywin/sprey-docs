@@ -163,12 +163,12 @@
 
 /* Keep the Create your account CTA contrasting in both themes without changing its text color. */
 :root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
-  background: #17151f;
-  border-color: #17151f;
+  background: color-mix(in srgb, var(--sprey-purple) 28%, #ffffff);
+  border-color: color-mix(in srgb, var(--sprey-purple) 45%, #ffffff);
 }
 :root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type:hover {
-  background: #292536;
-  border-color: #292536;
+  background: color-mix(in srgb, var(--sprey-purple) 38%, #ffffff);
+  border-color: color-mix(in srgb, var(--sprey-purple) 55%, #ffffff);
 }
 :root[data-theme='dark']:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
   background: #f3e8ff;
