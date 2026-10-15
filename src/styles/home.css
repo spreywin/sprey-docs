@@ -185,23 +185,3 @@
   background: #e9d5ff;
   border-color: #e9d5ff;
 }
-
-/* Light-theme homepage Processing CTA: vivid Sprey lilac, matching the account button. */
-:root:not([data-theme='dark'])[data-has-hero] .docs-home-payment-model[aria-label='Non-custodial payment infrastructure'] > a {
-  justify-self: end;
-  padding: .65rem .9rem;
-  border: 1px solid #7c3aed;
-  border-radius: .55rem;
-  background: #7c3aed;
-  color: #ffffff;
-  text-align: center;
-  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
-}
-:root:not([data-theme='dark'])[data-has-hero] .docs-home-payment-model[aria-label='Non-custodial payment infrastructure'] > a:hover {
-  border-color: #6d28d9;
-  background: #6d28d9;
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-
