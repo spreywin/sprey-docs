@@ -8,6 +8,8 @@ Merchant payments go directly to merchant-controlled wallets or payment destinat
 
 `Sprey WP Stack` is one ready-made WordPress/WooCommerce online-commerce implementation connected to Sprey Processing. It is one use of `pay.sprey.win`, not the boundary of the Processing product.
 
+Sprey Processing offers a **7-day free trial**. Each account includes access to a broad selection of available plugins, with additional plugin requests reviewed for compatibility and availability.
+
 Upstream capability and verified Sprey capability are intentionally separated.
 
 > **Build it. Verify it. Document it.**
