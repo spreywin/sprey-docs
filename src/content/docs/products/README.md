@@ -14,6 +14,6 @@ Merchant payments go directly to merchant-controlled wallets or payment destinat
   <strong>Start with a 7-day free trial</strong>
   <span>Each Sprey Processing account includes access to a broad selection of available plugins. Need another plugin? Request it from Sprey; availability depends on compatibility and review.</span>
   <a href="https://pay.sprey.win/register/">Create your account →</a>
-  <a href="/products/sprey-processing/">Explore Sprey Processing →</a>
+  <a href="/products/sprey-processing/">Explore Sprey Processing</a>
 </div>
 
