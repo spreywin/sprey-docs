@@ -204,21 +204,4 @@
   transform: translateY(-1px);
 }
 
-/* Dedicated homepage CTA: force the brand lilac on light backgrounds. */
-:root:not([data-theme='dark']) .docs-home-processing-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: .65rem .9rem;
-  border: 1px solid #7c3aed !important;
-  border-radius: .55rem;
-  background: #7c3aed !important;
-  color: #ffffff !important;
-  text-decoration: none;
-}
-:root:not([data-theme='dark']) .docs-home-processing-cta:hover {
-  border-color: #6d28d9 !important;
-  background: #6d28d9 !important;
-  color: #ffffff !important;
-}
 
