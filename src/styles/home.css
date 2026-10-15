@@ -159,3 +159,22 @@
     align-self: flex-start;
   }
 }
+
+
+/* Keep the Create your account CTA contrasting in both themes without changing its text color. */
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
+  background: #17151f;
+  border-color: #17151f;
+}
+:root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type:hover {
+  background: #292536;
+  border-color: #292536;
+}
+:root[data-theme='dark']:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
+  background: #f3e8ff;
+  border-color: #f3e8ff;
+}
+:root[data-theme='dark']:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type:hover {
+  background: #e9d5ff;
+  border-color: #e9d5ff;
+}
