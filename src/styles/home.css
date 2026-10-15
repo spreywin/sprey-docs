@@ -161,14 +161,21 @@
 }
 
 
-/* Keep the Create your account CTA contrasting in both themes without changing its text color. */
+/* Keep the Create your account CTA in Sprey's vivid lilac brand color. */
 :root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
-  background: color-mix(in srgb, var(--sprey-purple) 28%, #ffffff);
-  border-color: color-mix(in srgb, var(--sprey-purple) 45%, #ffffff);
+  background: #7c3aed;
+  border-color: #7c3aed;
 }
 :root:not([data-theme='dark']):not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type:hover {
-  background: color-mix(in srgb, var(--sprey-purple) 38%, #ffffff);
-  border-color: color-mix(in srgb, var(--sprey-purple) 55%, #ffffff);
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+
+/* The second CTA is a plain internal link: suppress any injected arrow/icon. */
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:last-of-type::after,
+:root:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:last-of-type svg {
+  display: none !important;
+  content: none !important;
 }
 :root[data-theme='dark']:not([data-has-hero]) .docs-home-payment-model[aria-label='Sprey Processing trial and plugins'] > a:first-of-type {
   background: #f3e8ff;
